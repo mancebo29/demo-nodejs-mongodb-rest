@@ -17,6 +17,9 @@ movieSchema.methods.getInfo = async function (title) {
     await axios.get(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`).then(res => {
         const data = res.data;
         if (data) {
+            if (data.Response && data.Response === 'False') {
+                throw new MovieError();
+            }
             this.year = Number(data.Year) || 0;
             this.name = data.Title;
             this.rating = Number(data.imdbRating) || 0;

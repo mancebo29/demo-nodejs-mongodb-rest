@@ -17,6 +17,16 @@ module.exports = function setUpBot () {
         return true;
     };
 
+    const errorCatcher = (e, message) => {
+        console.log(e);
+        if (typeof e === 'MovieError') {
+            message.channel.send('No encontré esa película :c');
+            message.channel.send('Soy medio lentito así que prueba a ser más específico');
+        } else {
+            message.channel.send('No sé hacer eso :c');
+        }
+    };
+
     client.on('message', message => {
         if (message.content === '!movies') {
             if (!checkPermission(message)) return;
@@ -27,8 +37,7 @@ module.exports = function setUpBot () {
                movies.forEach(m => reply += '\n' + `${n++}- ${m.asString()}`);
                message.channel.send(reply);
             }).catch(e => {
-                console.log(e);
-                message.channel.send('No sé hacer eso :c');
+
             });;
         }
 
@@ -78,6 +87,7 @@ module.exports = function setUpBot () {
         if (message.content.startsWith('!clearEntireMovieQueue')) {
             if (!checkPermission(message)) return;
 
+            message.delete();
             mongodb.clear().then(() => message.channel.send('SE BORRÓ TODO!'));
         }
     });
