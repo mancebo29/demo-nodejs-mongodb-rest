@@ -1,7 +1,7 @@
-class MovieError extends Error {
+module.exports = class MovieError extends Error {
     constructor(message) {
         super(message);
         this.name = 'MovieError';
         Error.captureStackTrace(this, MovieError)
     }
-}
+};
