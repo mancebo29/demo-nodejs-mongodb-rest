@@ -19,7 +19,7 @@ module.exports = function setUpBot () {
 
     const errorCatcher = (e, message) => {
         console.log(e);
-        if (typeof e === 'MovieError') {
+        if (typeof e === 'MovieError' || e.message === 'Not Found') {
             message.channel.send('No encontré esa película :c');
             message.channel.send('Soy medio lentito así que prueba a ser más específico');
         } else {

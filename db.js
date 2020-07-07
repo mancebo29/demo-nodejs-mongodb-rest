@@ -18,7 +18,7 @@ movieSchema.methods.getInfo = async function (title) {
         const data = res.data;
         if (data) {
             if (data.Response && data.Response === 'False') {
-                throw new MovieError();
+                throw new MovieError('Not found');
             }
             this.year = Number(data.Year) || 0;
             this.name = data.Title;
