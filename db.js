@@ -2,11 +2,22 @@ var mongoose = require('mongoose');
 var statsd = require('./statsd');
 var axios = require('axios');
 
-var movieSchema = mongoose.Schema({name: String, order: Number, year: Number});
+var movieSchema = mongoose.Schema({
+    name: String,
+    order: Number,
+    year: Number,
+    rating: Number,
+    link: String,
+    genre: String
+});
+
 movieSchema.methods.getInfo = async () => {
     await axios.get(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(data => {
-        this.year = data.year;
-        this.name = data.title;
+        this.year = data.Year;
+        this.name = data.Title;
+        this.rating = data.imdbRating;
+        this.link = data.imdbID ? `https://www.imdb.com/title/${data.data.imdbID}` : undefined;
+        this.genre = data.Genre;
     });
 };
 var Movie = mongoose.model('movie-queue', movieSchema);

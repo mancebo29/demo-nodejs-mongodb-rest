@@ -29,12 +29,13 @@ module.exports = function setUpBot () {
                 title = message.content.substr(message.content.indexOf('a ver') + 5);
             }
             mongodb.enqueue(title).then(m => {
-                message.channel.send(`Se agregó ${m.name} (${m.year})`)
+                message.channel.send(`Se agregó ${m.name} (${m.year}) ${m.link || ''}`);
             }).catch(e => {
                 console.log(e);
                 message.channel.send('No sé hacer eso :c');
             });
         }
+
     });
 
     client.login(process.env.BOT_TOKEN);
