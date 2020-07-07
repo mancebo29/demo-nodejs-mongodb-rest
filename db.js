@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var statsd = require('./statsd');
 var axios = require('axios');
-var MovieError = require('../errors/MovieError');
 
 var movieSchema = mongoose.Schema({
     name: String,
@@ -18,7 +17,7 @@ movieSchema.methods.getInfo = async function (title) {
         const data = res.data;
         if (data) {
             if (data.Response && data.Response === 'False') {
-                throw new MovieError('Not found');
+                throw new Error('Not found');
             }
             this.year = Number(data.Year) || 0;
             this.name = data.Title;

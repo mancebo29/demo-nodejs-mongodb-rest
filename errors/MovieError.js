@@ -4,6 +4,4 @@ class MovieError extends Error {
         this.name = 'MovieError';
         Error.captureStackTrace(this, MovieError)
     }
-};
-
-module.exports = MovieError;
+}
