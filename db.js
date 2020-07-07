@@ -13,11 +13,13 @@ var movieSchema = mongoose.Schema({
 
 movieSchema.methods.getInfo = async () => {
     await axios.get(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(data => {
+        console.log(data);
         this.year = Number(data.Year) || 0;
         this.name = data.Title;
         this.rating = Number(data.imdbRating) || 0;
         this.link = data.imdbID ? `https://www.imdb.com/title/${data.data.imdbID}` : undefined;
         this.genre = data.Genre;
+        console.log(this.year);
     });
 };
 var Movie = mongoose.model('movie-queue', movieSchema);
