@@ -8,6 +8,7 @@ var bodyParser    = require('body-parser');
 var mongodb       = require('./db');
 
 var routes = require('./routes/routes');
+var setUpBot = require('./bot/bot');
 
 var app = express();
 
@@ -57,5 +58,6 @@ app.use(function(err, req, res, next) {
 });
 
 mongodb.connectDB();
+setUpBot();
 
 module.exports = app;
