@@ -13,5 +13,5 @@ module.exports = function setUpBot () {
         }
     });
 
-    client.login('NzMwMTYxNzMxNjg2NDk4Mzg2.XwTeaA.vNxVNhw-UJMt8Ros6HGScnozU7E');
+    client.login(process.env.BOT_TOKEN);
 };
