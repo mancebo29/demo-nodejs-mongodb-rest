@@ -42,13 +42,17 @@ module.exports = function setUpBot () {
         if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {
             if (!checkPermission(message)) return;
 
-            let title;
+            let title, imdbId;
             if (message.content.startsWith('!addMovie')) {
                 title = message.content.substr(9);
             } else {
                 title = message.content.substr(message.content.indexOf('a ver') + 5);
             }
-            mongodb.enqueue(title.trim()).then(m => {
+
+            if (tilte.contains('imdb.com')) {
+                [,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
+            }
+            mongodb.enqueue(title.trim(), title).then(m => {
                 message.channel.send(`Se agregó ${m.asString()}`);
             }).catch(e => errorCatcher(e, message));
         }

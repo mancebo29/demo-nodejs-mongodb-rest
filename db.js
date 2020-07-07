@@ -11,9 +11,11 @@ var movieSchema = mongoose.Schema({
     genre: String
 });
 
-movieSchema.methods.getInfo = async function (title) {
-    console.log('HUHEUHEHUE: ', `http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`);
-    await axios.get(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`).then(res => {
+movieSchema.methods.getInfo = async function (title, imdbId = '') {
+    const url = imdbId ? `http://www.omdbapi.com/?i=${encodeURIComponent(imdbId)}&apikey=a12307ca`
+        : `http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`;
+    console.log('HUHEUHEHUE: ', url);
+    await axios.get().then(res => {
         const data = res.data;
         if (data) {
             if (data.Response && data.Response === 'False') {
@@ -29,7 +31,7 @@ movieSchema.methods.getInfo = async function (title) {
 };
 
 movieSchema.methods.asString = function() {
-    return `${this.name}${this.year ? ` (${this.year}) ` : ''}${this.link || ''}`;
+    return `${this.name} ${this.year ? `(${this.year}) ` : ''}${this.link || ''}`;
 };
 var Movie = mongoose.model('movie-queue', movieSchema);
 
