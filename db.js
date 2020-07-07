@@ -14,12 +14,17 @@ var movieSchema = mongoose.Schema({
 movieSchema.methods.getInfo = async () => {
     await axios.get(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(res => {
         const data = res.data;
+        console.log(data);
         this.year = Number(data.Year) || 0;
         this.name = data.Title;
         this.rating = Number(data.imdbRating) || 0;
         this.link = data.imdbID ? `https://www.imdb.com/title/${data.imdbID}` : undefined;
         this.genre = data.Genre;
     });
+};
+
+movieSchema.methods.asString = () => {
+    return `${this.title} (${this.year}) ${this.link || ''}`;
 };
 var Movie = mongoose.model('movie-queue', movieSchema);
 

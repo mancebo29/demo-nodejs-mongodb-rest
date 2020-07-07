@@ -24,7 +24,7 @@ module.exports = function setUpBot () {
             mongodb.seeQueue().then(movies => {
                let reply = 'Las películas en queue son: ';
                let n = 1;
-               movies.forEach(m => reply += '\n' + `${n++}- ${m.name} (${m.year})`);
+               movies.forEach(m => reply += '\n' + `${n++}- ${m.asString()}`);
                message.channel.send(reply);
             }).catch(e => {
                 console.log(e);
@@ -42,7 +42,7 @@ module.exports = function setUpBot () {
                 title = message.content.substr(message.content.indexOf('a ver') + 5);
             }
             mongodb.enqueue(title).then(m => {
-                message.channel.send(`Se agregó ${m.name} (${m.year}) ${m.link || ''}`);
+                message.channel.send(`Se agregó ${m.asString()}`);
             }).catch(e => {
                 console.log(e);
                 message.channel.send('No sé hacer eso :c');
@@ -57,7 +57,7 @@ module.exports = function setUpBot () {
                 if (Number.isNaN(index)) {
                     let reply = 'Indícame con el numerito please: ';
                     let n = 1;
-                    movies.forEach(m => reply += '\n' + `${n++}- ${m.name} (${m.year})`);
+                    movies.forEach(m => reply += '\n' + `${n++}- ${m.asString()}`);
                     message.channel.send(reply);
                 } else {
                     const i = Number(index);
