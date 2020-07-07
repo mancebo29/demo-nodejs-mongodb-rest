@@ -19,20 +19,21 @@ module.exports = function setUpBot () {
 
     client.on('message', message => {
         if (message.content === '!movies') {
-            if (!checkPermission()) return;
+            if (!checkPermission(message)) return;
 
             mongodb.seeQueue().then(movies => {
                let reply = 'Las películas en queue son: ';
-               movies.forEach(m => reply += '\n' + `${m.name} (${m.year})`);
-               message.channel.send(reply).catch(e => {
-                   console.log(e);
-                   message.channel.send('No sé hacer eso :c');
-               });
-            });
+               let n = 1;
+               movies.forEach(m => reply += '\n' + `${n++}- ${m.name} (${m.year})`);
+               message.channel.send(reply);
+            }).catch(e => {
+                console.log(e);
+                message.channel.send('No sé hacer eso :c');
+            });;
         }
 
         if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {
-            if (!checkPermission()) return;
+            if (!checkPermission(message)) return;
 
             let title;
             if (message.content.startsWith('!addMovie')) {
@@ -48,6 +49,24 @@ module.exports = function setUpBot () {
             });
         }
 
+        if (message.content.startsWith('!rmMovie')) {
+            if (!checkPermission(message)) return;
+
+            const index = message.content.substr(8);
+            mongodb.seeQueue().then(movies => {
+                if (Number.isNaN(index)) {
+                    let reply = 'Indícame con el numerito please: ';
+                    let n = 1;
+                    movies.forEach(m => reply += '\n' + `${n++}- ${m.name} (${m.year})`);
+                    message.channel.send(reply);
+                } else {
+
+                }
+            }).catch(e => {
+                console.log(e);
+                message.channel.send('No sé hacer eso :c');
+            });
+        }
     });
 
     client.login(process.env.BOT_TOKEN);
