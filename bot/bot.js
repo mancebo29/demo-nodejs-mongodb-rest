@@ -50,7 +50,8 @@ module.exports = function setUpBot () {
             }
 
             if (title.includes('imdb.com')) {
-                [,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
+                [title,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
+                console.log('XXXXXX', imdbId)
             }
             mongodb.enqueue(title.trim(), imdbId).then(m => {
                 message.channel.send(`Se agregó ${m.asString()}`);
