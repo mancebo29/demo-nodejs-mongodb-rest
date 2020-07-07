@@ -13,13 +13,15 @@ var movieSchema = mongoose.Schema({
 
 movieSchema.methods.getInfo = async (title) => {
     console.log(this.name);
-    await axios.get(`http://www.omdbapi.com/?t=${title}&apikey=a12307ca`).then(res => {
+    await axios.get(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`).then(res => {
         const data = res.data;
-        this.year = Number(data.Year) || 0;
-        this.name = data.Title;
-        this.rating = Number(data.imdbRating) || 0;
-        this.link = data.imdbID ? `https://www.imdb.com/title/${data.imdbID}` : undefined;
-        this.genre = data.Genre;
+        if (data) {
+            this.year = Number(data.Year) || 0;
+            this.name = data.Title;
+            this.rating = Number(data.imdbRating) || 0;
+            this.link = data.imdbID ? `https://www.imdb.com/title/${data.imdbID}` : undefined;
+            this.genre = data.Genre;
+        }
     });
 };
 
