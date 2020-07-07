@@ -8,7 +8,7 @@ movieSchema.methods.getInfo = async () => {
         this.name = data.title;
     });
 };
-var Movie = mongoose.model('movie-queue', schema);
+var Movie = mongoose.model('movie-queue', movieSchema);
 
 module.exports = {
     connectDB : function() {
