@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var statsd = require('./statsd');
+var axios = require('axios');
 
 var movieSchema = mongoose.Schema({name: String, order: Number, year: Number});
 movieSchema.methods.getInfo = async () => {
-    await fetch(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(data => {
+    await axios.get(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(data => {
         this.year = data.year;
         this.name = data.title;
     });
