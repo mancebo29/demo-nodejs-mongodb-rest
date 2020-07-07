@@ -36,9 +36,7 @@ module.exports = function setUpBot () {
                let n = 1;
                movies.forEach(m => reply += '\n' + `${n++}- ${m.asString()}`);
                message.channel.send(reply);
-            }).catch(e => {
-
-            });;
+            }).catch(e => errorCatcher(e, message));
         }
 
         if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {
@@ -52,10 +50,7 @@ module.exports = function setUpBot () {
             }
             mongodb.enqueue(title.trim()).then(m => {
                 message.channel.send(`Se agregó ${m.asString()}`);
-            }).catch(e => {
-                console.log(e);
-                message.channel.send('No sé hacer eso :c');
-            });
+            }).catch(e => errorCatcher(e, message));
         }
 
         if (message.content.startsWith('!rmMovie')) {
@@ -78,10 +73,7 @@ module.exports = function setUpBot () {
                         message.channel.send('No sé hacer eso :c');
                     });
                 }
-            }).catch(e => {
-                console.log(e);
-                message.channel.send('No sé hacer eso :c');
-            });
+            }).catch(e => errorCatcher(e, message));
         }
 
         if (message.content.startsWith('!clearEntireMovieQueue')) {
