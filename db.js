@@ -13,7 +13,6 @@ var movieSchema = mongoose.Schema({
 });
 
 movieSchema.methods.getInfo = async function (title) {
-    console.log(this.name);
     console.log('HUHEUHEHUE: ', `http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`);
     await axios.get(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`).then(res => {
         const data = res.data;
