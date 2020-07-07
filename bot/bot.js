@@ -74,6 +74,12 @@ module.exports = function setUpBot () {
                 message.channel.send('No sé hacer eso :c');
             });
         }
+
+        if (message.content.startsWith('!clearEntireMovieQueue')) {
+            if (!checkPermission(message)) return;
+
+            mongodb.clear().then(() => message.channel.send('SE BORRÓ TODO!'));
+        }
     });
 
     client.login(process.env.BOT_TOKEN);

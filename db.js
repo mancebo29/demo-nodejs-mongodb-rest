@@ -15,7 +15,6 @@ movieSchema.methods.getInfo = async (title) => {
     console.log(this.name);
     await axios.get(`http://www.omdbapi.com/?t=${title}&apikey=a12307ca`).then(res => {
         const data = res.data;
-        console.log(data);
         this.year = Number(data.Year) || 0;
         this.name = data.Title;
         this.rating = Number(data.imdbRating) || 0;
@@ -25,7 +24,7 @@ movieSchema.methods.getInfo = async (title) => {
 };
 
 movieSchema.methods.asString = () => {
-    return `${this.title} (${this.year}) ${this.link || ''}`;
+    return `${this.name} (${this.year}) ${this.link || ''}`;
 };
 var Movie = mongoose.model('movie-queue', movieSchema);
 
