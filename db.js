@@ -1,20 +1,44 @@
 var mongoose = require('mongoose');
 var statsd = require('./statsd');
 
-var schema = mongoose.Schema({value: String});
-var Values = mongoose.model('values', schema);
+var movieSchema = mongoose.Schema({name: String, order: Number, year: Number});
+movieSchema.methods.getInfo = async () => {
+    await fetch(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(data => {
+        this.year = data.year;
+        this.name = data.title;
+    });
+};
+var Movie = mongoose.model('movie-queue', schema);
 
 module.exports = {
     connectDB : function() {
         mongoose.connect(process.env.MONGODB_ADDON_URI, { useNewUrlParser: true });
     },
 
-    updateGauge : function() {
-        Values.count(function(err, result) {
-            if(!err) {
-                statsd.gauge('values', result);
-            }
-        })
+    enqueue: async function (title, order = null) {
+        if (!order) {
+            await new Promise(resolve => Movie.find((err, movies) => {
+                order = movies.reduce((max, current) => {
+                   return Math.max(max, current);
+                }, 0);
+                resolve();
+            }));
+        }
+        const movie = new Movie({ name: title, order });
+        return movie.getInfo().then(() =>  movie.save());
+    },
+
+    seeQueue: function () {
+        return new Promise(resolve => Movie.find((err, movies) => {
+          if (err) {
+            console.log(err);
+          }
+          resolve(movies);
+        }));
+    },
+
+    dequeue: function (title) {
+        return new Promise(resolve => Movie.remove({ name: title }, resolve));
     },
 
     getVal : function(res) {

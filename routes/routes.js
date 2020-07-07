@@ -4,19 +4,16 @@ var mongodb = require('../db');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res) {
-  mongodb.getVal(res);
+router.get('/', async function(req, res) {
+  const queue = await mongodb.seeQueue();
+  res.json(queue);
 });
 
-router.post('/values', function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  var val = req.body.value;
-
-  if (val === undefined || val === "") {
-    res.send(JSON.stringify({status: "error", value: "Value undefined"}));
-    return
-  }
-  mongodb.sendVal(val, res);
+router.post('/', async function(req, res) {
+  const title = req.body.title;
+  const order = req.body.order || null;
+  const saved = await mongodb.enqueue(title, order);
+  res.json(saved);
 });
 
 router.delete('/values/:id', function(req, res) {
