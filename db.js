@@ -11,8 +11,9 @@ var movieSchema = mongoose.Schema({
     genre: String
 });
 
-movieSchema.methods.getInfo = async () => {
-    await axios.get(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(res => {
+movieSchema.methods.getInfo = async (title) => {
+    console.log(this.name);
+    await axios.get(`http://www.omdbapi.com/?t=${title}&apikey=a12307ca`).then(res => {
         const data = res.data;
         console.log(data);
         this.year = Number(data.Year) || 0;
@@ -43,7 +44,7 @@ module.exports = {
             }));
         }
         const movie = new Movie({ name: title, order });
-        return movie.getInfo().then(() =>  movie.save());
+        return movie.getInfo(title).then(() =>  movie.save());
     },
 
     seeQueue: function () {
