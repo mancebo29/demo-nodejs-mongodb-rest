@@ -14,7 +14,10 @@ module.exports = function setUpBot () {
             mongodb.seeQueue().then(movies => {
                let reply = 'Las películas en queue son: ';
                movies.forEach(m => reply += '\n' + `${m.name} (${m.year})`);
-               message.channel.send(reply);
+               message.channel.send(reply).catch(e => {
+                   console.log(e);
+                   message.channel.send('No sé hacer eso :c');
+               });
             });
         }
 
@@ -27,6 +30,9 @@ module.exports = function setUpBot () {
             }
             mongodb.enqueue(title).then(m => {
                 message.channel.send(`Se agregó ${m.name} (${m.year})`)
+            }).catch(e => {
+                console.log(e);
+                message.channel.send('No sé hacer eso :c');
             });
         }
     });
