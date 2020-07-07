@@ -49,7 +49,7 @@ module.exports = function setUpBot () {
                 title = message.content.substr(message.content.indexOf('a ver') + 5);
             }
 
-            if (title.contains('imdb.com')) {
+            if (title.includes('imdb.com')) {
                 [,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
             }
             mongodb.enqueue(title.trim(), title).then(m => {
