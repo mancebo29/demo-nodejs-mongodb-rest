@@ -11,7 +11,7 @@ var movieSchema = mongoose.Schema({
     genre: String
 });
 
-movieSchema.methods.getInfo = async (title) => {
+movieSchema.methods.getInfo = async function (title) {
     console.log(this.name);
     await axios.get(`http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`).then(res => {
         const data = res.data;
@@ -25,8 +25,8 @@ movieSchema.methods.getInfo = async (title) => {
     });
 };
 
-movieSchema.methods.asString = () => {
-    return `${this.name} (${this.year}) ${this.link || ''}`;
+movieSchema.methods.asString = function() {
+    return `${this.name}${this.year ? ` (${this.year} ` : ''}${this.link || ''}`;
 };
 var Movie = mongoose.model('movie-queue', movieSchema);
 
