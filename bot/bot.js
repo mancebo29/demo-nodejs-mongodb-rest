@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 var mongodb       = require('../db');
-var MovieError = require('../errors/MovieError');
 
 
 module.exports = function setUpBot () {

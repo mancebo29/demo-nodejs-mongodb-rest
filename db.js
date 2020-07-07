@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var statsd = require('./statsd');
 var axios = require('axios');
+var MovieError = require('../errors/MovieError');
 
 var movieSchema = mongoose.Schema({
     name: String,
