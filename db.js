@@ -13,7 +13,6 @@ var movieSchema = mongoose.Schema({
 
 movieSchema.methods.getInfo = async () => {
     await axios.get(`http://www.omdbapi.com/?t=${this.name}&apikey=a12307ca`).then(data => {
-        console.log(data);
         this.year = Number(data.Year) || 0;
         this.name = data.Title;
         this.rating = Number(data.imdbRating) || 0;
@@ -32,8 +31,8 @@ module.exports = {
         if (!order) {
             await new Promise(resolve => Movie.find((err, movies) => {
                 order = movies.reduce((max, current) => {
-                   return Math.max(max, current);
-                }, 0);
+                   return Math.max(max, Number(current.order));
+                }, 0) || 0;
                 resolve();
             }));
         }

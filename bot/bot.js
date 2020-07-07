@@ -9,8 +9,18 @@ module.exports = function setUpBot () {
         console.log('Ready!');
     });
 
+    const checkPermission = (message) => {
+        if (message.author.id == 8072) {
+            message.channel.send('You don\'t have enough badges to train me');
+            return false;
+        }
+        return true;
+    };
+
     client.on('message', message => {
         if (message.content === '!movies') {
+            if (!checkPermission()) return;
+
             mongodb.seeQueue().then(movies => {
                let reply = 'Las películas en queue son: ';
                movies.forEach(m => reply += '\n' + `${m.name} (${m.year})`);
@@ -22,6 +32,8 @@ module.exports = function setUpBot () {
         }
 
         if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {
+            if (!checkPermission()) return;
+
             let title;
             if (message.content.startsWith('!addMovie')) {
                 title = message.content.substr(9);
