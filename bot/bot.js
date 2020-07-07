@@ -41,7 +41,7 @@ module.exports = function setUpBot () {
             } else {
                 title = message.content.substr(message.content.indexOf('a ver') + 5);
             }
-            mongodb.enqueue(title).then(m => {
+            mongodb.enqueue(title.trim()).then(m => {
                 message.channel.send(`Se agregó ${m.asString()}`);
             }).catch(e => {
                 console.log(e);
@@ -62,8 +62,8 @@ module.exports = function setUpBot () {
                 } else {
                     const i = Number(index);
                     const movieToRemove = movies[i - 1];
-                    mongodb.dequeue(movieToRemove.title).then(() => {
-                       message.channel.send(`Mandé _${movieToRemove.title}_ a la mierda entonces`);
+                    mongodb.dequeue(movieToRemove.name).then(() => {
+                       message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
                     }).catch(e => {
                         console.log(e);
                         message.channel.send('No sé hacer eso :c');
