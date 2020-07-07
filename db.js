@@ -43,7 +43,10 @@ module.exports = {
             }));
         }
         const movie = new Movie({ name: title, order });
-        return movie.getInfo(title).then(() =>  movie.save());
+        await movie.getInfo(title);
+        movie.save();
+
+        return movie;
     },
 
     seeQueue: function () {
