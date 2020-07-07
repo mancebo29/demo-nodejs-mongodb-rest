@@ -17,7 +17,7 @@ movieSchema.methods.getInfo = async () => {
         this.year = Number(data.Year) || 0;
         this.name = data.Title;
         this.rating = Number(data.imdbRating) || 0;
-        this.link = data.imdbID ? `https://www.imdb.com/title/${data.data.imdbID}` : undefined;
+        this.link = data.imdbID ? `https://www.imdb.com/title/${data.imdbID}` : undefined;
         this.genre = data.Genre;
     });
 };
@@ -52,6 +52,10 @@ module.exports = {
 
     dequeue: function (title) {
         return new Promise(resolve => Movie.remove({ name: title }, resolve));
+    },
+
+    clear: function () {
+        return new Promise(resolve => Movie.remove({}, resolve));
     },
 
     getVal : function(res) {

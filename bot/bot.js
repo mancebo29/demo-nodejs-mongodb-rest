@@ -60,7 +60,14 @@ module.exports = function setUpBot () {
                     movies.forEach(m => reply += '\n' + `${n++}- ${m.name} (${m.year})`);
                     message.channel.send(reply);
                 } else {
-
+                    const i = Number(index);
+                    const movieToRemove = movies[i - 1];
+                    mongodb.dequeue(movieToRemove.title).then(() => {
+                       message.channel.send(`Mandé _${movieToRemove.title}_ a la mierda entonces`);
+                    }).catch(e => {
+                        console.log(e);
+                        message.channel.send('No sé hacer eso :c');
+                    });
                 }
             }).catch(e => {
                 console.log(e);
