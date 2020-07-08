@@ -98,7 +98,7 @@ module.exports = function setUpBot () {
             mongodb.clear().then(() => message.channel.send('SE BORRÓ TODO!'));
         }
 
-        if (messsage.content.startsWith('!movieForm')) {
+        if (message.content.startsWith('!movieForm')) {
             if (creatingSurvey) {
                 message.channel.send('Wey pero aguántese que estoy en eso');
                 return;
