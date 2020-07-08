@@ -5,13 +5,13 @@ const URL = 'https://api.surveymonkey.com/v3/surveys/'
 const surveyService = {
 
   createSurvey: async () => {
-    const name = `La real película ${new Date().toLocaleDateString()}`;
+    const name = `La real película [${new Date().toISOString()}]`;
     const movies = await mongodb.seeQueue();
     const survey = await axios.post(URL, {
       'title': name,
       'pages': [
         {
-          'title': name,
+          'title': 'Davmi vete al carajo',
           'description': 'Todo esto para cumplir con el disparate de democracia',
           'position': 1,
           'questions': [
@@ -23,7 +23,7 @@ const surveyService = {
               },
               'headings': [
                 {
-                  'heading': 'Cuál de estos disparates te interesa ver? (Selecciona los que quieras)'
+                  'heading': 'Cuál de estos disparates te interesa ver? (Selecciona todos los que quieras)'
                 }
               ],
               'position': 2
