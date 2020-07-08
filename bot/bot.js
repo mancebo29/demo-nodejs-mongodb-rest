@@ -108,7 +108,7 @@ module.exports = function setUpBot () {
             surveyService.createSurvey().then(result => {
                 creatingSurvey = false;
                 message.channel.send(result.url);
-            });
+            }).catch(e => errorCatcher(e, message));
         }
     });
 
