@@ -48,9 +48,7 @@ const surveyService = {
       }
     }).then(r => r.data);
 
-    console.log('XXXXXXXADSADAS', survey);
-
-    const collector = await axios.post(URL, {
+    const collector = await axios.post(`${survey.href}/collectors`, {
       type: 'weblink'
     }, {
       headers: {
