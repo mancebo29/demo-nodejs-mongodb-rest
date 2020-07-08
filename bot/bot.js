@@ -17,9 +17,6 @@ module.exports = function setUpBot () {
     };
 
     client.on('message', message => {
-        if (message.author.tag && message.author.tag.endsWith('4806')) {
-            message.channel.send(`${message.author.toString()} vete para la cocina mejor`);
-        }
         if (message.content === '!movies') {
             if (!checkPermission(message)) return;
             movieServices.listMovies(message);
