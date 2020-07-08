@@ -80,6 +80,19 @@ const movieServices = {
             creatingSurvey = false;
             message.channel.send(result.url);
         }).catch(e => errorCatcher(e, message));
+    },
+
+    messageForIvette: (message) => {
+        const messages = [
+            `${message.author.toString()} vete para la cocina mejor`,
+            `${message.author.toString()} prepárame un sandwich por ahí mismo`,
+            `${message.author.toString()} eres mujer así que lo que digas no vale`,
+            `Como que alguien se escapó de la cocina...`,
+            `${message.author.toString()} muy interesante... Y definitivamente no es sarcasmo....`,
+            `Diría algo cool de no haber sido ${message.author.toString()} quien dijo eso...`,
+            `...`,
+        ];
+        message.reply(messages[Math.round(Math.random() * (messages.length - 1))]);
     }
 };
 
