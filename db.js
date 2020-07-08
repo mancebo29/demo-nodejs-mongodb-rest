@@ -12,7 +12,7 @@ var movieSchema = mongoose.Schema({
 });
 
 movieSchema.methods.getInfo = async function (title, imdbId = '') {
-    console.log(imdbId);
+    console.log('THE CODE', imdbId);
     const url = imdbId ? `http://www.omdbapi.com/?i=${encodeURIComponent(imdbId)}&apikey=a12307ca`
         : `http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`;
     console.log('HUHEUHEHUE: ', url);
