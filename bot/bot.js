@@ -1,9 +1,12 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 var mongodb       = require('../db');
+var surveyService = require('../services/googleForms');
 
 
 module.exports = function setUpBot () {
+
+    let creatingSurvey = false;
 
     client.once('ready', () => {
         console.log('Ready!');
@@ -51,7 +54,6 @@ module.exports = function setUpBot () {
 
             if (title.includes('imdb.com')) {
                 [title,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
-                console.log('XXXXXX', imdbId)
             }
             mongodb.enqueue(title.trim(), imdbId).then(m => {
                 message.channel.send(`Se agregó ${m.asString()}`);
@@ -90,6 +92,18 @@ module.exports = function setUpBot () {
 
             message.delete();
             mongodb.clear().then(() => message.channel.send('SE BORRÓ TODO!'));
+        }
+
+        if (messsage.content.startsWith('!movieForm')) {
+            if (creatingSurvey) {
+                message.channel.send('Wey pero aguántese que estoy en eso');
+                return;
+            }
+            creatingSurvey = true;
+            surveyService.createSurvey().then(result => {
+                creatingSurvey = false;
+                message.channel.send(result.url);
+            });
         }
     });
 
