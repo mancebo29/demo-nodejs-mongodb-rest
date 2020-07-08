@@ -92,7 +92,7 @@ module.exports = function setUpBot () {
             mongodb.clear().then(() => message.channel.send('SE BORRÓ TODO!'));
         }
 
-        if (message.content.startWith('!moviePoll')) {
+        if (message.content.startsWith('!moviePoll')) {
             if (!checkPermission(message)) return;
             let reply = `+poll:{Qué película soportan ver?} `;
 
