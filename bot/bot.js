@@ -28,7 +28,8 @@ module.exports = function setUpBot () {
     };
 
     client.on('message', message => {
-        if (message.author.id && message.author.id.endsWith('4806') && Math.random() > 0.5) {
+        console.log(message.author.id)
+        if (message.author.id && message.author.id.endsWith('4806')) {
             message.channel.send(`${message.author.toString()} vete para la cocina mejor`);
         }
         if (message.content === '!movies') {
