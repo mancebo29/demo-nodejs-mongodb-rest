@@ -48,6 +48,8 @@ const surveyService = {
       }
     }).then(r => r.data);
 
+    console.log('XXXXXXXADSADAS', survey);
+
     const collector = await axios.post(URL, {
       type: 'weblink'
     }, {
@@ -56,6 +58,8 @@ const surveyService = {
         'Authorization': `Bearer ${process.env.SURVEY_TOKEN}`
       },
     }).then(d => d.data);
+
+    console.log('aaaaaaaaaaaaaa', collector);
 
     return {survey, url: collector.url}
   },
