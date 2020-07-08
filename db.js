@@ -11,7 +11,7 @@ var movieSchema = mongoose.Schema({
     genre: String
 });
 
-movieSchema.methods.getInfo = async function (title, imdbId = '') {
+movieSchema.methods.getInfo = async function (title, imdbId) {
     console.log('THE CODE', imdbId);
     const url = imdbId ? `http://www.omdbapi.com/?i=${encodeURIComponent(imdbId)}&apikey=a12307ca`
         : `http://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=a12307ca`;
@@ -41,7 +41,7 @@ module.exports = {
         mongoose.connect(process.env.MONGODB_ADDON_URI, { useNewUrlParser: true });
     },
 
-    enqueue: async function (title, order = null) {
+    enqueue: async function (title, imdbId = '', order = null) {
         if (!order) {
             await new Promise(resolve => Movie.find((err, movies) => {
                 order = movies.reduce((max, current) => {
@@ -51,7 +51,7 @@ module.exports = {
             }));
         }
         const movie = new Movie({ name: title, order });
-        await movie.getInfo(title);
+        await movie.getInfo(title, imdbId);
         movie.save();
 
         return movie;
