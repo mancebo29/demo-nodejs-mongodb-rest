@@ -10,7 +10,7 @@ module.exports = function setUpBot () {
     });
 
     const checkPermission = (message) => {
-        if (message.author.id == 8072) {
+        if (message.author.tag.endsWith('8072')) {
             message.channel.send('You don\'t have enough badges to train me');
             return false;
         }
@@ -28,8 +28,8 @@ module.exports = function setUpBot () {
     };
 
     client.on('message', message => {
-        console.log(message.author.id)
-        if (message.author.id && message.author.id.endsWith('4806')) {
+        console.log(message.author.id);
+        if (message.author.tag && message.author.tag.endsWith('4806')) {
             message.channel.send(`${message.author.toString()} vete para la cocina mejor`);
         }
         if (message.content === '!movies') {
