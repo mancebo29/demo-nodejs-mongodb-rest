@@ -55,7 +55,7 @@ module.exports = function setUpBot () {
             }
             mongodb.enqueue(title.trim(), imdbId).then(m => {
                 message.channel.send(`Se agregó ${m.asString()}`);
-                if (m.rating && m.rating < 7) {
+                if (m.rating && Number(m.rating) < 7) {
                     message.channel.send(`Tomen en cuenta que solo tiene ${m.rating} en IMDB`);
                 }
             }).catch(e => errorCatcher(e, message));
