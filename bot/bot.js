@@ -91,6 +91,21 @@ module.exports = function setUpBot () {
             message.delete();
             mongodb.clear().then(() => message.channel.send('SE BORRÓ TODO!'));
         }
+
+        if (message.content.startWith('!moviePoll')) {
+            if (!checkPermission(message)) return;
+            let reply = `+poll:{Qué película soportan ver?} `;
+
+
+            mongodb.seeQueue().then(movies => {
+                if (!movies || !movies.length) {
+                    message.channel.send('Pero no hay películas :c');
+                    return;
+                }
+                movies.forEach(m => reply += `[${m.name}] `);
+                message.channel.send(reply);
+            }).catch(e => errorCatcher(e, message));
+        }
     });
 
     client.login(process.env.BOT_TOKEN);
