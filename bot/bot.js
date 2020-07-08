@@ -10,7 +10,7 @@ module.exports = function setUpBot () {
     });
 
     const checkPermission = (message) => {
-        if (message.author.tag.endsWith('0149')) {
+        if (message.author.tag.endsWith('8072')) {
             message.channel.send('You don\'t have enough badges to train me');
             return false;
         }
