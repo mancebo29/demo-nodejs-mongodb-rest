@@ -92,7 +92,7 @@ const movieServices = {
             `Diría algo cool de no haber sido ${message.author.toString()} quien dijo eso...`,
             `...`,
         ];
-        message.reply(messages[Math.round(Math.random() * (messages.length - 1))]);
+        message.channel.send(messages[Math.round(Math.random() * (messages.length - 1))]);
     }
 };
 
