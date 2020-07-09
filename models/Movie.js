@@ -30,7 +30,7 @@ movieSchema.methods.getInfo = async function (title, imdbId) {
 };
 
 movieSchema.methods.asString = function() {
-    return `${this.name} ${this.year ? `(${this.year}) ` : ''}${this.link || ''}`;
+    return `${this.name} ${this.year ? `(${this.year}) ` : ''}${this.link ? `<${this.link}>` : ''}`;
 };
 var Movie = mongoose.model('movie-queue', movieSchema);
 
