@@ -18,7 +18,13 @@ const movieServices = {
         mongodb.seeQueue().then(movies => {
             let reply = 'Las películas en queue son: ';
             let n = 1;
-            movies.forEach(m => reply += '\n' + `${n++}- ${m.asString()}`);
+            movies.forEach(m => {
+                if (reply.length + m.asString().length >= 2000) {
+                    message.channel.send(reply);
+                    reply = '';
+                }
+                reply += '\n' + `${n++}- ${m.asString()}`;
+            });
             message.channel.send(reply);
         }).catch(e => errorCatcher(e, message));
     },
