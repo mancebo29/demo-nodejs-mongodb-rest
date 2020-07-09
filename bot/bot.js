@@ -28,9 +28,10 @@ module.exports = function setUpBot () {
         if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
             movieServices.messageForIvette(message);
         }
-        if (message.content === '!movies') {
+        if (message.content.startsWith('!movies')) {
             if (!checkPermission(message)) return;
-            movieServices.listMovies(message);
+            const full = message.content.endsWith('-f');
+            movieServices.listMovies(message, full);
         }
 
         if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {

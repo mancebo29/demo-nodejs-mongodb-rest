@@ -14,17 +14,24 @@ const errorCatcher = (e, message) => {
 let creatingSurvey = false;
 
 const movieServices = {
-    listMovies: (message) => {
+    listMovies: (message, full = false) => {
         mongodb.seeQueue().then(movies => {
             let reply = 'Las películas en queue son: ';
             let n = 1;
-            movies.forEach(m => {
+            for (const m of movies) {
                 if (reply.length + m.asString().length >= 2000) {
-                    message.channel.send(reply);
-                    reply = '';
+                    if (full) {
+                        message.channel.send(reply);
+                        reply = '';
+                    } else {
+                        reply += '...';
+                        message.channel.send(reply);
+                        message.channel.send(`Y ${movies.length - movies.indexOf(m) - 1} películas más.\nPuedes usar \`!movies -f\` para verlas todas`);
+                        return;
+                    }
                 }
                 reply += '\n' + `${n++}- ${m.asString()}`;
-            });
+            };
             message.channel.send(reply);
         }).catch(e => errorCatcher(e, message));
     },
