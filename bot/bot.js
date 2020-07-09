@@ -8,10 +8,18 @@ module.exports = function setUpBot () {
         console.log('Ready!');
     });
 
+    let davmiIsBack = false;
+
     const checkPermission = (message) => {
         if (message.author.tag.endsWith('8072')) {
-            message.channel.send('You don\'t have enough badges to train me');
-            return false;
+            if (!davmiIsBack) {
+                message.REPLY('VOLVISTEEEEEEEEEE!');
+                davmiIsBack = true;
+                return false;
+            } else {
+                message.channel.send('You don\'t have enough badges to train me');
+                return false;
+            }
         }
         return true;
     };
