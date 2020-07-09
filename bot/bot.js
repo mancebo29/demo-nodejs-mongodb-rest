@@ -52,6 +52,10 @@ module.exports = function setUpBot () {
             if (!checkPermission(message)) return;
             movieServices.createMovieForm(message);
         }
+
+        if (message.content.toLowerCase().includes('te amo') && Math.random() < 0.34) {
+            message.reply('Eso me decía ella :\'c');
+        }
     });
 
     client.login(process.env.BOT_TOKEN);
