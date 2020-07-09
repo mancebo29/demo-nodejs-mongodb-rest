@@ -25,6 +25,12 @@ module.exports = function setUpBot () {
     };
 
     client.on('message', message => {
+        if (message.mentions.has(client.user)) {
+            if (message.content.includes('help') || message.content.includes('ayuda') || message.content.includes('aiuda')) {
+                message.channel.send('Los comandos disponibles son: \n-`!addMovie` o `vamos a ver` para agregar una película\n-`!rmMovie {index}` para remover una película\n-`!movies` para consultar la lista de películas\n-`!movieForm` para generar un form para decidir qué película ver.');
+            }
+            return;
+        }
         if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
             movieServices.messageForIvette(message);
         }
