@@ -26,7 +26,7 @@ const movieServices = {
                     } else {
                         reply += '...';
                         message.channel.send(reply);
-                        message.channel.send(`Y ${movies.length - movies.indexOf(m) - 1} películas más.\nPuedes usar \`!movies -f\` para verlas todas`);
+                        message.channel.send(`Y ${movies.length - movies.indexOf(m)} películas más.\nPuedes usar \`!movies -f\` para verlas todas`);
                         return;
                     }
                 }
