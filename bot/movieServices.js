@@ -13,6 +13,13 @@ const errorCatcher = (e, message) => {
 
 let creatingSurvey = false;
 
+const sendMessageWithDelay = (message, text, delay = 1500) => {
+    return new Promise(resolve => setTimeout(() => {
+        message.channel.send(text);
+        resolve();
+    }, delay))
+}
+
 const movieServices = {
     listMovies: (message, full = false) => {
         mongodb.seeQueue().then(movies => {
@@ -107,6 +114,28 @@ const movieServices = {
             `...`,
         ];
         message.channel.send(messages[Math.round(Math.random() * (messages.length - 1))]);
+    },
+
+    reportResults: () => {
+        if (creatingSurvey) {
+            message.channel.send('AGUÁNTESE');
+            return;
+        }
+        message.channel.send('Vamos a ver...');
+        surveyService.fetchResponses().then(results => {
+            if (!results.length) {
+                message.channel.send('Hubo un fallo :c');
+            }
+            if (results.length > 1) {
+
+            } else {
+                message.channel.send('Señoras y señores, results are in...');
+                sendMessageWithDelay(message, 'Agárrense a sus asientos y prepárense');
+                sendMessageWithDelay(message, 'La película ganadora es...');
+                sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 500);
+                sendMessageWithDelay(message, results[0].text, 2000);
+            }
+        }).catch(e => errorCatcher(e, message));
     }
 };
 

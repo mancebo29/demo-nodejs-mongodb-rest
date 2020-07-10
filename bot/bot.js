@@ -9,7 +9,7 @@ module.exports = function setUpBot () {
     });
 
     const checkPermission = (message) => {
-        if (message.author.tag.endsWith('8072')) {
+        if (message.author.tag.endsWith('4990')) {
             message.channel.send('You don\'t have enough badges to train me');
             return false;
         }
@@ -50,6 +50,11 @@ module.exports = function setUpBot () {
         if (message.content.startsWith('!movieForm')) {
             if (!checkPermission(message)) return;
             movieServices.createMovieForm(message);
+        }
+
+        if (message.content.startsWith('!results')) {
+            if (!checkPermission(message)) return;
+            movieServices.reportResults(message);
         }
 
         if (message.content.toLowerCase().includes('te amo') && Math.random() < 0.34) {
