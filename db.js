@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Movie = require('./models/Movie');
+var State = require('./models/State');
 
 module.exports = {
     connectDB : function() {
@@ -37,5 +38,28 @@ module.exports = {
 
     clear: function () {
         return new Promise(resolve => Movie.remove({}, resolve));
+    },
+
+    setStateKey: function (key, value) {
+        return new Promise(resolve => {
+            State.find((err, s) => {
+                if (err) {
+                    console.log(err);
+                }
+                s[key] = value;
+                s.save(resolve);
+            });
+        });
+    },
+
+    getStateKey: function (key) {
+        return new Promise(resolve => {
+            State.find((err, s) => {
+                if (err) {
+                    console.log(err);
+                }
+                resolve(s[key]);
+            });
+        });
     },
 };
