@@ -135,7 +135,7 @@ const movieServices = {
                 message.channel.send('Señoras y señores, results are in...');
                 await sendMessageWithDelay(message, 'Agárrense a sus asientos y prepárense');
                 await sendMessageWithDelay(message, 'La película ganadora es...');
-                await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 500);
+                await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*');
                 await sendMessageWithDelay(message, results[0].text, 2000);
             }
         }).catch(e => errorCatcher(e, message));

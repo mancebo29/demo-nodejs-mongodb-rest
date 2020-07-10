@@ -11,9 +11,7 @@ router.get('/', async function(req, res) {
 
 router.post('/', async function(req, res) {
   const title = req.body.title;
-  const order = req.body.order || null;
-  const saved = await mongodb.enqueue(title, order);
-  res.json(saved);
+  res.json(title);
 });
 
 router.delete('/values/:id', function(req, res) {
