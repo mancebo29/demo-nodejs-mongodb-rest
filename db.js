@@ -17,7 +17,6 @@ module.exports = {
             }));
         }
         const movie = new Movie({ name: title, order });
-        console.log('WEY KLK ATIVO');
         await movie.getInfo(title, imdbId);
         movie.save();
 

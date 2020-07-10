@@ -54,7 +54,6 @@ const movieServices = {
         if (title.includes('imdb.com')) {
             [title,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
         }
-        console.log('SE ESTA LLAMANDO ESTO');
         mongodb.enqueue(title.trim(), imdbId).then(m => {
             message.channel.send(`Se agregó ${m.asString(true)}`);
             console.log('THE RATING', m.rating);
