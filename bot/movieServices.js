@@ -121,7 +121,7 @@ const movieServices = {
             message.channel.send('AGUÁNTESE');
             return;
         }
-        message.channel.send('Vamos a ver...');
+        message.channel.send('Vamos a esto...');
         try {
             const results = await surveyService.fetchResponses();
             if (!results.length) {
