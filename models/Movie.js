@@ -18,7 +18,7 @@ movieSchema.methods.getInfo = async function (title, imdbId) {
         const data = res.data;
         if (data) {
             if (data.Response && data.Response === 'False') {
-                throw new Error('Not Found');
+                throw new Error('Not Found hue');
             }
             this.year = Number(data.Year) || 0;
             this.name = data.Title;

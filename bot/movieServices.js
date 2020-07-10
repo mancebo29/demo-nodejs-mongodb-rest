@@ -3,7 +3,7 @@ var mongodb       = require('../db');
 
 const errorCatcher = (e, message) => {
     console.log(e);
-    if (e.message === 'Not Found') {
+    if (e.message === 'Not Found hue') {
         message.channel.send('No encontré esa película :c');
         message.channel.send('Soy medio lentito así que prueba a ser más específico');
     } else {
@@ -116,13 +116,14 @@ const movieServices = {
         message.channel.send(messages[Math.round(Math.random() * (messages.length - 1))]);
     },
 
-    reportResults: (message) => {
+    reportResults: async (message) => {
         if (creatingSurvey) {
             message.channel.send('AGUÁNTESE');
             return;
         }
         message.channel.send('Vamos a ver...');
-        surveyService.fetchResponses().then(async (results) => {
+        try {
+            const results = await surveyService.fetchResponses();
             if (!results.length) {
                 message.channel.send('Hubo un fallo :c');
             }
@@ -138,7 +139,9 @@ const movieServices = {
                 await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*');
                 await sendMessageWithDelay(message, results[0].text, 2000);
             }
-        }).catch(e => errorCatcher(e, message));
+         } catch (e) {
+            errorCatcher(e, message);
+        }
     }
 };
 
