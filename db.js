@@ -46,7 +46,8 @@ module.exports = {
                 if (err) {
                     console.log(err);
                 }
-                const [state] = s;
+                let [state] = s;
+                if (!state) state = new State({ lastForm: '' });
                 state[key] = value;
                 state.save(resolve);
             });
