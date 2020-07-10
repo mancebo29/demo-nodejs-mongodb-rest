@@ -60,22 +60,24 @@ const surveyService = {
   },
 
   fetchResponses: async () => {
-    const results = { names: [], movies: {} } ;
+    const results = { names: [], movies: {} };
     const surveyUrl = await mongodb.getStateKey('lastForm');
     const responses = await axios.get(`${surveyUrl}/responses/bulk`, {per_page: 39}, genericConfig).then(d => d.data);
 
-    const [page] = responses.data.pages;
-    const [name, choice] = page.questions;
-    for (const answer of name.answers) {
-      results.names.push(answer.text);
-    }
-
     const choices = {};
-    for (const answer of choice.answers) {
-      if (!choices[answer.choice_id]) {
-        choices[answer.choice_id] = 1;
-      } else {
-        choices[answer.choice_id] += 1;
+    for (const data of responses.data) {
+      const [page] = data.pages;
+      const [name, choice] = page.questions;
+      for (const answer of name.answers) {
+        results.names.push(answer.text);
+      }
+
+      for (const answer of choice.answers) {
+        if (!choices[answer.choice_id]) {
+          choices[answer.choice_id] = 1;
+        } else {
+          choices[answer.choice_id] += 1;
+        }
       }
     }
 
