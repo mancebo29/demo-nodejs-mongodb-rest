@@ -32,9 +32,6 @@ module.exports = function setUpBot () {
             movieServices.listMovies(message, full);
         }
 
-        console.log(message.content);
-        console.log(message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver'));
-
         if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {
             if (!checkPermission(message)) return;
             movieServices.addMovie(message);
