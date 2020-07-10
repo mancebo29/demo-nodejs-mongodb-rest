@@ -135,10 +135,14 @@ const movieServices = {
                 await sendMessageWithDelay(message, `Entre: \n${nextMessage}`, 500);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
+                const winnerTitle = results[0].text;
                 await sendMessageWithDelay(message, 'Agárrense a sus asientos y prepárense');
                 await sendMessageWithDelay(message, 'La película ganadora es...');
-                await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*');
-                await sendMessageWithDelay(message, results[0].text, 3000);
+                await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 3000);
+                await sendMessageWithDelay(message, winnerTitle, 3000);
+                await sendMessageWithDelay(message, 'Así que la sacaré del queue...');
+                const [,title] = winnerTitle.match(/^(.+)\(\d{4}\)/);
+                await mongodb.dequeue(title.trim());
             }
          } catch (e) {
             errorCatcher(e, message);
