@@ -123,10 +123,11 @@ const movieServices = {
         }
         message.channel.send('Vamos a esto...');
         try {
-            const results = await surveyService.fetchResponses();
+            const { results, names } = await surveyService.fetchResponses();
             if (!results.length) {
                 message.channel.send('Hubo un fallo :c');
             }
+            message.channel.send(`Tengo los votos de:\n${names.join('\n')}`);
             if (results.length > 1) {
                 message.channel.send('Eh... Ok ya tengo los resultados...');
                 await sendMessageWithDelay(message, 'Pero hay un empate xD');

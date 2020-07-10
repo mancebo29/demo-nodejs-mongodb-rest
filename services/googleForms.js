@@ -60,7 +60,7 @@ const surveyService = {
   },
 
   fetchResponses: async () => {
-    const results = { names: [], movies: {} };
+    const names = [];
     const surveyUrl = await mongodb.getStateKey('lastForm');
     const responses = await axios.get(`${surveyUrl}/responses/bulk?per_page=39`, genericConfig).then(d => d.data);
 
@@ -73,7 +73,7 @@ const surveyService = {
       const [name, choice] = page.questions;
       questionId = choice.id;
       for (const answer of name.answers) {
-        results.names.push(answer.text);
+        names.push(answer.text);
       }
 
       for (const answer of choice.answers) {
@@ -105,7 +105,7 @@ const surveyService = {
 
     const winningChoices = originalQuestion.answers.choices.filter(oc => winners.includes(oc.id));
 
-    return winningChoices;
+    return { results: winningChoices, names };
   },
 };
 
