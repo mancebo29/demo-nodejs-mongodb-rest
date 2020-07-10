@@ -116,7 +116,7 @@ const movieServices = {
         message.channel.send(messages[Math.round(Math.random() * (messages.length - 1))]);
     },
 
-    reportResults: () => {
+    reportResults: (message) => {
         if (creatingSurvey) {
             message.channel.send('AGUÁNTESE');
             return;
