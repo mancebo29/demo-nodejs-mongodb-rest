@@ -54,6 +54,7 @@ const movieServices = {
         if (title.includes('imdb.com')) {
             [title,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
         }
+        console.log('SE ESTA LLAMANDO ESTO');
         mongodb.enqueue(title.trim(), imdbId).then(m => {
             message.channel.send(`Se agregó ${m.asString(true)}`);
             console.log('THE RATING', m.rating);
@@ -131,7 +132,7 @@ const movieServices = {
                 message.channel.send('Eh... Ok ya tengo los resultados...');
                 await sendMessageWithDelay(message, 'Pero hay un empate xD');
                 const nextMessage = results.reduce((text, c) => `${text}${c.text}\n`, '');
-                await sendMessageWithDelay(message, `Entre: ${nextMessage}`, 500);
+                await sendMessageWithDelay(message, `Entre: \n${nextMessage}`, 500);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
                 await sendMessageWithDelay(message, 'Agárrense a sus asientos y prepárense');
