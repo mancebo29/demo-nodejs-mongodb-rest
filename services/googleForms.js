@@ -62,7 +62,9 @@ const surveyService = {
   fetchResponses: async () => {
     const results = { names: [], movies: {} } ;
     const surveyUrl = await mongodb.getStateKey('lastForm');
-    const responses = await axios.get(`${surveyUrl}/responses/bulk`, {per_page: 39}, genericConfig).then(d => d.data);
+    const responses = await axios.get(`${surveyUrl}/responses/bulk?per_page=39`, genericConfig).then(d => d.data);
+
+    console.log('RESPONSES GOTTEN SUCCESSFULLY HUE');
 
     const [page] = responses.data.pages;
     const [name, choice] = page.questions;
@@ -79,6 +81,8 @@ const surveyService = {
       }
     }
 
+    console.log('THE HUE CHOICES ARE', choices);
+
     let winners = [];
     let score = 0;
     for (const [k, c] of Object.entries(choices)) {
@@ -93,9 +97,12 @@ const surveyService = {
         }
       }
     }
+    console.log('ABOUT TO GET THE QUESTIO HUE');
 
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${page.id}/questions/${choice.id}`, {}, genericConfig)
       .then(d => d.data);
+
+    console.log('GOT ORIGINAL QUESTION HUE');
 
     const winningChoices = originalQuestion.answers.choices.filter(oc => winners.includes(oc.id));
 
