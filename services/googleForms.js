@@ -62,7 +62,7 @@ const surveyService = {
   fetchResponses: async () => {
     const results = { names: [], movies: {} } ;
     const surveyUrl = await mongodb.getStateKey('lastForm');
-    const responses = await axios.get(`${surveyUrl}/responses/bulk`, {}, genericConfig).then(d => d.data);
+    const responses = await axios.get(`${surveyUrl}/responses/bulk`, {per_page: 39}, genericConfig).then(d => d.data);
 
     const [page] = responses.data.pages;
     const [name, choice] = page.questions;
