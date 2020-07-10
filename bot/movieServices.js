@@ -104,7 +104,6 @@ const movieServices = {
             `${message.author.toString()} muy interesante... Y definitivamente no es sarcasmo....`,
             `Diría algo cool de no haber sido ${message.author.toString()} quien dijo eso...`,
             `${message.author.toString()} estás borracha de nuevo?`,
-            `Según mis cálculos${message.author.toString()} mandó ese mensaje hace ${(Math.random() * 12).toFixed(2)} horas, pero con su internet de Higüey llegó ahora`
             `...`,
         ];
         message.channel.send(messages[Math.round(Math.random() * (messages.length - 1))]);
