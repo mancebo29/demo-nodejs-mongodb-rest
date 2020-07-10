@@ -67,11 +67,12 @@ const surveyService = {
     console.log('RESPONSES GOTTEN SUCCESSFULLY HUE');
 
     const choices = {};
-    let pageId;
+    let pageId, questionId;
     for (const data of responses.data) {
       const [page] = data.pages;
       pageId = page.id;
       const [name, choice] = page.questions;
+      questionId = choice.id;
       for (const answer of name.answers) {
         results.names.push(answer.text);
       }
@@ -103,7 +104,7 @@ const surveyService = {
     }
     console.log('ABOUT TO GET THE QUESTIO HUE');
 
-    const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${choice.id}`, {}, genericConfig)
+    const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, {}, genericConfig)
       .then(d => d.data);
 
     console.log('GOT ORIGINAL QUESTION HUE');
