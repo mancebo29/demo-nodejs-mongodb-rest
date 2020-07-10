@@ -46,8 +46,9 @@ module.exports = {
                 if (err) {
                     console.log(err);
                 }
-                s[key] = value;
-                s.save(resolve);
+                const [state] = s;
+                state[key] = value;
+                state.save(resolve);
             });
         });
     },
@@ -58,7 +59,8 @@ module.exports = {
                 if (err) {
                     console.log(err);
                 }
-                resolve(s[key]);
+                const [state] = s;
+                resolve(state[key]);
             });
         });
     },
