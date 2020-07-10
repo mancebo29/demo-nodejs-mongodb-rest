@@ -122,18 +122,21 @@ const movieServices = {
             return;
         }
         message.channel.send('Vamos a ver...');
-        surveyService.fetchResponses().then(results => {
+        surveyService.fetchResponses().then(async (results) => {
             if (!results.length) {
                 message.channel.send('Hubo un fallo :c');
             }
             if (results.length > 1) {
-
+                message.channel.send('Eh... Ok ya tengo los resultados...');
+                await sendMessageWithDelay(message, 'Pero hay un empate xD');
+                const nextMessage = results.reduce((text, c) => `${text}${c.text}\n`, '');
+                await sendMessageWithDelay(message, `Entre: ${nextMessage}`, 500);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
-                sendMessageWithDelay(message, 'Agárrense a sus asientos y prepárense');
-                sendMessageWithDelay(message, 'La película ganadora es...');
-                sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 500);
-                sendMessageWithDelay(message, results[0].text, 2000);
+                await sendMessageWithDelay(message, 'Agárrense a sus asientos y prepárense');
+                await sendMessageWithDelay(message, 'La película ganadora es...');
+                await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 500);
+                await sendMessageWithDelay(message, results[0].text, 2000);
             }
         }).catch(e => errorCatcher(e, message));
     }
