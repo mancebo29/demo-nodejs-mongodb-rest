@@ -57,8 +57,6 @@ const surveyService = {
       },
     }).then(d => d.data);
 
-    console.log('aaaaaaaaaaaaaa', collector);
-
     return {survey, url: collector.url}
   },
 };

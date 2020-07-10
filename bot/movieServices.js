@@ -19,7 +19,7 @@ const movieServices = {
             let reply = 'Las películas en queue son: ';
             let n = 1;
             for (const m of movies) {
-                if (reply.length + m.asString().length >= 2000) {
+                if (reply.length + m.asString(true).length >= 2000) {
                     if (full) {
                         message.channel.send(reply);
                         reply = '';
@@ -30,7 +30,7 @@ const movieServices = {
                         return;
                     }
                 }
-                reply += '\n' + `${n++}- ${m.asString()}`;
+                reply += '\n' + `${n++}- ${m.asString(true)}`;
             };
             message.channel.send(reply);
         }).catch(e => errorCatcher(e, message));
@@ -48,7 +48,7 @@ const movieServices = {
             [title,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
         }
         mongodb.enqueue(title.trim(), imdbId).then(m => {
-            message.channel.send(`Se agregó ${m.asString()}`);
+            message.channel.send(`Se agregó ${m.asString(true)}`);
             console.log('THE RATING', m.rating);
             if (m.rating && Number(m.rating) < 7) {
                 message.channel.send(`Ehm... Tomen en cuenta que solo tiene ${m.rating} en IMDB`);
@@ -62,7 +62,7 @@ const movieServices = {
             if (Number.isNaN(index)) {
                 let reply = 'Indícame con el numerito please: ';
                 let n = 1;
-                movies.forEach(m => reply += '\n' + `${n++}- ${m.asString()}`);
+                movies.forEach(m => reply += '\n' + `${n++}- ${m.asString(true)}`);
                 message.channel.send(reply);
             } else {
                 const i = Number(index);
