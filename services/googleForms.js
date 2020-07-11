@@ -12,6 +12,7 @@ const genericConfig = {
 const surveyService = {
 
   createSurvey: async (movies = null) => {
+    const isTieBreaker = !!movies;
     const name = `${movies ? 'El real desempate' : 'La real película'} [${new Date().toISOString()}]`;
     if (!movies) {
       movies = await mongodb.seeQueue();
@@ -25,7 +26,7 @@ const surveyService = {
           'position': 1,
           'questions': [
             {
-              'family': 'multiple_choice',
+              'family': isTieBreaker ? 'single_choice' : 'multiple_choice',
               'subtype': 'vertical',
               'answers': {
                 'choices': movies.map(m => ({text: m.asString()}))
