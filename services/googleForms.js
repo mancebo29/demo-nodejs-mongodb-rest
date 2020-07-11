@@ -36,7 +36,10 @@ const surveyService = {
                   'heading': 'Cuál de estos disparates te interesa ver? (Selecciona todos los que quieras)'
                 }
               ],
-              'position': 2
+              'position': 2,
+              'required': {
+                'text': 'Compadre pero llene esto',
+              }
             },
             {
               'family': 'open_ended',
@@ -67,7 +70,6 @@ const surveyService = {
     const surveyUrl = await mongodb.getStateKey('lastForm');
     console.log(`${surveyUrl}/responses/bulk?per_page=39`);
     const responses = await axios.get(`${surveyUrl}/responses/bulk?per_page=39`, genericConfig).then(d => d.data);
-
 
     const choices = {};
     let pageId, questionId;
