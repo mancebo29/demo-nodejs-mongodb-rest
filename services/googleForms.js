@@ -86,6 +86,7 @@ const surveyService = {
     }
 
     let winners = [];
+    let counter = 1;
     let score = 0;
     for (const [k, c] of Object.entries(choices)) {
       if (winners.length === 0) {
@@ -98,6 +99,7 @@ const surveyService = {
           winners = [k];
         }
       }
+      console.log(`HUEHUEHUE ${counter++} ${c} ${winners}`);
     }
 
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, genericConfig)
