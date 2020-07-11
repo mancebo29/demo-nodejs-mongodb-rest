@@ -133,6 +133,10 @@ const movieServices = {
                 await sendMessageWithDelay(message, 'Pero hay un empate xD');
                 const nextMessage = results.reduce((text, c) => `${text}${c.text}\n`, '');
                 await sendMessageWithDelay(message, `Entre: \n${nextMessage}`, 500);
+                const movies = results.map(r => ({ asString: () => r.text }));
+
+                const survey = await surveyService.createSurvey(movies);
+                message.channel.send(survey.url);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
                 const winnerTitle = results[0].text;
@@ -140,9 +144,9 @@ const movieServices = {
                 await sendMessageWithDelay(message, 'La película ganadora es...');
                 await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 3000);
                 await sendMessageWithDelay(message, winnerTitle, 3000);
-                await sendMessageWithDelay(message, 'Así que la sacaré del queue...');
                 const [,title] = winnerTitle.match(/^(.+)\(\d{4}\)/);
                 await mongodb.dequeue(title.trim());
+                await sendMessageWithDelay(message, 'Así que la sacaré del queue...');
             }
          } catch (e) {
             errorCatcher(e, message);

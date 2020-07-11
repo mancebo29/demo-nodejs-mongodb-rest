@@ -11,9 +11,11 @@ const genericConfig = {
 
 const surveyService = {
 
-  createSurvey: async () => {
-    const name = `La real película [${new Date().toISOString()}]`;
-    const movies = await mongodb.seeQueue();
+  createSurvey: async (movies = null) => {
+    const name = `${movies ? 'El real desempate' : 'La real película'} [${new Date().toISOString()}]`;
+    if (!movies) {
+      movies = await mongodb.seeQueue();
+    }
     const survey = await axios.post(URL, {
       'title': name,
       'pages': [
