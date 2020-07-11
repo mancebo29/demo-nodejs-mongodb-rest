@@ -134,9 +134,8 @@ const movieServices = {
                 const nextMessage = results.reduce((text, c) => `${text}${c.text}\n`, '');
                 await sendMessageWithDelay(message, `Entre: \n${nextMessage}`, 500);
                 const movies = results.map(r => ({ asString: () => r.text }));
-
                 const survey = await surveyService.createSurvey(movies);
-                message.channel.send(survey.url);
+                await sendMessageWithDelay(message, `Entonces, para el desempate llenen esto: ${survey.url}`);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
                 const winnerTitle = results[0].text;
