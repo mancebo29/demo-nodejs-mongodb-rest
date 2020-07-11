@@ -65,6 +65,7 @@ const surveyService = {
   fetchResponses: async () => {
     const names = [];
     const surveyUrl = await mongodb.getStateKey('lastForm');
+    console.log(`${surveyUrl}/responses/bulk?per_page=39`);
     const responses = await axios.get(`${surveyUrl}/responses/bulk?per_page=39`, genericConfig).then(d => d.data);
 
 
@@ -89,7 +90,6 @@ const surveyService = {
     }
 
     let winners = [];
-    let counter = 1;
     let score = 0;
     for (const [k, c] of Object.entries(choices)) {
       if (winners.length === 0) {
@@ -104,6 +104,7 @@ const surveyService = {
         }
       }
     }
+    console.log(`${surveyUrl}/pages/${pageId}/questions/${questionId}`);
 
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, genericConfig)
       .then(d => d.data);
