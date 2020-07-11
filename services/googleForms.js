@@ -97,6 +97,7 @@ const surveyService = {
           winners.push(k);
         } else if (c > score) {
           winners = [k];
+          score = c;
         }
       }
       console.log(`HUEHUEHUE ${counter++} ${c} ${winners}`);
