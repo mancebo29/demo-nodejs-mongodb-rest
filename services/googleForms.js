@@ -100,7 +100,6 @@ const surveyService = {
           score = c;
         }
       }
-      console.log(`HUEHUEHUE ${counter++} ${c} ${winners}`);
     }
 
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, genericConfig)
