@@ -48,6 +48,8 @@ const surveyService = {
               ],
               'required': {
                 'text': 'Compadre pero llene esto',
+                'type': 'all',
+                'amount': '3'
               },
               'position': 1
             }
