@@ -36,10 +36,7 @@ const surveyService = {
                   'heading': 'Cuál de estos disparates te interesa ver? (Selecciona todos los que quieras)'
                 }
               ],
-              'position': 2,
-              'required': {
-                'text': 'Compadre pero llene esto',
-              }
+              'position': 2
             },
             {
               'family': 'open_ended',
@@ -49,6 +46,9 @@ const surveyService = {
                   'heading': 'Escribe tu nombre (Y no me vengas con un disparate por favor)'
                 }
               ],
+              'required': {
+                'text': 'Compadre pero llene esto',
+              },
               'position': 1
             }
           ]
