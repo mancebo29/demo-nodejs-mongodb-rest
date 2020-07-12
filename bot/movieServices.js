@@ -2,7 +2,7 @@ var surveyService = require('../services/googleForms');
 var mongodb       = require('../db');
 
 const errorCatcher = (e, message) => {
-    console.log(e);
+    console.log('APPLICATION ERROR:', JSON.stringify(e), e);
     if (e.message === 'Not Found hue') {
         message.channel.send('No encontré esa película :c');
         message.channel.send('Soy medio lentito así que prueba a ser más específico');
