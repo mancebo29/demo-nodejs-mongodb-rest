@@ -158,6 +158,7 @@ const movieServices = {
             return;
         }
 
+        message.channel.send('Déjame chequear...');
         try {
             const { names } = await surveyService.fetchResponses();
             message.channel
