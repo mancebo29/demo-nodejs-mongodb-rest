@@ -150,7 +150,22 @@ const movieServices = {
          } catch (e) {
             errorCatcher(e, message);
         }
-    }
+    },
+
+    reportVoters: async (message) => {
+        if (creatingSurvey) {
+            message.channel.send('AGUÁNTESE');
+            return;
+        }
+
+        try {
+            const { names } = await surveyService.fetchResponses();
+            message.channel
+              .send(`Tengo hasta ahora ${names.length} voto${names.length === 1 ? '' : 's'}: ${names.join(', ')}`)
+        } catch (e) {
+            errorCatcher(e, message);
+        }
+    },
 };
 
 module.exports = movieServices;

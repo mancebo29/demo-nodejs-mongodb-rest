@@ -60,6 +60,11 @@ module.exports = function setUpBot () {
         if (message.content.toLowerCase().includes('te amo') && Math.random() < 0.34) {
             message.reply('Eso me decía ella :\'c');
         }
+
+        if (message.content.startsWith('!votes')) {
+            if (!checkPermission(message)) return;
+            movieServices.reportVoters(message);
+        }
     });
 
     client.login(process.env.BOT_TOKEN);
