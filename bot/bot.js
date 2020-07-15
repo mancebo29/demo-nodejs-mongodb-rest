@@ -75,6 +75,18 @@ module.exports = function setUpBot () {
                 case 'spiderman':
                     url = 'https://cdn.discordapp.com/attachments/692562023493402665/724977030323634256/FB_IMG_1592918385370.jpg';
                     break;
+                case 'hulk':
+                    url = 'https://www.galerie-sakura.com/media/main/produit/48397b28d09e891cc8a9e177d9668e451c893b55.jpg';
+                    break
+                case 'ironman':
+                    url = 'https://www.galerie-sakura.com/media/main/produit/538eb7fc40d9df54b3797af0d9bf903ecda2a88a.jpg';
+                    break;
+                case 'mario':
+                    url = 'https://www.galerie-sakura.com/media/main/produit/64a5b56c22274d261605ec7f6a2e9c04bcd019b3.jpg';
+                    break;
+                case 'yoda':
+                    url = 'https://www.galerie-sakura.com/media/main/produit/ee0bbfb7780f3da10ddf3bd21e9b992bdc83a693.jpg';
+                    break;
             }
 
             if (url) {
