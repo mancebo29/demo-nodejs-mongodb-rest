@@ -73,7 +73,7 @@ module.exports = function setUpBot () {
                     url = 'https://cdn.discordapp.com/attachments/692562023493402665/724977030323634256/FB_IMG_1592918385370.jpg';
                     break;
                 case 'spiderman':
-                    url = 'https://cdn.discordapp.com/attachments/692562023493402665/724977030323634256/FB_IMG_1592918385370.jpg';
+                    url = 'https://www.galerie-sakura.com/media/main/produit/285537613c4e8d0958f09f6a7b10da2515de6296.jpg';
                     break;
                 case 'hulk':
                     url = 'https://www.galerie-sakura.com/media/main/produit/48397b28d09e891cc8a9e177d9668e451c893b55.jpg';
