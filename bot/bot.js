@@ -77,7 +77,7 @@ module.exports = function setUpBot () {
                     break;
                 case 'hulk':
                     url = 'https://www.galerie-sakura.com/media/main/produit/48397b28d09e891cc8a9e177d9668e451c893b55.jpg';
-                    break
+                    break;
                 case 'ironman':
                     url = 'https://www.galerie-sakura.com/media/main/produit/538eb7fc40d9df54b3797af0d9bf903ecda2a88a.jpg';
                     break;
