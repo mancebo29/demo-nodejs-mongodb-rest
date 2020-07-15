@@ -65,6 +65,22 @@ module.exports = function setUpBot () {
             if (!checkPermission(message)) return;
             movieServices.reportVoters(message);
         }
+
+        if (messsage.content.startsWith('penis ')) {
+            let url = null;
+            switch (message.content.substr(6).trim().toLowerCase()) {
+                case 'batman':
+                    url = 'https://cdn.discordapp.com/attachments/692562023493402665/724977030323634256/FB_IMG_1592918385370.jpg';
+                    break;
+                case 'spiderman':
+                    url = 'https://cdn.discordapp.com/attachments/692562023493402665/724977030323634256/FB_IMG_1592918385370.jpg';
+                    break;
+            }
+
+            if (url) {
+                message.channel.send(url);
+            }
+        }
     });
 
     client.login(process.env.BOT_TOKEN);
