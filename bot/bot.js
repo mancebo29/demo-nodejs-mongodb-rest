@@ -66,7 +66,7 @@ module.exports = function setUpBot () {
             movieServices.reportVoters(message);
         }
 
-        if (messsage.content.startsWith('penis ')) {
+        if (message.content.startsWith('penis')) {
             let url = null;
             switch (message.content.substr(6).trim().toLowerCase()) {
                 case 'batman':
