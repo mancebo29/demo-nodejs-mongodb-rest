@@ -90,7 +90,7 @@ module.exports = function setUpBot () {
             }
 
             if (url) {
-                message.channel.send(url);
+                message.channel.send(message.author.toString(), { files: [url] });
             }
         }
     });
