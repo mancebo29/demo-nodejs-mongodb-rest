@@ -1,4 +1,5 @@
 var jokeService = require('../services/jokeService');
+var catService = require('../services/catService');
 var surveyService = require('../services/googleForms');
 var mongodb       = require('../db');
 
@@ -174,9 +175,10 @@ const movieServices = {
             const generalChannel = message.client.channels.resolve('690318438077562902');
             const [user, level] = message.content.split(' | ');
             console.log(user);
-            let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}. Te ganaste un chiste: `;
-            await message.channel.send(congratsMessage);
+            const c = await catService.getRandomCat(`Felicidades!`);
             const j = await jokeService.getRandomJoke();
+            let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}. Te ganaste un chiste: `;
+            await message.channel.send(congratsMessage, { files: [c] });
 
             if (j.type === 'single') {
                 await message.channel.send(j.joke);
