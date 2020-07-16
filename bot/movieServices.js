@@ -97,10 +97,11 @@ const movieServices = {
             return;
         }
         creatingSurvey = true;
+        const pollsChannel = message.client.channels.resolve('733376737890533447');
         message.channel.send('Ok, dame un segundo...');
         surveyService.createSurvey().then(result => {
             creatingSurvey = false;
-            message.channel.send(result.url);
+            pollsChannel.send(result.url);
         }).catch(e => errorCatcher(e, message));
     },
 
@@ -131,13 +132,15 @@ const movieServices = {
             }
             message.channel.send(`Tengo los votos de:\n${names.join('\n')}`);
             if (results.length > 1) {
+                const pollsChannel = message.client.channels.resolve('733376737890533447');
                 message.channel.send('Eh... Ok ya tengo los resultados...');
                 await sendMessageWithDelay(message, 'Pero hay un empate xD');
                 const nextMessage = results.reduce((text, c) => `${text}${c.text}\n`, '');
                 await sendMessageWithDelay(message, `Entre: \n${nextMessage}`, 500);
                 const movies = results.map(r => ({ asString: () => r.text }));
                 const survey = await surveyService.createSurvey(movies);
-                await sendMessageWithDelay(message, `Entonces, para el desempate llenen esto: ${survey.url}`);
+                await sendMessageWithDelay(message, `Chequeen el canal de polls`);
+                await pollsChannel.send(`Llenen esto para el desempate: ${survey.url}`);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
                 const winnerTitle = results[0].text;
