@@ -178,8 +178,10 @@ const movieServices = {
             const text = `Felicidades x${level}! :3`;
 
             console.log(generalChannel);
-            let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}. Te ganaste un chiste: `;
-            await message.channel.send(congratsMessage, { files: [`https://cataas.com/cat/says/${encodeURIComponent(text)}`] });
+            let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}.`;
+            await message.channel.send(congratsMessage);
+            await message.channel.send(`https://cataas.com/cat/says/${encodeURIComponent(text)}`);
+            await message.channel.send('Te ganaste un chiste:');
 
             if (j.type === 'single') {
                 await message.channel.send(j.joke);
