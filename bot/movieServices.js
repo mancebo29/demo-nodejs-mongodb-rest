@@ -174,11 +174,12 @@ const movieServices = {
         try {
             const generalChannel = message.client.channels.resolve('690318438077562902');
             const [user, level] = message.content.split(' | ');
-            console.log(user);
-            const c = await catService.getRandomCat(`Felicidades!`);
             const j = await jokeService.getRandomJoke();
+            const text = `Felicidades x${level}! :3`;
+
+            console.log(generalChannel);
             let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}. Te ganaste un chiste: `;
-            await message.channel.send(congratsMessage, { files: [c] });
+            await message.channel.send(congratsMessage, { files: [`https://cataas.com/cat/says/${encodeURIComponent(text)}`] });
 
             if (j.type === 'single') {
                 await message.channel.send(j.joke);
