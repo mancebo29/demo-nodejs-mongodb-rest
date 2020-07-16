@@ -14,4 +14,4 @@ const jokeService = {
     }
 };
 
-export default jokeService;
+module.exports = jokeService;
