@@ -175,13 +175,13 @@ const movieServices = {
             const [user, level] = message.content.split(' | ');
             console.log(user);
             let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}. Te ganaste un chiste: `;
-            message.channel.send(congratsMessage);
+            await message.channel.send(congratsMessage);
             const j = await jokeService.getRandomJoke();
 
             if (j.type === 'single') {
-                message.channel.send(j.joke);
+                await message.channel.send(j.joke);
             } else {
-                message.channel.send(j.setup);
+                await message.channel.send(j.setup);
                 await sendMessageWithDelay(message, j.delivery, 5000);
             }
         } catch (e) {
