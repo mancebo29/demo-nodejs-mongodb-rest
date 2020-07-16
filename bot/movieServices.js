@@ -1,3 +1,4 @@
+var jokeService = require('../services/jokeService');
 var surveyService = require('../services/googleForms');
 var mongodb       = require('../db');
 
@@ -167,6 +168,26 @@ const movieServices = {
             errorCatcher(e, message);
         }
     },
+
+    levelUp: async (message) => {
+        try {
+            const generalChannel = message.client.channels.resolve('690318438077562902');
+            const [user, level] = message.content.split(' | ');
+            console.log(user);
+            let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}. Te ganaste un chiste: `;
+            message.channel.send(congratsMessage);
+            const j = await jokeService.getRandomJoke();
+
+            if (j.type === 'single') {
+                message.channel.send(j.joke);
+            } else {
+                message.channel.send(j.setup);
+                await sendMessageWithDelay(message, j.delivery, 5000);
+            }
+        } catch (e) {
+            errorCatcher(e, message);
+        }
+    }
 };
 
 module.exports = movieServices;

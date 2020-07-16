@@ -66,6 +66,10 @@ module.exports = function setUpBot () {
             movieServices.reportVoters(message);
         }
 
+        if (message.content.includes(' | ') && (message.author.tag.endsWith('4876') || message.author.tag.endsWith('0149'))) {
+            movieServices.levelUp(message);
+        }
+
         if (message.content.startsWith('penis')) {
             let url = null;
             switch (message.content.substr(6).trim().toLowerCase()) {
