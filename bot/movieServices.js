@@ -209,10 +209,10 @@ const movieServices = {
     dailyPoll: async (message) => {
         try {
             const pollsChannel = message.client.channels.resolve('733376737890533447');
-            const message = await message.channel.send(
+            const sentMessage = await message.channel.send(
               `klk?\n:regional_indicator_a: Jackbox\n\n:regional_indicator_b: Among Us\n\n:regional_indicator_c: Movie Night\n\n:regional_indicator_d: D&D\n\n:regional_indicator_e: Algo más`
             );
-            message.react(':regional_indicator_a: ');
+            sentMessage.react(':regional_indicator_a: ');
         } catch (e) {
             errorCatcher(e, message);
         }
