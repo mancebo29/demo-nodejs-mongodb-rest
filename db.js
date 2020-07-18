@@ -28,7 +28,7 @@ module.exports = {
     },
 
     updateScore: function (title, order) {
-        Movie.update({ name: title }, null, { order });
+        return Movie.update({ name: title }, null, { order });
     },
 
     dequeue: function (title) {
