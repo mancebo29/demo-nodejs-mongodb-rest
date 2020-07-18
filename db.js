@@ -12,7 +12,7 @@ module.exports = {
             await new Promise(resolve => Movie.find((err, movies) => {
                 order = movies.reduce((max, current) => {
                    return Math.max(max, Number(current.order));
-                }, 0) || 0;
+                }, 0) || 20;
                 resolve();
             }));
         }

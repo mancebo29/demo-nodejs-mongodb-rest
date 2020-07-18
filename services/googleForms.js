@@ -115,11 +115,10 @@ const surveyService = {
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, genericConfig)
       .then(d => d.data);
 
-    console.log('ABOUT TO DO THE MAP');
     const allScores = originalQuestion.answers.choices.map(oc => {
-      const matches = oc.text.match(/^(.+)\(\d{4}\)/);
+      const matches = oc.text.match(/^(.+)(\(\d{4}\))?(http.+)/);
       if (!matches) {
-        console.log('XXXJADSJDSA', oc.text);
+        console.log('NON MATCHING MOVIE ERROR', oc.text);
       }
       const title = matches ? matches[1] : '';
       return {
@@ -128,7 +127,6 @@ const surveyService = {
         score: choices[oc.id],
       }
     });
-    console.log('DID THE MAP');
     const winningChoices = allScores.filter(oc => winners.includes(oc.id));
     const runnerUpChoices = allScores.filter(oc => runnerUps.includes(oc.id));
 
