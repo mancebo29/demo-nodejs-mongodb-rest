@@ -157,6 +157,7 @@ const movieServices = {
                 await sendMessageWithDelay(message, `Quedando en segundo lugar:\n${secondPlaces}`);
                 await sendMessageWithDelay(message, `Pero esas se quedaron para una próxima`);
 
+                await mongodb.resetOrder();
                 allScores.forEach(m => {
                     mongodb.updateScore(m.title, 20 - m.score);
                 });

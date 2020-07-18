@@ -36,6 +36,10 @@ module.exports = {
         return new Promise(resolve => Movie.update({ name: title }, { order }, resolve));
     },
 
+    resetOrder: function () {
+        return new Promise(resolve => Movie.update({}, { order: 20 }));
+    },
+
     dequeue: function (title) {
         return new Promise(resolve => Movie.remove({ name: title }, resolve));
     },
