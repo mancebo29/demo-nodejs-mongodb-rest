@@ -123,7 +123,7 @@ const movieServices = {
         }
         message.channel.send('Vamos a esto...');
         try {
-            const { results, names } = await surveyService.fetchResponses();
+            const { results, names, runnerUps, allScores } = await surveyService.fetchResponses();
             if (!results.length) {
                 message.channel.send('Hubo un fallo :c');
             }
@@ -138,14 +138,23 @@ const movieServices = {
                 await sendMessageWithDelay(message, `Entonces, para el desempate llenen esto: ${survey.url}`);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
-                const winnerTitle = results[0].text;
+                const [winnerMovie] = results;
+                const winnerTitle = winnerMovie.text;
                 await sendMessageWithDelay(message, 'Agárrense a sus asientos y prepárense');
                 await sendMessageWithDelay(message, 'La película ganadora es...');
                 await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 3000);
                 await sendMessageWithDelay(message, winnerTitle, 3000);
-                const [,title] = winnerTitle.match(/^(.+)\(\d{4}\)/);
-                await mongodb.dequeue(title.trim());
+                await sendMessageWithDelay(message, `Con un total de ${winnerMovie.score} votos`, 3000);
+                await mongodb.dequeue(winnerMovie.title.trim());
                 await sendMessageWithDelay(message, 'Así que la sacaré del queue...');
+
+                const secondPlaces = runnerUps.reduce((text, c) => `${text}${c.text}\n`, '');
+                await sendMessageWithDelay(message, `Quedando en segundo lugar:\n${secondPlaces}`);
+                await sendMessageWithDelay(message, `Pero esas se quedaron para una próxima`);
+
+                allScores.forEach(m => {
+                    mongodb.updateScore(m.title, 20 - m.score);
+                });
             }
          } catch (e) {
             errorCatcher(e, message);

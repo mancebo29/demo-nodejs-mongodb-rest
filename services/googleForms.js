@@ -94,6 +94,7 @@ const surveyService = {
     }
 
     let winners = [];
+    let runnerUps = [];
     let score = 0;
     for (const [k, c] of Object.entries(choices)) {
       if (winners.length === 0) {
@@ -103,6 +104,7 @@ const surveyService = {
         if (c === score) {
           winners.push(k);
         } else if (c > score) {
+          runnerUps = winners;
           winners = [k];
           score = c;
         }
@@ -113,9 +115,15 @@ const surveyService = {
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, genericConfig)
       .then(d => d.data);
 
-    const winningChoices = originalQuestion.answers.choices.filter(oc => winners.includes(oc.id));
+    const allScores = originalQuestion.answers.choices.map(oc => ({
+      ...oc,
+      title: oc.text.match(/^(.+)\(\d{4}\)/).trim(),
+      score: choices[oc.id],
+    }));
+    const winningChoices = allScores.filter(oc => winners.includes(oc.id));
+    const runnerUpChoices = allScores.filter(oc => runnerUps.includes(oc.id));
 
-    return { results: winningChoices, names };
+    return { results: winningChoices, names, runnerUps: runnerUpChoices, allScores };
   },
 };
 

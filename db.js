@@ -24,12 +24,16 @@ module.exports = {
     },
 
     seeQueue: function () {
-        return new Promise(resolve => Movie.find((err, movies) => {
+        return new Promise(resolve => Movie.find({ sort: { order: 1 } }, (err, movies) => {
           if (err) {
             console.log(err);
           }
           resolve(movies);
         }));
+    },
+
+    updateScore: function (title, order) {
+        Movie.update({ name: title }, { order });
     },
 
     dequeue: function (title) {
