@@ -37,7 +37,7 @@ module.exports = {
     },
 
     resetOrder: function () {
-        return new Promise(resolve => Movie.update({}, { order: 20 }));
+        return new Promise(resolve => Movie.updateMany({}, { order: 20 }, resolve));
     },
 
     dequeue: function (title) {
