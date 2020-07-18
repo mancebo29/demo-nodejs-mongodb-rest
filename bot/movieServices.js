@@ -28,7 +28,7 @@ const movieServices = {
             let reply = 'Las películas en queue son: ';
             let n = 1;
             for (const m of movies) {
-                if (reply.length + m.asString(true).length >= 2000) {
+                if (reply.length + m.asString(true).length >= 1990) {
                     if (full) {
                         message.channel.send(reply);
                         reply = '';
