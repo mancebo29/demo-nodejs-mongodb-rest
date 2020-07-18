@@ -1,3 +1,5 @@
+var jokeService = require('../services/jokeService');
+var catService = require('../services/catService');
 var surveyService = require('../services/googleForms');
 var mongodb       = require('../db');
 
@@ -13,9 +15,9 @@ const errorCatcher = (e, message) => {
 
 let creatingSurvey = false;
 
-const sendMessageWithDelay = (message, text, delay = 1500) => {
+const sendMessageWithDelay = (message, text, delay = 1500, channel = null) => {
     return new Promise(resolve => setTimeout(() => {
-        message.channel.send(text);
+        (channel || message.channel).send(text);
         resolve();
     }, delay))
 }
@@ -95,10 +97,11 @@ const movieServices = {
             return;
         }
         creatingSurvey = true;
+        const pollsChannel = message.client.channels.resolve('733376737890533447');
         message.channel.send('Ok, dame un segundo...');
         surveyService.createSurvey().then(result => {
             creatingSurvey = false;
-            message.channel.send(result.url);
+            pollsChannel.send(result.url);
         }).catch(e => errorCatcher(e, message));
     },
 
@@ -129,13 +132,15 @@ const movieServices = {
             }
             message.channel.send(`Tengo los votos de:\n${names.join('\n')}`);
             if (results.length > 1) {
+                const pollsChannel = message.client.channels.resolve('733376737890533447');
                 message.channel.send('Eh... Ok ya tengo los resultados...');
                 await sendMessageWithDelay(message, 'Pero hay un empate xD');
                 const nextMessage = results.reduce((text, c) => `${text}${c.text}\n`, '');
                 await sendMessageWithDelay(message, `Entre: \n${nextMessage}`, 500);
                 const movies = results.map(r => ({ asString: () => r.text }));
                 const survey = await surveyService.createSurvey(movies);
-                await sendMessageWithDelay(message, `Entonces, para el desempate llenen esto: ${survey.url}`);
+                await sendMessageWithDelay(message, `Chequeen el canal de polls`);
+                await pollsChannel.send(`Llenen esto para el desempate: ${survey.url}`);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
                 const [winnerMovie] = results;
@@ -176,6 +181,29 @@ const movieServices = {
             errorCatcher(e, message);
         }
     },
+
+    levelUp: async (message) => {
+        try {
+            const generalChannel = message.client.channels.resolve('690318438077562902');
+            const [user, level] = message.content.split(' | ');
+            const j = await jokeService.getRandomJoke();
+            const text = `Felicidades x${level}! :3`;
+
+            let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}.`;
+            await generalChannel.send(congratsMessage);
+            await generalChannel.send(`https://cataas.com/cat/says/${encodeURIComponent(text)}`);
+            await generalChannel.send('Te ganaste un chiste:');
+
+            if (j.type === 'single') {
+                await sendMessageWithDelay(message, j.joke, 3000, generalChannel);
+            } else {
+                await sendMessageWithDelay(message, j.setup, 3000, generalChannel);
+                await sendMessageWithDelay(message, j.delivery, 5000, generalChannel);
+            }
+        } catch (e) {
+            errorCatcher(e, message);
+        }
+    }
 };
 
 module.exports = movieServices;
