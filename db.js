@@ -24,12 +24,7 @@ module.exports = {
     },
 
     seeQueue: function () {
-        return new Promise(resolve => Movie.find({}, { sort: { order: 1 } }, (err, movies) => {
-          if (err) {
-            console.log(err);
-          }
-          resolve(movies);
-        }));
+        return Movie.find({}, { sort: { order: 1 } });
     },
 
     updateScore: function (title, order) {
