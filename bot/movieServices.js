@@ -212,7 +212,7 @@ const movieServices = {
             const sentMessage = await message.channel.send(
               `klk?\n:regional_indicator_a: Jackbox\n\n:regional_indicator_b: Among Us\n\n:regional_indicator_c: Movie Night\n\n:regional_indicator_d: D&D\n\n:regional_indicator_e: Algo más`
             );
-            sentMessage.react(':regional_indicator_a: ');
+            sentMessage.react(':regional_indicator_a:');
         } catch (e) {
             errorCatcher(e, message);
         }
