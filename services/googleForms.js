@@ -116,9 +116,10 @@ const surveyService = {
       .then(d => d.data);
 
     const allScores = originalQuestion.answers.choices.map(oc => {
-      const matches = oc.text.match(/^(.+)(\(\d{4}\))?(http.+)/);
+      let matches = oc.text.match(/^(.+)(\(\d{4}\))/);
       if (!matches) {
         console.log('NON MATCHING MOVIE ERROR', oc.text);
+        matches = oc.text.match(/^(.+)(\(\d{4}\))?(http.+)/);
       }
       const title = matches ? matches[1] : '';
       console.log('TITLE', title);
