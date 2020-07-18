@@ -24,7 +24,7 @@ module.exports = {
     },
 
     seeQueue: function () {
-        return Movie.find({}, null, { sort: { order: 1 } });
+        return Movie.find({}, {}, { sort: { order: 1 } });
     },
 
     updateScore: function (title, order) {
