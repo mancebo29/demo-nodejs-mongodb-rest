@@ -115,15 +115,16 @@ const surveyService = {
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, genericConfig)
       .then(d => d.data);
 
+    console.log('ABOUT TO DO THE MAP');
     const allScores = originalQuestion.answers.choices.map(oc => {
-      const [x,title] = oc.text.match(/^(.+)\(\d{4}\)/);
-      console.log('XXXHUEXXX', x, title);
+      const [,title] = oc.text.match(/^(.+)\(\d{4}\)/);
       return {
         ...oc,
         title: title ? title.trim() : '',
         score: choices[oc.id],
       }
     });
+    console.log('DID THE MAP');
     const winningChoices = allScores.filter(oc => winners.includes(oc.id));
     const runnerUpChoices = allScores.filter(oc => runnerUps.includes(oc.id));
 
