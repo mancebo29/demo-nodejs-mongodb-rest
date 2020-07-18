@@ -95,8 +95,12 @@ const surveyService = {
 
     let winners = [];
     let runnerUps = [];
-    let score = 0;
+    let score = 0, lastScore = 0;
     for (const [k, c] of Object.entries(choices)) {
+      if (c === lastScore) {
+        runnerUps.push(k);
+      }
+
       if (winners.length === 0) {
         winners.push(k);
         score = c;
@@ -106,6 +110,7 @@ const surveyService = {
         } else if (c > score) {
           runnerUps = winners;
           winners = [k];
+          lastScore = score;
           score = c;
         }
       }
