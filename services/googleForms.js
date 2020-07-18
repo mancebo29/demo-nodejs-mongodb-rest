@@ -117,7 +117,7 @@ const surveyService = {
 
     const allScores = originalQuestion.answers.choices.map(oc => ({
       ...oc,
-      title: oc.text.match(/^(.+)\(\d{4}\)/).trim(),
+      title: oc.text.match(/^(.+)\(\d{4}\)/)[1].trim(),
       score: choices[oc.id],
     }));
     const winningChoices = allScores.filter(oc => winners.includes(oc.id));
