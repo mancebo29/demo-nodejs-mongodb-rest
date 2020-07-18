@@ -117,7 +117,11 @@ const surveyService = {
 
     console.log('ABOUT TO DO THE MAP');
     const allScores = originalQuestion.answers.choices.map(oc => {
-      const [,title] = oc.text.match(/^(.+)\(\d{4}\)/);
+      const matches = oc.text.match(/^(.+)\(\d{4}\)/);
+      if (!matches) {
+        console.log('XXXJADSJDSA', oc.text);
+      }
+      const title = matches ? matches[1] : '';
       return {
         ...oc,
         title: title ? title.trim() : '',
