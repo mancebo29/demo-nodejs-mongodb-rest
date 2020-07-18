@@ -121,6 +121,7 @@ const surveyService = {
         console.log('NON MATCHING MOVIE ERROR', oc.text);
       }
       const title = matches ? matches[1] : '';
+      console.log('TITLE', title);
       return {
         ...oc,
         title: title ? title.trim() : '',
