@@ -24,11 +24,11 @@ module.exports = {
     },
 
     seeQueue: function () {
-        return Movie.find({}, { sort: { order: 1 } });
+        return Movie.find({}, null, { sort: { order: 1 } });
     },
 
     updateScore: function (title, order) {
-        return Movie.update({ name: title }, null, { order });
+        Movie.update({ name: title }, { order });
     },
 
     dequeue: function (title) {
