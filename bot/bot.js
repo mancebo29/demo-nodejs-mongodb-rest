@@ -9,8 +9,8 @@ module.exports = function setUpBot() {
     });
 
     const checkPermission = (message) => {
-        if (message.author.tag.endsWith('0149')) {
-            message.channel.send('ANARQUIA TU A MI NO ME MANDAS.');
+        if (message.author.tag.endsWith('4990')) {
+            message.channel.send('DUDE, YOU DONT HAVE ENOUGH FUCKING BADGES TO TRAIN ME.');
             return false;
         }
         return true;
