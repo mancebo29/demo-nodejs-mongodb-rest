@@ -81,7 +81,7 @@ const movieServices = {
                 mongodb.dequeue(movieToRemove.name).then(() => {
                     message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
                 }).catch(e => {
-                    console.log(e);
+                    logger.log(e);
                     message.channel.send('No sé hacer eso :c');
                 });
             }
@@ -104,7 +104,7 @@ const movieServices = {
                     mongodb.dequeue(movieToRemove.name).then(() => {
                         message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
                     }).catch(e => {
-                        console.log(e);
+                        logger.log(e);
                         message.channel.send('No sé hacer eso :c');
                     });
                 }
