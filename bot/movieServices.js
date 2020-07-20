@@ -176,9 +176,11 @@ const movieServices = {
 
             if (!isTieBreaking) {
                 const secondPlaces = runnerUps.reduce((text, c) => `${text}${c.text}\n`, '');
-                await sendMessageWithDelay(message, `Quedando en segundo lugar:\n${secondPlaces}`);
+                if (runnerUps.length) {
+                    await sendMessageWithDelay(message, `Quedando en segundo lugar:\n${secondPlaces}`);
 
-                await sendMessageWithDelay(message, `Pero esas se quedaron para una próxima`);
+                    await sendMessageWithDelay(message, `Pero esas se quedaron para una próxima`);
+                }
                 allScores.forEach(m => {
                     mongodb.updateScore(m.title, m.score);
                 });
