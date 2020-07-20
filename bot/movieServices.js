@@ -175,6 +175,7 @@ const movieServices = {
 
 
             if (!isTieBreaking) {
+                await mongodb.resetOrder();
                 const secondPlaces = runnerUps.reduce((text, c) => `${text}${c.text}\n`, '');
                 if (runnerUps.length) {
                     await sendMessageWithDelay(message, `Quedando en segundo lugar:\n${secondPlaces}`);
