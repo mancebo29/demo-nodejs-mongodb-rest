@@ -71,6 +71,11 @@ module.exports = function setUpBot () {
             movieServices.dailyPoll(message);
         }
 
+        if (message.content.startsWith('!opinions')) {
+            if (!checkPermission(message)) return;
+            movieServices.opinions(message);
+        }
+
         if (message.content.includes(' | ') && (message.author.tag.endsWith('4876') || message.author.tag.endsWith('0149'))) {
             movieServices.levelUp(message);
         }

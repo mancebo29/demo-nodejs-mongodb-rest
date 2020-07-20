@@ -2,6 +2,7 @@ var jokeService = require('../services/jokeService');
 var catService = require('../services/catService');
 var surveyService = require('../services/googleForms');
 var mongodb       = require('../db');
+var utils         = require('../utils/utils');
 
 const errorCatcher = (e, message) => {
     console.log('APPLICATION ERROR:', JSON.stringify(e), e);
@@ -227,7 +228,24 @@ const movieServices = {
         } catch (e) {
             errorCatcher(e, message);
         }
-    }
+    },
+
+    opinions: async (message) => {
+        try {
+            const movieNights = message.client.channels.resolve('727367585225506857');
+            const membersArray = Array.from(movieNights.members);
+            const shuffledArray = utils.suffle(membersArray);
+
+            let n = 1;
+            let message = '';
+            for (const user in shuffledArray) {
+                message =`${message}${n++}- ${user}\n`;
+            }
+            message.channel.send(message);
+        } catch(e) {
+            errorCatcher(e, message);
+        }
+    },
 };
 
 module.exports = movieServices;
