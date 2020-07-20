@@ -99,8 +99,8 @@ const movieServices = {
                     movies.forEach(m => reply += '\n' + `${n++}- ${m.asString(true)}`);
                     message.channel.send(reply);
                 } else {
-                    const i = Number(index);
-                    const movieToRemove = movies[i - 1];
+                    let i = Number(index);
+                    let movieToRemove = movies[i - 1];
                     if (movieToRemove) {
                         mongodb.dequeue(movieToRemove.name).then(() => {
                             deletedMovies.push(movieToRemove.name);
