@@ -18,7 +18,8 @@ module.exports = function setUpBot() {
 
     client.on('message', message => {
         if (message.mentions.has(client.user)) {
-            if (message.content.includes('help') || message.content.includes('ayuda') || message.content.includes('aiuda') || message.toLowerCase().content.includes('sos')) {
+            let lowerMessage = mesasge.content.toLowerCase();
+            if (lowerMessage.includes('help') || lowerMessage.includes('ayuda') || lowerMessage.includes('aiuda') || lowerMessage.includes('sos')) {
                 message.channel.send('Los comandos disponibles son: \n-`!addMovie` o `vamos a ver` seguido del nombre o link de IMDB de la película para agregarla al queue\n-`!rmMovie {index}` para remover una película\n-`!movies` para consultar la lista de películas (Si hay muchas películas tendrás que hacer `!movies -f` para verlas todas)\n-`!movieForm` para generar un form para decidir qué película ver.');
             }
             return;
