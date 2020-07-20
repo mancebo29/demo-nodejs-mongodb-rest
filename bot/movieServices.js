@@ -1,5 +1,4 @@
 var jokeService = require('../services/jokeService');
-var catService = require('../services/catService');
 var surveyService = require('../services/googleForms');
 var mongodb = require('../db');
 var utils = require('../utils/utils');
@@ -145,6 +144,8 @@ const movieServices = {
             if (!results.length) {
                 message.channel.send('Hubo un fallo :c');
             }
+            const isTieBreaking = await mongodb.getStateKey('isTieBreaking');
+
             message.channel.send(`Tengo los votos de:\n${names.join('\n')}`);
             if (results.length > 1) {
                 const pollsChannel = message.client.channels.resolve('733376737890533447');
@@ -155,7 +156,7 @@ const movieServices = {
                 const movies = results.map(r => ({ asString: () => r.text }));
                 const survey = await surveyService.createSurvey(movies);
                 await sendMessageWithDelay(message, `Chequeen el canal de polls`);
-                await pollsChannel.send(`Llenen esto para el desempate: ${survey.url}`);
+                // await pollsChannel.send(`Llenen esto para el desempate: ${survey.url}`);
                 await mongodb.setStateKey('isTieBreaking', true);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
@@ -169,21 +170,20 @@ const movieServices = {
                 await mongodb.dequeue(winnerMovie.title.trim());
                 await sendMessageWithDelay(message, 'Así que la sacaré del queue...');
 
-                const isTieBreaking = await mongodb.getStateKey('isTieBreaking');
-
-                if (!isTieBreaking) {
-                    const secondPlaces = runnerUps.reduce((text, c) => `${text}${c.text}\n`, '');
-                    await sendMessageWithDelay(message, `Quedando en segundo lugar:\n${secondPlaces}`);
-
-                    await sendMessageWithDelay(message, `Pero esas se quedaron para una próxima`);
-                    await mongodb.resetOrder();
-                    allScores.forEach(m => {
-                        mongodb.updateScore(m.title, 20 - m.score);
-                    });
-                }
-
                 await mongodb.setStateKey('isTieBreaking', false);
             }
+
+
+            if (!isTieBreaking) {
+                const secondPlaces = runnerUps.reduce((text, c) => `${text}${c.text}\n`, '');
+                await sendMessageWithDelay(message, `Quedando en segundo lugar:\n${secondPlaces}`);
+
+                await sendMessageWithDelay(message, `Pero esas se quedaron para una próxima`);
+                allScores.forEach(m => {
+                    mongodb.updateScore(m.title, m.score);
+                });
+            }
+
         } catch (e) {
             errorCatcher(e, message);
         }

@@ -12,7 +12,7 @@ module.exports = {
             await new Promise(resolve => Movie.find((err, movies) => {
                 order = movies.reduce((max, current) => {
                    return Math.max(max, Number(current.order));
-                }, 0) || 20;
+                }, 0) || Number.MAX_SAFE_INTEGER;
                 resolve();
             }));
         }
@@ -33,7 +33,13 @@ module.exports = {
     },
 
     updateScore: function (title, order) {
-        return new Promise(resolve => Movie.update({ name: title }, { order }, resolve));
+        return new Promise((resolve, reject) => Movie.findOne({ name: title }, (err, movie) => {
+            if (err) {
+                reject(err);
+            }
+            movie.order -= order;
+            movie.save(resolve);
+        }));
     },
 
     resetOrder: function () {
