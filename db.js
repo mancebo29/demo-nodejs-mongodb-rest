@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Movie = require('./models/Movie');
 var State = require('./models/State');
+var logger = require('./logger/logger');
 
 module.exports = {
     connectDB : function() {
@@ -36,6 +37,9 @@ module.exports = {
         return new Promise((resolve, reject) => Movie.findOne({ name: title }, (err, movie) => {
             if (err) {
                 reject(err);
+            }
+            if (!movie) {
+                logger.log(`MOVIE NOT FOUND: ${title}`);
             }
             movie.order -= order;
             movie.save(resolve);
