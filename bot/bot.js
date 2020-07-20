@@ -9,10 +9,6 @@ module.exports = function setUpBot() {
     });
 
     const checkPermission = (message) => {
-        if (message.author.tag.endsWith('4990')) {
-            message.channel.send('DUDE, YOU DONT HAVE ENOUGH FUCKING BADGES TO TRAIN ME.');
-            return false;
-        }
         return true;
     };
 
