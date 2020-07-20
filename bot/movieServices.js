@@ -90,7 +90,7 @@ const movieServices = {
 
     removeMovies: (message) => {
         const indexes = message.content.substr(9).trim().split(',');
-
+        const deletedMovies = [];
         mongodb.seeQueue().then(movies => {
             indexes.forEach(index => {
                 if (Number.isNaN(index)) {
@@ -101,16 +101,24 @@ const movieServices = {
                 } else {
                     const i = Number(index);
                     const movieToRemove = movies[i - 1];
-                    logger.log(movieToRemove);
-                    mongodb.dequeue(movieToRemove.name).then(() => {
-                        message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
-                    }).catch(e => {
-                        logger.log(e);
-                        message.channel.send('No sé hacer eso :c');
-                    });
+                    if (movieToRemove) {
+                        mongodb.dequeue(movieToRemove.name).then(() => {
+                            deletedMovies.push(movieToRemove.name);
+                        }).catch(e => {
+                            logger.log(e);
+                            message.channel.send('No sé hacer eso :c');
+                        });
+                    }
+                    else {
+                        logger.log(`No encontré la película con el índice ${i} en el listado ${JSON.parse(movies)}`);
+                    }
                 }
             });
         }).catch(e => errorCatcher(e, message));
+
+        if (!deletedMovies) {
+            message.channel.send(`Mandé _${deletedMovies.join(", ")}_ a la mierda entonces`);
+        }
     },
 
     clearQueue: (message) => {
