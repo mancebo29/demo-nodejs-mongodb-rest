@@ -238,7 +238,7 @@ const movieServices = {
 
             let n = 1;
             let reply = '';
-            for (const user in shuffledArray) {
+            for (const user of shuffledArray) {
                 reply =`${reply}${n++}- ${user}\n`;
             }
             message.channel.send(reply);
