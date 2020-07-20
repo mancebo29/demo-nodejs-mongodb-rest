@@ -34,14 +34,13 @@ module.exports = function setUpBot() {
             movieServices.addMovie(message);
         }
 
-        if (message.content.startsWith('!rmMovie')) {
-            if (!checkPermission(message)) return;
-            movieServices.removeMovie(message);
-        }
-
         if (message.content.startsWith('!rmMovies')) {
             if (!checkPermission(message)) return;
             movieServices.removeMovies(message);
+        }
+        else if (message.content.startsWith('!rmMovie')) {
+            if (!checkPermission(message)) return;
+            movieServices.removeMovie(message);
         }
 
         if (message.content.startsWith('!clearEntireMovieQueue')) {
