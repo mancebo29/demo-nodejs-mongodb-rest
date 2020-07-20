@@ -23,4 +23,11 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-module.exports = logger;
+const loggerObject = {
+  log: (...messages) => {
+    const messagesArray = Array.from(messages);
+    logger.log({ level: 'info', message: messagesArray.join(', ') });
+  }
+}
+
+module.exports = loggerObject;
