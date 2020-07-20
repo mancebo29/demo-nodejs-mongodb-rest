@@ -237,11 +237,11 @@ const movieServices = {
             const shuffledArray = utils.suffle(membersArray);
 
             let n = 1;
-            let message = '';
+            let reply = '';
             for (const user in shuffledArray) {
-                message =`${message}${n++}- ${user}\n`;
+                reply =`${reply}${n++}- ${user}\n`;
             }
-            message.channel.send(message);
+            message.channel.send(reply);
         } catch(e) {
             errorCatcher(e, message);
         }
