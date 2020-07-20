@@ -3,9 +3,10 @@ var catService = require('../services/catService');
 var surveyService = require('../services/googleForms');
 var mongodb = require('../db');
 var utils = require('../utils/utils');
+var logger = require('../logger/logger');
 
 const errorCatcher = (e, message) => {
-    console.log('APPLICATION ERROR:', JSON.stringify(e), e);
+    logger.log('APPLICATION ERROR:', JSON.stringify(e), e);
     if (e.message === 'Not Found hue') {
         message.channel.send('No encontré esa película :c');
         message.channel.send('Soy medio lentito así que prueba a ser más específico');
@@ -35,7 +36,7 @@ const eliminarPelicula = (index, movies) => {
         mongodb.dequeue(movieToRemove.name).then(() => {
             message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
         }).catch(e => {
-            console.log(e);
+            logger.log(e);
             message.channel.send('No sé hacer eso :c');
         });
     }
@@ -77,7 +78,7 @@ const movieServices = {
         }
         mongodb.enqueue(title.trim(), imdbId).then(m => {
             message.channel.send(`Se agregó ${m.asString(true)}`);
-            console.log('THE RATING', m.rating);
+            logger.log('THE RATING', m.rating);
             if (m.rating && Number(m.rating) < 7) {
                 message.channel.send(`Ehm... Tomen en cuenta que solo tiene ${m.rating} en IMDB`);
             }
