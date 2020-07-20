@@ -23,7 +23,7 @@ const sendMessageWithDelay = (message, text, delay = 1500, channel = null) => {
     }, delay))
 }
 
-const eliminarPelicula = (index) => {
+const eliminarPelicula = (index, movies) => {
     if (Number.isNaN(index)) {
         let reply = 'Indícame con el numerito please: ';
         let n = 1;
@@ -87,7 +87,7 @@ const movieServices = {
     removeMovie: (message) => {
         const index = message.content.substr(8);
         mongodb.seeQueue().then(movies => {
-            eliminarPelicula(index);
+            eliminarPelicula(index, movies);
         }).catch(e => errorCatcher(e, message));
     },
 
@@ -95,7 +95,7 @@ const movieServices = {
         const indexes = message.content.substr(9).trim().split(',');
         mongodb.seeQueue().then(movies => {
             indexes.forEach(index => {
-                eliminarPelicula(index.trim());
+                eliminarPelicula(index.trim(), movies);
             });
         }).catch(e => errorCatcher(e, message));
     },
