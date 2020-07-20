@@ -101,6 +101,7 @@ const movieServices = {
                 } else {
                     const i = Number(index);
                     const movieToRemove = movies[i - 1];
+                    logger.log(movieToRemove);
                     mongodb.dequeue(movieToRemove.name).then(() => {
                         message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
                     }).catch(e => {
