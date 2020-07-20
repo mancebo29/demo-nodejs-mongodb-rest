@@ -3,14 +3,14 @@ const client = new Discord.Client();
 const movieServices = require('./movieServices');
 
 
-module.exports = function setUpBot () {
+module.exports = function setUpBot() {
     client.once('ready', () => {
         console.log('Ready!');
     });
 
     const checkPermission = (message) => {
-        if (message.author.tag.endsWith('4990')) {
-            message.channel.send('You don\'t have enough badges to train me');
+        if (message.author.tag.endsWith('0149')) {
+            message.channel.send('ANARQUIA TU A MI NO ME MANDAS.');
             return false;
         }
         return true;
@@ -18,7 +18,7 @@ module.exports = function setUpBot () {
 
     client.on('message', message => {
         if (message.mentions.has(client.user)) {
-            if (message.content.includes('help') || message.content.includes('ayuda') || message.content.includes('aiuda')) {
+            if (message.content.includes('help') || message.content.includes('ayuda') || message.content.includes('aiuda') || message.toLowerCase().content.includes('sos')) {
                 message.channel.send('Los comandos disponibles son: \n-`!addMovie` o `vamos a ver` seguido del nombre o link de IMDB de la película para agregarla al queue\n-`!rmMovie {index}` para remover una película\n-`!movies` para consultar la lista de películas (Si hay muchas películas tendrás que hacer `!movies -f` para verlas todas)\n-`!movieForm` para generar un form para decidir qué película ver.');
             }
             return;
@@ -40,6 +40,11 @@ module.exports = function setUpBot () {
         if (message.content.startsWith('!rmMovie')) {
             if (!checkPermission(message)) return;
             movieServices.removeMovie(message);
+        }
+
+        if (message.content.startsWith('!rmMovie')) {
+            if (!checkPermission(message)) return;
+            movieServices.removeMovies(message);
         }
 
         if (message.content.startsWith('!clearEntireMovieQueue')) {

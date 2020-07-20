@@ -1,8 +1,8 @@
 var jokeService = require('../services/jokeService');
 var catService = require('../services/catService');
 var surveyService = require('../services/googleForms');
-var mongodb       = require('../db');
-var utils         = require('../utils/utils');
+var mongodb = require('../db');
+var utils = require('../utils/utils');
 
 const errorCatcher = (e, message) => {
     console.log('APPLICATION ERROR:', JSON.stringify(e), e);
@@ -55,7 +55,7 @@ const movieServices = {
         }
 
         if (title.includes('imdb.com')) {
-            [title,imdbId] = title.match(/imdb.com\/title\/(\w+)/);
+            [title, imdbId] = title.match(/imdb.com\/title\/(\w+)/);
         }
         mongodb.enqueue(title.trim(), imdbId).then(m => {
             message.channel.send(`Se agregó ${m.asString(true)}`);
@@ -84,6 +84,30 @@ const movieServices = {
                     message.channel.send('No sé hacer eso :c');
                 });
             }
+        }).catch(e => errorCatcher(e, message));
+    },
+
+    removeMovies: (message) => {
+        const indexes = message.content.substr(8).trim().split(',');
+
+        mongodb.seeQueue().then(movies => {
+            indexes.forEach(index => {
+                if (Number.isNaN(index)) {
+                    let reply = 'Indícame con el numerito please: ';
+                    let n = 1;
+                    movies.forEach(m => reply += '\n' + `${n++}- ${m.asString(true)}`);
+                    message.channel.send(reply);
+                } else {
+                    const i = Number(index);
+                    const movieToRemove = movies[i - 1];
+                    mongodb.dequeue(movieToRemove.name).then(() => {
+                        message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
+                    }).catch(e => {
+                        console.log(e);
+                        message.channel.send('No sé hacer eso :c');
+                    });
+                }
+            });
         }).catch(e => errorCatcher(e, message));
     },
 
@@ -170,7 +194,7 @@ const movieServices = {
 
                 await mongodb.setStateKey('isTieBreaking', false);
             }
-         } catch (e) {
+        } catch (e) {
             errorCatcher(e, message);
         }
     },
@@ -185,7 +209,7 @@ const movieServices = {
         try {
             const { names } = await surveyService.fetchResponses();
             message.channel
-              .send(`Tengo hasta ahora ${names.length} voto${names.length === 1 ? '' : 's'}: ${names.join(', ')}`)
+                .send(`Tengo hasta ahora ${names.length} voto${names.length === 1 ? '' : 's'}: ${names.join(', ')}`)
         } catch (e) {
             errorCatcher(e, message);
         }
@@ -218,7 +242,7 @@ const movieServices = {
         try {
             const pollsChannel = message.client.channels.resolve('733376737890533447');
             const sentMessage = await pollsChannel.send(
-              `klk?\n:regional_indicator_a: Jackbox\n\n:regional_indicator_b: Among Us\n\n:regional_indicator_c: Movie Night\n\n:regional_indicator_d: D&D\n\n:regional_indicator_e: Algo más`
+                `klk?\n:regional_indicator_a: Jackbox\n\n:regional_indicator_b: Among Us\n\n:regional_indicator_c: Movie Night\n\n:regional_indicator_d: D&D\n\n:regional_indicator_e: Algo más`
             );
             sentMessage.react('🇦');
             sentMessage.react('🇧');
@@ -239,10 +263,10 @@ const movieServices = {
             let n = 1;
             let reply = '';
             for (const user of shuffledArray) {
-                reply =`${reply}${n++}- ${user}\n`;
+                reply = `${reply}${n++}- ${user}\n`;
             }
             message.channel.send(reply);
-        } catch(e) {
+        } catch (e) {
             errorCatcher(e, message);
         }
     },
