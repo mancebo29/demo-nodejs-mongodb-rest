@@ -39,7 +39,7 @@ module.exports = function setUpBot() {
             movieServices.removeMovie(message);
         }
 
-        if (message.content.startsWith('!rmMovie')) {
+        if (message.content.startsWith('!rmMovies')) {
             if (!checkPermission(message)) return;
             movieServices.removeMovies(message);
         }
