@@ -25,7 +25,7 @@ module.exports = {
     },
 
     seeQueue: function () {
-        return new Promise((resolve, reject) => Movie.find({}, null, { sort: { order: 1 } }, (err, movies) => {
+        return new Promise((resolve, reject) => Movie.find({}, null, { sort: { order: 1, rating: -1 } }, (err, movies) => {
             if (err) {
                 reject(err);
             }
@@ -40,6 +40,7 @@ module.exports = {
             }
             if (!movie) {
                 logger.log(`MOVIE NOT FOUND: ${title}`);
+                return resolve();
             }
             movie.order -= order;
             movie.save(resolve);
