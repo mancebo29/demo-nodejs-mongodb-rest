@@ -23,6 +23,24 @@ const sendMessageWithDelay = (message, text, delay = 1500, channel = null) => {
     }, delay))
 }
 
+const eliminarPelicula = (index) => {
+    if (Number.isNaN(index)) {
+        let reply = 'Indícame con el numerito please: ';
+        let n = 1;
+        movies.forEach(m => reply += '\n' + `${n++}- ${m.asString(true)}`);
+        message.channel.send(reply);
+    } else {
+        const i = Number(index);
+        const movieToRemove = movies[i - 1];
+        mongodb.dequeue(movieToRemove.name).then(() => {
+            message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
+        }).catch(e => {
+            console.log(e);
+            message.channel.send('No sé hacer eso :c');
+        });
+    }
+}
+
 const movieServices = {
     listMovies: (message, full = false) => {
         mongodb.seeQueue().then(movies => {
@@ -69,44 +87,15 @@ const movieServices = {
     removeMovie: (message) => {
         const index = message.content.substr(8);
         mongodb.seeQueue().then(movies => {
-            if (Number.isNaN(index)) {
-                let reply = 'Indícame con el numerito please: ';
-                let n = 1;
-                movies.forEach(m => reply += '\n' + `${n++}- ${m.asString(true)}`);
-                message.channel.send(reply);
-            } else {
-                const i = Number(index);
-                const movieToRemove = movies[i - 1];
-                mongodb.dequeue(movieToRemove.name).then(() => {
-                    message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
-                }).catch(e => {
-                    console.log(e);
-                    message.channel.send('No sé hacer eso :c');
-                });
-            }
+            eliminarPelicula(index);
         }).catch(e => errorCatcher(e, message));
     },
 
     removeMovies: (message) => {
-        const indexes = message.content.substr(8).trim().split(',');
-
+        const indexes = message.content.substr(9).trim().split(',');
         mongodb.seeQueue().then(movies => {
             indexes.forEach(index => {
-                if (Number.isNaN(index)) {
-                    let reply = 'Indícame con el numerito please: ';
-                    let n = 1;
-                    movies.forEach(m => reply += '\n' + `${n++}- ${m.asString(true)}`);
-                    message.channel.send(reply);
-                } else {
-                    const i = Number(index);
-                    const movieToRemove = movies[i - 1];
-                    mongodb.dequeue(movieToRemove.name).then(() => {
-                        message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
-                    }).catch(e => {
-                        console.log(e);
-                        message.channel.send('No sé hacer eso :c');
-                    });
-                }
+                eliminarPelicula(index.trim());
             });
         }).catch(e => errorCatcher(e, message));
     },
