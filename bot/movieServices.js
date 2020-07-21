@@ -51,7 +51,7 @@ const movieServices = {
             filtersToUse.rating = { $gte: filters.rating };
         }
         if (filters.genres) {
-            filtersToUse.genre = { $regex: `(${filters.genres.map(g => g.trim()).join('|')})` };
+            filtersToUse.genre = { $regex: `(${filters.genres.map(g => g.trim()).join('|')})`, $options: 'i' };
             console.log(filtersToUse.genres);
         }
         mongodb.seeQueue(filtersToUse).then(movies => {
