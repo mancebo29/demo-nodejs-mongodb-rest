@@ -52,6 +52,7 @@ const movieServices = {
         }
         if (filters.genres) {
             filtersToUse.genres = { $regex: `(${filters.genres.map(g => g.trim()).join('|')})` };
+            console.log(filtersToUse.genres);
         }
         mongodb.seeQueue(filtersToUse).then(movies => {
             let reply = 'Las películas en queue son: ';
