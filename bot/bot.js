@@ -27,8 +27,15 @@ module.exports = function setUpBot() {
         }
         if (message.content.startsWith('!movies')) {
             if (!checkPermission(message)) return;
-            const full = message.content.endsWith('-f');
-            movieServices.listMovies(message, full);
+            const full = message.content.contains('-f');
+            const genresMatch = message.content.match(/-g ?([\w, ]+) ?(-\w|$)/);
+            const ratingMatch = message.content.match(/-r ?([\d.,]+) ?(-\w|$)/);
+            const yearMatch = message.content.match(/-y ?([\d]{4}) ?(-\w|$)/);
+            movieServices.listMovies(message, full, {
+                genres: genresMatch ? genresMatch[1].toLowerCase().trim().split(',') : undefined,
+                rating: ratingMatch ? Number(ratingMatch[1]) : undefined,
+                year: yearMatch ? Number(yearMatch[1]) : undefined,
+            });
         }
 
         if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {

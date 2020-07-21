@@ -24,8 +24,8 @@ module.exports = {
         return movie;
     },
 
-    seeQueue: function () {
-        return new Promise((resolve, reject) => Movie.find({}, null, { sort: { order: 1, rating: -1 } }, (err, movies) => {
+    seeQueue: function (filters = {}) {
+        return new Promise((resolve, reject) => Movie.find(filters, null, { sort: { order: 1, rating: -1 } }, (err, movies) => {
             if (err) {
                 reject(err);
             }

@@ -42,8 +42,13 @@ const deleteMovie = (index, message, movieList) => {
 }
 
 const movieServices = {
-    listMovies: (message, full = false) => {
-        mongodb.seeQueue().then(movies => {
+    listMovies: (message, full = false, filters = {}) => {
+        const filtersToUse = {
+            year: filters.year ? { $gte: filters.year } : undefined,
+            rating: filters.rating ? { $gte: filters.rating } : undefined,
+            genres: filters.genres ? { $regex: `(${filters.genres.map(g => g.trim()).join('|')})` } : undefined
+        };
+        mongodb.seeQueue(filtersToUse).then(movies => {
             let reply = 'Las películas en queue son: ';
             let n = 1;
             for (const m of movies) {
