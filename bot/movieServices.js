@@ -75,7 +75,7 @@ const movieServices = {
         if (title.includes('imdb.com')) {
             [title, imdbId] = title.match(/imdb.com\/title\/(\w+)/);
         }
-        mongodb.enqueue(title.trim(), imdbId).then(m => {
+        mongodb.enqueue(title.trim(), imdbId, message.author.toString()).then(m => {
             message.channel.send(`Se agregó ${m.asString(true)}`);
             logger.log('THE RATING', m.rating);
             if (m.rating && Number(m.rating) < 7) {

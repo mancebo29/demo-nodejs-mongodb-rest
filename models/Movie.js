@@ -7,7 +7,8 @@ var movieSchema = mongoose.Schema({
     year: Number,
     rating: Number,
     link: String,
-    genre: String
+    genre: String,
+    addedBy: String,
 });
 
 movieSchema.methods.getInfo = async function (title, imdbId) {

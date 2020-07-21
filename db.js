@@ -8,7 +8,7 @@ module.exports = {
         mongoose.connect(process.env.MONGODB_ADDON_URI, { useNewUrlParser: true });
     },
 
-    enqueue: async function (title, imdbId = '', order = null) {
+    enqueue: async function (title, imdbId = '', user, order = null) {
         if (!order) {
             await new Promise(resolve => Movie.find((err, movies) => {
                 order = movies.reduce((max, current) => {
@@ -17,7 +17,7 @@ module.exports = {
                 resolve();
             }));
         }
-        const movie = new Movie({ name: title, order });
+        const movie = new Movie({ name: title, order, addedBy: user });
         await movie.getInfo(title, imdbId);
         movie.save();
 
