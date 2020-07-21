@@ -43,11 +43,16 @@ const deleteMovie = (index, message, movieList) => {
 
 const movieServices = {
     listMovies: (message, full = false, filters = {}) => {
-        const filtersToUse = {
-            year: filters.year ? { $gte: filters.year } : 0,
-            rating: filters.rating ? { $gte: filters.rating } : 0,
-            genres: filters.genres ? { $regex: `(${filters.genres.map(g => g.trim()).join('|')})` } : ''
-        };
+        const filtersToUse = {};
+        if (filters.year) {
+            filtersToUse.year = { $gte: filters.year };
+        }
+        if (filters.rating) {
+            filtersToUse.rating = { $gte: filters.rating };
+        }
+        if (filters.genres) {
+            filtersToUse.genres = { $regex: `(${filters.genres.map(g => g.trim()).join('|')})` };
+        }
         mongodb.seeQueue(filtersToUse).then(movies => {
             let reply = 'Las películas en queue son: ';
             let n = 1;
