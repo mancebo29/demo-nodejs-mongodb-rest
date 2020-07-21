@@ -27,7 +27,7 @@ module.exports = function setUpBot() {
         }
         if (message.content.startsWith('!movies')) {
             if (!checkPermission(message)) return;
-            const full = message.content.contains('-f');
+            const full = message.content.includes('-f');
             const genresMatch = message.content.match(/-g ?([\w, ]+) ?(-\w|$)/);
             const ratingMatch = message.content.match(/-r ?([\d.,]+) ?(-\w|$)/);
             const yearMatch = message.content.match(/-y ?([\d]{4}) ?(-\w|$)/);
