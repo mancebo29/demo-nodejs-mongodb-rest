@@ -282,7 +282,7 @@ const movieServices = {
         creatingSurvey = true;
         const pollsChannel = message.client.channels.resolve('733376737890533447');
         await message.channel.send('Ok, dame un segundo...');
-        const movies = await mongodb.seeQueue();
+        const movies = await mongodb.seeQueue({ rating: 7 });
         const formMovies = utils.suffle(movies).slice(0, count || 10);
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
