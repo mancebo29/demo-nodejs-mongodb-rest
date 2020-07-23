@@ -274,7 +274,7 @@ const movieServices = {
         }
     },
 
-    randomForm: async () => {
+    randomForm: async (message, count) => {
         if (creatingSurvey) {
             message.channel.send('Wey pero aguántese que estoy en eso');
             return;
@@ -283,7 +283,7 @@ const movieServices = {
         const pollsChannel = message.client.channels.resolve('733376737890533447');
         await message.channel.send('Ok, dame un segundo...');
         const movies = await mongodb.seeQueue();
-        const formMovies = utils.suffle(movies).slice(0, 10);
+        const formMovies = utils.suffle(movies).slice(0, count || 10);
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
             pollsChannel.send(result.url);
