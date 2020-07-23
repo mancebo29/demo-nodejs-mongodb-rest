@@ -64,7 +64,7 @@ module.exports = function setUpBot() {
 
         if (message.content.startsWith('!randomForm')) {
             if (!checkPermission(message)) return;
-            const countMatch = message.content.match(/!randomForm ?([\d]{4}) ?$/);
+            const countMatch = message.content.match(/!randomForm ?([\d]+) ?$/);
 
             movieServices.randomForm(message, countMatch ? Number(countMatch[1]) : undefined);
         }
