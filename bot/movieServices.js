@@ -165,7 +165,7 @@ const movieServices = {
                 const nextMessage = results.reduce((text, c) => `${text}${c.text}\n`, '');
                 await sendMessageWithDelay(message, `Entre: \n${nextMessage}`, 500);
                 const movies = results.map(r => ({ asString: () => r.text }));
-                const survey = await surveyService.createSurvey(movies);
+                const survey = await surveyService.createSurvey(movies, true);
                 await sendMessageWithDelay(message, `Chequeen el canal de polls`);
                 await pollsChannel.send(`Llenen esto para el desempate: ${survey.url}`);
                 await mongodb.setStateKey('isTieBreaking', true);
@@ -273,6 +273,22 @@ const movieServices = {
             errorCatcher(e, message);
         }
     },
+
+    randomForm: async () => {
+        if (creatingSurvey) {
+            message.channel.send('Wey pero aguántese que estoy en eso');
+            return;
+        }
+        creatingSurvey = true;
+        const pollsChannel = message.client.channels.resolve('733376737890533447');
+        await message.channel.send('Ok, dame un segundo...');
+        const movies = await mongodb.seeQueue();
+        const formMovies = utils.suffle(movies).slice(0, 10);
+        surveyService.createSurvey(formMovies).then(result => {
+            creatingSurvey = false;
+            pollsChannel.send(result.url);
+        }).catch(e => errorCatcher(e, message));
+    }
 };
 
 module.exports = movieServices;

@@ -62,6 +62,11 @@ module.exports = function setUpBot() {
             movieServices.createMovieForm(message);
         }
 
+        if (message.content.startsWith('!randomForm')) {
+            if (!checkPermission(message)) return;
+            movieServices.randomForm(message);
+        }
+
         if (message.content.startsWith('!results')) {
             if (!checkPermission(message)) return;
             movieServices.reportResults(message);

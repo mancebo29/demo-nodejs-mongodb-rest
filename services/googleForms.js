@@ -11,9 +11,9 @@ const genericConfig = {
 
 const surveyService = {
 
-  createSurvey: async (movies = null) => {
-    const isTieBreaker = !!movies;
-    const name = `${movies ? 'El real desempate' : 'La real película'} [${new Date().toISOString()}]`;
+  createSurvey: async (movies = null, isTieBreaking = false) => {
+    const isTieBreaker = isTieBreaking;
+    const name = `${isTieBreaking ? 'El real desempate' : 'La real película'} [${new Date().toISOString()}]`;
     if (!movies) {
       movies = await mongodb.seeQueue();
     }
