@@ -167,7 +167,7 @@ const movieServices = {
                 const movies = results.map(r => ({ asString: () => r.text }));
                 const survey = await surveyService.createSurvey(movies);
                 await sendMessageWithDelay(message, `Chequeen el canal de polls`);
-                // await pollsChannel.send(`Llenen esto para el desempate: ${survey.url}`);
+                await pollsChannel.send(`Llenen esto para el desempate: ${survey.url}`);
                 await mongodb.setStateKey('isTieBreaking', true);
             } else {
                 message.channel.send('Señoras y señores, results are in...');
