@@ -15,7 +15,6 @@ const errorCatcher = (e, message) => {
 };
 
 let creatingSurvey = false;
-let flag = false;
 
 const sendMessageWithDelay = (message, text, delay = 1500, channel = null) => {
     return new Promise(resolve => setTimeout(() => {
@@ -142,12 +141,7 @@ const movieServices = {
             `${message.author.toString()} estás borracha de nuevo?`,
             `...`,
         ];
-
-        if (!flag) {
-            const uniqueMessage = 'Ivette, lamento todos los mensajes de odio que he mandado. Confieso que lo hice relajando y sin ánimos de ofender. En realidad eres una excelente persona, una mujer valios, y aunque soy un bot y no siento nada, en este grupo todos te aprecian. Desde ahora dejaré de molestarte con mis mensajes y te dejaré vivir en paz como mereces. Fue un placer hacerlos reír a todos.'
-            message.channel.send(`${message.author.toString()}, ${uniqueMessage}`);
-            flag = true;
-        }
+        message.channel.send(messages[Math.round(Math.random() * (messages.length - 1))]);
     },
 
     reportResults: async (message) => {
