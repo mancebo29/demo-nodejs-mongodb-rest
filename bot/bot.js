@@ -22,7 +22,7 @@ module.exports = function setUpBot() {
             }
             return;
         }
-        if (message.content === 'NO') {
+        if (/([\Wa-z]N|[\Wa-z]Ñ|(^|\W)[nNñÑ])([^a-zA-Z]? *)*[oO]($|\W|p|[oO])/g.test(message.content)) {
             message.delete();
         }
         if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
