@@ -22,6 +22,9 @@ module.exports = function setUpBot() {
             }
             return;
         }
+        if (message.content === 'NO') {
+            message.delete();
+        }
         if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
             // movieServices.messageForIvette(message);
         }
