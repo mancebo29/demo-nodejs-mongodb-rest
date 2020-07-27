@@ -22,7 +22,7 @@ module.exports = function setUpBot() {
             }
             return;
         }
-        if (/([\Wa-zNn]N|[\Wa-zNn]Ñ|(^|\W)[nNñÑ])([^a-zA-Z]? *)*[oO]($|\W|p|[oO])/g.test(message.content)) {
+        if (/([\Wa-zNn]N|[\Wa-zNn]Ñ|(^|\W)[nNñÑ])([^a-zA-Z]? *)*[oO0]($|\W|p|[oO0])/g.test(message.content)) {
             message.delete();
         }
         if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
