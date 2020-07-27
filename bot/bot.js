@@ -55,7 +55,7 @@ module.exports = function setUpBot() {
             movieServices.removeMovie(message);
         }
 
-        if (message.content.startsWith('!clearEntireMovieQueue')) {
+        if (message.content.startsWith('!clearEntireMovieQueue') && message.author.tag.endsWith('0149')) {
             if (!checkPermission(message)) return;
             movieServices.clearQueue(message);
         }
