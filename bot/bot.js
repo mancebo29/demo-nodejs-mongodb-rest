@@ -31,10 +31,12 @@ module.exports = function setUpBot() {
             const genresMatch = message.content.match(/-g ?([\w, ]+) ?(-\w|$)/);
             const ratingMatch = message.content.match(/-r ?([\d.,]+) ?(-\w|$)/);
             const yearMatch = message.content.match(/-y ?([\d]{4}) ?(-\w|$)/);
+            const queryMatch = message.content.match(/-q ?([\w]+) ?(-\w|$)/);
             movieServices.listMovies(message, full, {
                 genres: genresMatch ? genresMatch[1].toLowerCase().trim().split(',') : undefined,
                 rating: ratingMatch ? Number(ratingMatch[1]) : undefined,
                 year: yearMatch ? Number(yearMatch[1]) : undefined,
+                query: queryMatch ? queryMatch[1].toLocaleLowerCase().trim() : undefined,
             });
         }
 
