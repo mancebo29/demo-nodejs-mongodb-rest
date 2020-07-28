@@ -22,8 +22,9 @@ module.exports = function setUpBot() {
             }
             return;
         }
+
         if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
-            movieServices.messageForIvette(message);
+            // movieServices.messageForIvette(message);
         }
         if (message.content.startsWith('!movies')) {
             if (!checkPermission(message)) return;
@@ -54,7 +55,7 @@ module.exports = function setUpBot() {
             movieServices.removeMovie(message);
         }
 
-        if (message.content.startsWith('!clearEntireMovieQueue')) {
+        if (message.content.startsWith('!clearEntireMovieQueue') && message.author.tag.endsWith('0149')) {
             if (!checkPermission(message)) return;
             movieServices.clearQueue(message);
         }
