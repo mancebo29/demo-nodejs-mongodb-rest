@@ -5,9 +5,10 @@ var logger = require('../logger/logger');
 const ratingService = {
     rateMovie: async (message) => {
         try {
-            logger.log("Llamada a rating");
-            utils.handleError("error", "error");
+
             const sentMessage = await message.channel.send('Puedes dar tu score debajo');
+            logger.log(JSON.stringify(sentMessage));
+            logger.log(JSON.stringify(message));
             sentMessage.react(':one:');
             sentMessage.react(':two:');
             sentMessage.react(':three:');
