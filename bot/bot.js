@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const movieServices = require('./movieServices');
+const ratingServices = require('../services/ratingService');
 
 
 module.exports = function setUpBot() {
@@ -131,6 +132,11 @@ module.exports = function setUpBot() {
             if (url) {
                 message.channel.send(message.author.toString(), { files: [url] });
             }
+        }
+
+        //Rating service
+        if (message.content.startsWith('!rating')) {
+            ratingServices.rateMovie(message);
         }
     });
 
