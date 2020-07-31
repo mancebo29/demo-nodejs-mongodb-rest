@@ -1,9 +1,12 @@
 var mongodb = require('../db');
 var utils = require('../utils/utils');
+var logger = require('../logger/logger');
 
 const ratingService = {
     rateMovie: async (message) => {
         try {
+            logger.log("Llamada a rating");
+            utils.handleError("error", "error");
             const sentMessage = await message.channel.send('Puedes dar tu score debajo');
             sentMessage.react(':one:');
             sentMessage.react(':two:');
