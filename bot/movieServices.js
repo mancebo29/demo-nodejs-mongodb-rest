@@ -2,17 +2,6 @@ var jokeService = require('../services/jokeService');
 var surveyService = require('../services/googleForms');
 var mongodb = require('../db');
 var utils = require('../utils/utils');
-var logger = require('../logger/logger');
-
-const errorCatcher = (e, message) => {
-    logger.log('APPLICATION ERROR:', JSON.stringify(e), e);
-    if (e.message === 'Not Found hue') {
-        message.channel.send('No encontré esa película :c');
-        message.channel.send('Soy medio lentito así que prueba a ser más específico');
-    } else {
-        message.channel.send('No sé hacer eso :c');
-    }
-};
 
 let creatingSurvey = false;
 
@@ -35,8 +24,7 @@ const deleteMovie = (index, message, movieList) => {
         mongodb.dequeue(movieToRemove.name).then(() => {
             message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
         }).catch(e => {
-            logger.log(e);
-            message.channel.send('No sé hacer eso :c');
+
         });
     }
 }
@@ -75,7 +63,7 @@ const movieServices = {
                 reply += '\n' + `${n++}- ${m.asString(true)}`;
             };
             message.channel.send(reply);
-        }).catch(e => errorCatcher(e, message));
+        }).catch(e => utils.handleError(e, message));
     },
 
     addMovie: (message) => {
@@ -91,18 +79,17 @@ const movieServices = {
         }
         mongodb.enqueue(title.trim(), imdbId, message.author.toString()).then(m => {
             message.channel.send(`Se agregó ${m.asString(true)}`);
-            logger.log('THE RATING', m.rating);
             if (m.rating && Number(m.rating) < 7) {
                 message.channel.send(`Ehm... Tomen en cuenta que solo tiene ${m.rating} en IMDB`);
             }
-        }).catch(e => errorCatcher(e, message));
+        }).catch(e => utils.handleError(e, message));
     },
 
     removeMovie: (message) => {
         const index = message.content.substr(8);
         mongodb.seeQueue().then(movies => {
             deleteMovie(index, message, movies);
-        }).catch(e => errorCatcher(e, message));
+        }).catch(e => utils.handleError(e, message));
     },
 
     removeMovies: (message) => {
@@ -111,7 +98,7 @@ const movieServices = {
             indexes.forEach(index => {
                 deleteMovie(index, message, movies);
             });
-        }).catch(e => errorCatcher(e, message));
+        }).catch(e => utils.handleError(e, message));
     },
 
     clearQueue: (message) => {
@@ -130,7 +117,7 @@ const movieServices = {
         surveyService.createSurvey().then(result => {
             creatingSurvey = false;
             pollsChannel.send(result.url);
-        }).catch(e => errorCatcher(e, message));
+        }).catch(e => utils.handleError(e, message));
     },
 
     messageForIvette: (message) => {
@@ -201,7 +188,7 @@ const movieServices = {
             }
 
         } catch (e) {
-            errorCatcher(e, message);
+            utils.handleError(e, message);
         }
     },
 
@@ -217,7 +204,7 @@ const movieServices = {
             message.channel
                 .send(`Tengo hasta ahora ${names.length} voto${names.length === 1 ? '' : 's'}: ${names.join(', ')}`)
         } catch (e) {
-            errorCatcher(e, message);
+            utils.handleError(e, message);
         }
     },
 
@@ -240,7 +227,7 @@ const movieServices = {
                 await sendMessageWithDelay(message, j.delivery, 5000, generalChannel);
             }
         } catch (e) {
-            errorCatcher(e, message);
+            utils.handleError(e, message);
         }
     },
 
@@ -256,7 +243,7 @@ const movieServices = {
             sentMessage.react('🇩');
             sentMessage.react('🇪');
         } catch (e) {
-            errorCatcher(e, message);
+            utils.handleError(e, message);
         }
     },
 
@@ -273,7 +260,7 @@ const movieServices = {
             }
             message.channel.send(reply);
         } catch (e) {
-            errorCatcher(e, message);
+            utils.handleError(e, message);
         }
     },
 
@@ -290,7 +277,7 @@ const movieServices = {
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
             pollsChannel.send(result.url);
-        }).catch(e => errorCatcher(e, message));
+        }).catch(e => utils.handleError(e, message));
     }
 };
 
