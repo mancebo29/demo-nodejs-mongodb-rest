@@ -15,6 +15,11 @@ module.exports = function setUpBot() {
     };
 
     client.on('message', message => {
+
+        if (message.content === "!ping") {
+            message.channel.send("pong!");
+        }
+
         if (message.mentions.has(client.user)) {
             let lowerMessage = message.content.toLowerCase();
             if (lowerMessage.includes('help') || lowerMessage.includes('ayuda') || lowerMessage.includes('aiuda') || lowerMessage.includes('sos')) {
