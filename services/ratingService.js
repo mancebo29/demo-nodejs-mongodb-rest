@@ -15,6 +15,7 @@ const ratingService = {
             sentMessage.react(':eight:');
             sentMessage.react(':nine:');
             sentMessage.react(':ten:');
+            sentMessage.react('👍');
         } catch (e) {
             utils.handleError(e, message);
         }
