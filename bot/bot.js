@@ -29,9 +29,17 @@ module.exports = function setUpBot() {
             return;
         }
 
-        if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
-            // movieServices.messageForIvette(message);
+        if (message.author.tag && message.author.tag.endsWith('4806')) {
+            message.react('🍆');
+            if (Math.random() < 0.34) {
+                // movieServices.messageForIvette(message);
+            }
         }
+        if (message.author.tag && message.author.tag.endsWith('0149')) {
+            message.channel.send('mein führer');
+            message.channel.send('https://en.wikipedia.org/wiki/Swastika#/media/File:NSDAP-Logo.svg');
+        }
+
         if (message.content.startsWith('!movies')) {
             if (!checkPermission(message)) return;
             const full = message.content.includes('-f');
