@@ -9,9 +9,9 @@ const ratingService = {
                 .then(sent => {
                     sent.react("👍");
                     sent.react("👎");
-                    sent.react(':one:');
-                    sent.react(':two:');
-                    sent.react(':three:');
+                    sent.react('1️⃣');
+                    sent.react("2️⃣");
+                    sent.react(":three:");
                     sent.react(':four:');
                     sent.react(':five:');
                     sent.react(':six:');
