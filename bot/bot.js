@@ -2,16 +2,15 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const movieServices = require('./movieServices');
 const ratingServices = require('../services/ratingService');
+const sinon = require('sinon');
 
 
 module.exports = function setUpBot() {
     client.once('ready', () => {
         console.log('Ready!');
-        if (process.env === 'dev') {
+        if (process.env.NODE_ENV === 'dev') {
             const testChannel = client.channels.resolve(process.env.DEFAULT_BOT_CHANNEL);
-            client.channels.resolve = () => {
-                return testChannel;
-            }
+            client.channels.resolve = sinon.stub().returns(testChannel);
         }
         const testChannel = client.channels.resolve('734638568407826432');
         testChannel.send('Deployed!');
@@ -42,10 +41,6 @@ module.exports = function setUpBot() {
             if (Math.random() < 0.34) {
                 // movieServices.messageForIvette(message);
             }
-        }
-        if (message.author.tag && message.author.tag.endsWith('0149')) {
-            message.channel.send('mein führer');
-            message.channel.send('https://en.wikipedia.org/wiki/Swastika#/media/File:NSDAP-Logo.svg');
         }
 
         if (message.content.startsWith(`${PREFIX}movies`)) {
