@@ -6,6 +6,12 @@ const movieServices = require('./movieServices');
 module.exports = function setUpBot() {
     client.once('ready', () => {
         console.log('Ready!');
+        if (process.env === 'dev') {
+            const testChannel = client.channels.resolve(process.env.DEFAULT_BOT_CHANNEL);
+            client.channels.resolve = () => {
+                return testChannel;
+            }
+        }
         const testChannel = client.channels.resolve('734638568407826432');
         testChannel.send('Deployed!');
     });
