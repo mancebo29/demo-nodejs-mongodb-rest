@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const movieServices = require('./movieServices');
+const ratingServices = require('../services/ratingService');
 
 
 module.exports = function setUpBot() {
@@ -21,6 +22,11 @@ module.exports = function setUpBot() {
     };
 
     client.on('message', message => {
+
+        if (message.content === "!ping") {
+            message.channel.send("pong!");
+        }
+
         if (message.mentions.has(client.user)) {
             let lowerMessage = message.content.toLowerCase();
             if (lowerMessage.includes('help') || lowerMessage.includes('ayuda') || lowerMessage.includes('aiuda') || lowerMessage.includes('sos')) {
@@ -29,9 +35,17 @@ module.exports = function setUpBot() {
             return;
         }
 
-        if (message.author.tag && message.author.tag.endsWith('4806') && Math.random() < 0.34) {
-            // movieServices.messageForIvette(message);
+        if (message.author.tag && message.author.tag.endsWith('4806')) {
+            message.react('🍆');
+            if (Math.random() < 0.34) {
+                // movieServices.messageForIvette(message);
+            }
         }
+        if (message.author.tag && message.author.tag.endsWith('0149')) {
+            message.channel.send('mein führer');
+            message.channel.send('https://en.wikipedia.org/wiki/Swastika#/media/File:NSDAP-Logo.svg');
+        }
+
         if (message.content.startsWith('!movies')) {
             if (!checkPermission(message)) return;
             const full = message.content.includes('-f');
@@ -132,6 +146,11 @@ module.exports = function setUpBot() {
             if (url) {
                 message.channel.send(message.author.toString(), { files: [url] });
             }
+        }
+
+        //Rating service
+        if (message.content.startsWith('!rating')) {
+            ratingServices.rateMovie(message);
         }
     });
 
