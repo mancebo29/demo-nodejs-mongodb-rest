@@ -5,20 +5,19 @@ var logger = require('../logger/logger');
 const ratingService = {
     rateMovie: async (message) => {
         try {
-            message.channel.send('Dame el númerito')
+            message.channel.send('Ahora todos se creen criticos')
                 .then(sent => {
-                    sent.react("👍");
-                    sent.react("👎");
+                    sent.react('0️⃣ ');
                     sent.react('1️⃣');
                     sent.react("2️⃣");
-                    sent.react(":three:");
-                    sent.react(':four:');
-                    sent.react(':five:');
-                    sent.react(':six:');
-                    sent.react(':seven:');
-                    sent.react(':eight:');
-                    sent.react(':nine:');
-                    sent.react(':ten:');
+                    sent.react('3️⃣');
+                    sent.react('4️⃣');
+                    sent.react('5️⃣');
+                    sent.react('6️⃣');
+                    sent.react('7️⃣');
+                    sent.react('8️⃣');
+                    sent.react('9️⃣');
+                    sent.react('🔟');
                 }).catch(err => {
                     utils.handleError(err);
                 });
