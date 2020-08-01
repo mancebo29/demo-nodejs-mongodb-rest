@@ -23,7 +23,9 @@ module.exports = function setUpBot() {
 
     client.on('message', message => {
 
-        if (message.content === "!ping") {
+        const PREFIX = process.env.BOT_COMMAND_PREFIX || '!';
+
+        if (message.content === `${PREFIX}ping`) {
             message.channel.send("pong!");
         }
 
@@ -46,7 +48,7 @@ module.exports = function setUpBot() {
             message.channel.send('https://en.wikipedia.org/wiki/Swastika#/media/File:NSDAP-Logo.svg');
         }
 
-        if (message.content.startsWith('!movies')) {
+        if (message.content.startsWith(`${PREFIX}movies`)) {
             if (!checkPermission(message)) return;
             const full = message.content.includes('-f');
             const genresMatch = message.content.match(/-g ?([\w, ]+) ?(-\w|$)/);
@@ -61,38 +63,38 @@ module.exports = function setUpBot() {
             });
         }
 
-        if (message.content.startsWith('!addMovie') || message.content.toLowerCase().startsWith('vamos a ver')) {
+        if (message.content.startsWith(`${PREFIX}addMovie`) || message.content.toLowerCase().startsWith('vamos a ver')) {
             if (!checkPermission(message)) return;
             movieServices.addMovie(message);
         }
 
-        if (message.content.startsWith('!rmMovies')) {
+        if (message.content.startsWith(`${PREFIX}rmMovies`)) {
             if (!checkPermission(message)) return;
             movieServices.removeMovies(message);
         }
-        else if (message.content.startsWith('!rmMovie')) {
+        else if (message.content.startsWith(`${PREFIX}rmMovie`)) {
             if (!checkPermission(message)) return;
             movieServices.removeMovie(message);
         }
 
-        if (message.content.startsWith('!clearEntireMovieQueue') && message.author.tag.endsWith('0149')) {
+        if (message.content.startsWith(`${PREFIX}clearEntireMovieQueue`) && message.author.tag.endsWith('0149')) {
             if (!checkPermission(message)) return;
             movieServices.clearQueue(message);
         }
 
-        if (message.content.startsWith('!movieForm')) {
+        if (message.content.startsWith(`${PREFIX}movieForm`)) {
             if (!checkPermission(message)) return;
             movieServices.createMovieForm(message);
         }
 
-        if (message.content.startsWith('!randomForm')) {
+        if (message.content.startsWith(`${PREFIX}randomForm`)) {
             if (!checkPermission(message)) return;
             const countMatch = message.content.match(/!randomForm ?([\d]+) ?$/);
 
             movieServices.randomForm(message, countMatch ? Number(countMatch[1]) : undefined);
         }
 
-        if (message.content.startsWith('!results')) {
+        if (message.content.startsWith(`${PREFIX}results`)) {
             if (!checkPermission(message)) return;
             movieServices.reportResults(message);
         }
@@ -101,17 +103,17 @@ module.exports = function setUpBot() {
             message.reply('Eso me decía ella :\'c');
         }
 
-        if (message.content.startsWith('!votes')) {
+        if (message.content.startsWith(`${PREFIX}votes`)) {
             if (!checkPermission(message)) return;
             movieServices.reportVoters(message);
         }
 
-        if (message.content.startsWith('!klk')) {
+        if (message.content.startsWith(`${PREFIX}klk`)) {
             if (!checkPermission(message)) return;
             movieServices.dailyPoll(message);
         }
 
-        if (message.content.startsWith('!opinions')) {
+        if (message.content.startsWith(`${PREFIX}opinions`)) {
             if (!checkPermission(message)) return;
             movieServices.opinions(message);
         }
@@ -149,7 +151,7 @@ module.exports = function setUpBot() {
         }
 
         //Rating service
-        if (message.content.startsWith('!rating')) {
+        if (message.content.startsWith(`${PREFIX}rating`)) {
             ratingServices.rateMovie(message);
         }
     });
