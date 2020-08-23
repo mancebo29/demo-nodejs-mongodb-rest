@@ -32,7 +32,7 @@ movieSchema.methods.getInfo = async function (title, imdbId) {
 
 movieSchema.methods.asString = function(escapeLink = false) {
     const link = this.link ? (escapeLink ? `<${this.link}>` : this.link) : '';
-    const suggestedBy = this.addedBy ? ` [${this.addedBy}] ` : '';
+    const suggestedBy = this.addedBy && escapeLink ? ` [${this.addedBy}] ` : '';
     return `${this.name} ${this.year ? `(${this.year}) ` : ''}${suggestedBy}${link}`;
 };
 var Movie = mongoose.model('movie-queue', movieSchema);
