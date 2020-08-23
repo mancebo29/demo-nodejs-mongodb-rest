@@ -271,12 +271,16 @@ const movieServices = {
         }
         creatingSurvey = true;
         const pollsChannel = message.client.channels.resolve('733376737890533447');
+        const generalChannel = message.client.channels.resolve('690318438077562902');
         await message.channel.send('Ok, dame un segundo...');
         const movies = await mongodb.seeQueue();
         const formMovies = utils.suffle(movies).slice(0, count || 10);
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
             pollsChannel.send(result.url);
+            generalChannel.send(formMovies.reduce((text, movie) => {
+                return `${text}${movie.asString(true)}\n`;
+            }, ''));
         }).catch(e => utils.handleError(e, message));
     }
 };
