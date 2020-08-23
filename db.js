@@ -19,6 +19,10 @@ module.exports = {
         }
         const movie = new Movie({ name: title, order, addedBy: user });
         await movie.getInfo(title, imdbId);
+        const existingMovie = await new Promise(r => Movie.findOne({ name: movie.name, link: movie.link }).then(r));
+        if (existingMovie) {
+            throw new Error('Movie already exists');
+        }
         movie.save();
 
         return movie;

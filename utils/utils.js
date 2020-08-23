@@ -18,11 +18,17 @@ const utils = {
     },
     handleError: (e, message) => {
         logger.log('APPLICATION ERROR:', JSON.stringify(e), e);
-        if (e.message === 'Not Found hue') {
-            message.channel.send('No encontré esa película :c');
-            message.channel.send('Soy medio lentito así que prueba a ser más específico');
-        } else {
-            message.channel.send('No sé hacer eso :c');
+        switch (e.message) {
+            case 'Not Found hue':
+                message.channel.send('No encontré esa película :c');
+                message.channel.send('Soy medio lentito así que prueba a ser más específico');
+                break;
+            case 'Movie already exists':
+                message.channel.send('Pero esta película ya está equisdé');
+                break;
+            default:
+                message.channel.send('No sé hacer eso :c');
+                break;
         }
     }
 }
