@@ -149,6 +149,18 @@ module.exports = function setUpBot() {
         if (message.content.startsWith(`${PREFIX}rating`)) {
             ratingServices.rateMovie(message);
         }
+
+        if (message.content.startsWith(`${PREFIX}submit`)) {
+            movieServices.submitMovie(message);
+        }
+
+        if (message.content.startsWith(`${PREFIX}customForm`)) {
+            movieServices.openCustomForm(message);
+        }
+
+        if (message.content.startsWith(`${PREFIX}generateCustomForm`) || message.content.startsWith(`${PREFIX}gcf`)) {
+            movieServices.closeCustomForm(message);
+        }
     });
 
     client.login(process.env.BOT_TOKEN);

@@ -37,6 +37,15 @@ module.exports = {
         }));
     },
 
+    findMovie: function (filters =  {}) {
+        return new Promise((resolve, reject) => Movie.findOne(filters, (err, movie) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(movie);
+        }));
+    },
+
     updateScore: function (title, order) {
         return new Promise((resolve, reject) => Movie.findOne({ name: title }, (err, movie) => {
             if (err) {
