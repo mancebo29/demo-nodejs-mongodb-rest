@@ -346,8 +346,8 @@ const movieServices = {
 
     customVotes: async (message) => {
         try {
-            const message = `Tengo los votos de: ${Object.keys(movieSuggestions).join('\n')}`;
-            message.channel.send(message);
+            const reply = `Tengo los votos de: ${Object.keys(movieSuggestions).join('\n')}`;
+            message.channel.send(reply);
         } catch (e) {
             utils.handleError(e, message);
         }
