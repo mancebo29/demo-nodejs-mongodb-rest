@@ -325,8 +325,6 @@ const movieServices = {
 
         const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
 
-        testChannel.send(movieSuggestions);
-
         const formMovies = Object.values(movieSuggestions);
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
