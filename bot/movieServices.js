@@ -311,7 +311,7 @@ const movieServices = {
 
             });
             collector.on('end', (r, u) => {
-                this.closeCustomForm(message);
+                movieServices.closeCustomForm(message);
             });
         } catch (e) {
             utils.handleError(e, message);
