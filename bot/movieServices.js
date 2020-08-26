@@ -303,7 +303,7 @@ const movieServices = {
                 try {
                     if (u.bot) return;
                     const chat = await u.createDM();
-                    await chat.send('Oye klk, manda `!submit {link-de-imdb}` donde _{link-de-imdb}_ es el link de imdb de la película que quieres proponer para hoy. Puedes usar el comando `!movies` y todos los filtros que quieras por aquí.');
+                    await chat.send('Oye klk, manda `!submit {link-de-imdb}` donde _{link-de-imdb}_ es el link de imdb de la película (**SIN LAS LLAVES**) que quieres proponer para hoy. Puedes usar el comando `!movies` y todos los filtros que quieras por aquí.');
                     await chat.send(utils.HELP_MESSAGE);
                 } catch (e) {
                     utils.handleError(e, message);
