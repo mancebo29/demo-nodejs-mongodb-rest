@@ -163,6 +163,10 @@ module.exports = function setUpBot() {
         if (message.content.startsWith(`${PREFIX}generateCustomForm`) || message.content.startsWith(`${PREFIX}gcf`)) {
             movieServices.closeCustomForm(message);
         }
+
+        if (message.content.startsWith(`${PREFIX}customVotes`)) {
+            movieServices.customVotes(message);
+        }
     });
 
     client.login(process.env.BOT_TOKEN);

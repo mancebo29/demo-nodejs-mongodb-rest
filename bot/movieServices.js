@@ -342,7 +342,16 @@ const movieServices = {
         } catch (e) {
             utils.handleError(e, message);
         }
-    }
+    },
+
+    customVotes: async (message) => {
+        try {
+            const message = `Tengo los votos de: ${Object.keys(movieSuggestions).join('\n')}`;
+            message.channel.send(message);
+        } catch (e) {
+            utils.handleError(e, message);
+        }
+    },
 };
 
 module.exports = movieServices;
