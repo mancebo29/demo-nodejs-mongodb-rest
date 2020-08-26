@@ -342,6 +342,12 @@ const movieServices = {
         try {
             const link = message.content.substr(7).trim();
             const selectedMovie = await mongodb.findMovie({ link });
+
+            if (!selectedMovie) {
+                message.channel.send('Compadre pero ponga el link que yo le doy! DIOSSSSS MÍO!');
+                return;
+            }
+
             const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
             movieSuggestions[message.author.toString()] = selectedMovie;
 
