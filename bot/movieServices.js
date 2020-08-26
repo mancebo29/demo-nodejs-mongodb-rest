@@ -5,8 +5,6 @@ var utils = require('../utils/utils');
 
 let creatingSurvey = false;
 
-let movieSuggestions = {};
-
 const sendMessageWithDelay = (message, text, delay = 1500, channel = null) => {
     return new Promise(resolve => setTimeout(() => {
         (channel || message.channel).send(text);
@@ -292,22 +290,29 @@ const movieServices = {
                 message.channel.send('Wey pero aguántese que estoy en eso');
                 return;
             }
+            const pollsChannel = message.client.channels.resolve('733376737890533447');
             creatingSurvey = true;
-            const movieNight = message.client.channels.resolve('727367585225506857');
-
-            const membersArray = Array.from(movieNight.members.array());
 
             await message.channel.send('Ok, dame un segundo...');
-            for (const member of membersArray) {
+            const sentMessage = await pollsChannel.send('Los que vayan a ver la película hagan react a este mensaje!');
+            await sentMessage.react('👍');
+
+            const filter = (reaction) => reaction.emoji.name === '👍';
+            const collector = sentMessage.createReactionCollector(filter, { time: 30 * 60 * 1000 });
+            collector.on('collect', async (r, u) => {
                 try {
-                    const chat = await member.createDM();
+                    if (u.bot) return;
+                    const chat = await u.createDM();
                     await chat.send('Oye klk, manda `!submit {link-de-imdb}` donde _{link-de-imdb}_ es el link de imdb de la película que quieres proponer para hoy. Puedes usar el comando `!movies` y todos los filtros que quieras por aquí.');
                     await chat.send(utils.HELP_MESSAGE);
                 } catch (e) {
                     utils.handleError(e, message);
                 }
-            }
-            message.channel.send('Revisen DM');
+
+            });
+            collector.on('end', (r, u) => {
+                this.closeCustomForm(message);
+            });
         } catch (e) {
             utils.handleError(e, message);
         }
@@ -318,12 +323,14 @@ const movieServices = {
         const generalChannel = message.client.channels.resolve('690318438077562902');
         const testChannel = message.client.channels.resolve('721904569361104957');
 
+        const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
+
         testChannel.send(movieSuggestions);
 
         const formMovies = Object.values(movieSuggestions);
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
-            movieSuggestions = {};
+            mongodb.setStateKey('movieSuggestions', {});
             pollsChannel.send(result.url);
             generalChannel.send(formMovies.reduce((text, movie) => {
                 return `${text}${movie.asString(true)}\n`;
@@ -335,7 +342,10 @@ const movieServices = {
         try {
             const link = message.content.substr(7).trim();
             const selectedMovie = await mongodb.findMovie({ link });
+            const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
             movieSuggestions[message.author.toString()] = selectedMovie;
+
+            await mongodb.setStateKey('movieSuggestions', movieSuggestions);
 
             await message.channel.send(`Entonces me fui con ${selectedMovie.asString(true)}`);
             await message.channel.send('Gracias UwU');
@@ -346,6 +356,7 @@ const movieServices = {
 
     customVotes: async (message) => {
         try {
+            const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
             const reply = `Tengo los votos de: ${Object.keys(movieSuggestions).join('\n')}`;
             message.channel.send(reply);
         } catch (e) {
