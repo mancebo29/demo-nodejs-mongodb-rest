@@ -147,11 +147,6 @@ module.exports = function setUpBot() {
             }
         }
 
-        //Rating service
-        if (message.content.startsWith(`${PREFIX}rating`)) {
-            ratingServices.rateMovie(message);
-        }
-
         if (message.content.startsWith(`${PREFIX}submit`)) {
             movieServices.submitMovie(message);
         }
@@ -166,6 +161,10 @@ module.exports = function setUpBot() {
 
         if (message.content.startsWith(`${PREFIX}customVotes`)) {
             movieServices.customVotes(message);
+        }
+
+        if (message.content.startsWith(`${PREFIX}rating`)) {
+            movieServices.rateMovie(message);
         }
     });
 

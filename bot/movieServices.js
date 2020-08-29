@@ -2,6 +2,8 @@ var jokeService = require('../services/jokeService');
 var surveyService = require('../services/googleForms');
 var mongodb = require('../db');
 var utils = require('../utils/utils');
+const WatchedMovie = require('../models/WatchedMovie');
+const Movie = require('../models/Movie');
 
 let creatingSurvey = false;
 
@@ -168,6 +170,16 @@ const movieServices = {
                 await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 3000);
                 await sendMessageWithDelay(message, winnerTitle, 3000);
                 await sendMessageWithDelay(message, `Con un total de ${winnerMovie.score} votos`, 3000);
+                const movie = await mongodb.findMovie({ name: winnerMovie.title.trim() });
+                console.log(movie, winnerMovie.title.trim());
+                if (movie) {
+                    const watchedMovie = new WatchedMovie({
+                        movie,
+                        watchedOn: new Date(),
+                        score: 0
+                    });
+                    await watchedMovie.save();
+                }
                 await mongodb.dequeue(winnerMovie.title.trim());
                 await sendMessageWithDelay(message, 'Así que la sacaré del queue...');
 
@@ -321,11 +333,10 @@ const movieServices = {
     closeCustomForm: async (message) => {
         const pollsChannel = message.client.channels.resolve('733376737890533447');
         const generalChannel = message.client.channels.resolve('690318438077562902');
-        const testChannel = message.client.channels.resolve('721904569361104957');
 
         const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
 
-        const formMovies = Object.values(movieSuggestions);
+        const formMovies = movieSuggestions.map(m => new Movie(m.movie));
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
             mongodb.setStateKey('movieSuggestions', {});
@@ -346,8 +357,13 @@ const movieServices = {
                 return;
             }
 
-            const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
-            movieSuggestions[message.author.toString()] = selectedMovie;
+            const movieSuggestions = await mongodb.getStateKey('movieSuggestions') || [];
+            const alreadySubmitted = movieSuggestions.find(m => m.user === message.author.toString());
+            if (alreadySubmitted) {
+                alreadySubmitted.movie = selectedMovie;
+            } else {
+                movieSuggestions.push({user: message.author.toString(), movie: selectedMovie});
+            }
 
             await mongodb.setStateKey('movieSuggestions', movieSuggestions);
 
@@ -361,12 +377,45 @@ const movieServices = {
     customVotes: async (message) => {
         try {
             const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
-            const reply = `Tengo los votos de: ${Object.keys(movieSuggestions).join('\n')}`;
+
+            const reply = `Tengo los votos de: ${movieSuggestions.map(m => m.user).join('\n')}`;
             message.channel.send(reply);
         } catch (e) {
             utils.handleError(e, message);
         }
     },
+
+    rateMovie: async (message) => {
+        try {
+            const lines = message.content.split('\n');
+            const movieToRate = await mongodb.findWatchedMovie({ score: 0 });
+            let totalScore = 0;
+            let totalVotes = 0;
+            const ratings = [];
+            for (let line of lines) {
+                const matches = line.match(/^(\w+): *"(.+)" *(.+)/);
+                if (!matches) continue;
+                const [, person, tagline, scoreStr] = matches;
+                const score = Number(scoreStr.replace(/[^\d.]/g, ''));
+                console.log(score);
+                if (person && tagline && score) {
+                    ratings.push({
+                        user: person,
+                        message: tagline,
+                        score,
+                    });
+                    totalScore += score || 0;
+                    totalVotes++;
+                }
+            }
+
+            movieToRate.ratings = ratings;
+            movieToRate.score = Math.round(totalScore / totalVotes * 10) / 10;
+            await movieToRate.save();
+        } catch (e) {
+            utils.handleError(e, message);
+        }
+    }
 };
 
 module.exports = movieServices;

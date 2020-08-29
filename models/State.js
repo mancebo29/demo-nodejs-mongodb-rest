@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
-var Movie = require('Movie');
 
 var stateSchema = mongoose.Schema({
   lastForm: String,
   isTieBreaking: Boolean,
-  movieSuggestions: {
-    type: Map,
-    of: Movie,
-  },
+  movieSuggestions: [{
+    user: String,
+    movie: mongoose.Mixed,
+  }],
 });
 
 var State = mongoose.model('movie-queue-state', stateSchema);

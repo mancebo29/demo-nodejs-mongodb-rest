@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Movie = require('./models/Movie');
+var WatchedMovie = require('./models/WatchedMovie');
 var State = require('./models/State');
 var logger = require('./logger/logger');
 
@@ -39,6 +40,15 @@ module.exports = {
 
     findMovie: function (filters =  {}) {
         return new Promise((resolve, reject) => Movie.findOne(filters, (err, movie) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(movie);
+        }));
+    },
+
+    findWatchedMovie: function (filters =  {}) {
+        return new Promise((resolve, reject) => WatchedMovie.findOne(filters, (err, movie) => {
             if (err) {
                 reject(err);
             }
