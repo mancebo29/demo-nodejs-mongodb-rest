@@ -397,7 +397,6 @@ const movieServices = {
                 if (!matches) continue;
                 const [, person, tagline, scoreStr] = matches;
                 const score = Number(scoreStr.replace(/[^\d.]/g, ''));
-                console.log(score);
                 if (person && tagline && score) {
                     ratings.push({
                         user: person,
@@ -412,6 +411,15 @@ const movieServices = {
             movieToRate.ratings = ratings;
             movieToRate.score = Math.round(totalScore / totalVotes * 10) / 10;
             await movieToRate.save();
+
+            await message.channel.send('Ok, a ver si entendí...');
+            let summary = '';
+            for (let rating of ratings) {
+                summary += `${rating.user} Le dio un ${rating.score} y dijo _"${rating.message}"_\n`;
+            }
+            await message.channel.send(summary);
+            await message.channel.send(`Si es así, entonces...`);
+            await message.channel.send(`LA PELÍCULA TIENE UN MESITÓMETRO DE: ${movieToRate.score}`);
         } catch (e) {
             utils.handleError(e, message);
         }
