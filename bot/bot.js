@@ -54,7 +54,7 @@ module.exports = function setUpBot() {
                     message.react('👃🏼');
                     break;
                 case '4990':
-                    message.react('⚽️');
+                    message.react('💩');
                     break;
                 case '0149':
                     message.react('🌈');
