@@ -51,7 +51,7 @@ module.exports = function setUpBot() {
                     message.react('🎬');
                     break;
                 case '6779':
-                    message.react('👃🏼');
+                    message.react('🔪');
                     break;
                 case '4990':
                     message.react('💩');
@@ -66,7 +66,7 @@ module.exports = function setUpBot() {
                     message.react('🔥');
                     break;
                 case '6745':
-                    message.react('🔪');
+                    message.react('👃🏼');
                     break;
                 case '0018':
                     message.react('🌚');
