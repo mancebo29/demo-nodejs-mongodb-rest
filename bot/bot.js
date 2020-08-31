@@ -37,9 +37,38 @@ module.exports = function setUpBot() {
         }
 
         if (message.author.tag && message.author.tag.endsWith('4806')) {
-            message.react('🍆');
-            if (Math.random() < 0.34) {
-                // movieServices.messageForIvette(message);
+            const authorCode = message.author.tag.substr(-4);
+            switch (authorCode) {
+                case '4806':
+                    message.react('🍆');
+                    break;
+                case '8633':
+                    message.react('💸');
+                    break;
+                case '6192':
+                    message.react('🎬');
+                    break;
+                case '6779':
+                    message.react('👃🏼');
+                    break;
+                case '4990':
+                    message.react('⚽️');
+                    break;
+                case '0149':
+                    message.react('🌈');
+                    break;
+                case '8703':
+                    message.react('🦎');
+                    break;
+                case '4151':
+                    message.react('🔥');
+                    break;
+                case '6745':
+                    message.react('🔪');
+                    break;
+                case '0018':
+                    message.react('🌚');
+                    break;
             }
         }
 
