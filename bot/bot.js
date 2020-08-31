@@ -50,8 +50,8 @@ module.exports = function setUpBot() {
                 case '6192':
                     message.react('🎬');
                     break;
-                case '6779':
-                    message.react('🔪');
+                    // case '6779':
+                    //     message.react('🔪');
                     break;
                 case '4990':
                     message.react('💩');
