@@ -1,7 +1,7 @@
 var axios = require('axios');
 var mongoose = require('mongoose');
 
-var movieSchema = mongoose.Schema({
+const movieSchema = mongoose.Schema({
     name: String,
     order: Number,
     year: Number,

@@ -3,6 +3,8 @@ const client = new Discord.Client();
 const movieServices = require('./movieServices');
 const ratingServices = require('../services/ratingService');
 const sinon = require('sinon');
+var utils = require('../utils/utils');
+
 
 
 module.exports = function setUpBot() {
@@ -31,7 +33,7 @@ module.exports = function setUpBot() {
         if (message.mentions.has(client.user)) {
             let lowerMessage = message.content.toLowerCase();
             if (lowerMessage.includes('help') || lowerMessage.includes('ayuda') || lowerMessage.includes('aiuda') || lowerMessage.includes('sos')) {
-                message.channel.send('Los comandos disponibles son: \n-`!addMovie` o `vamos a ver` seguido del nombre o link de IMDB de la película para agregarla al queue\n-`!rmMovie {index}` para remover una película\n-`!movies` para consultar la lista de películas (Si hay muchas películas tendrás que hacer `!movies -f` para verlas todas)\n-`!movieForm` para generar un form para decidir qué película ver.');
+                message.channel.send(utils.HELP_MESSAGE);
             }
             return;
         }
@@ -174,9 +176,24 @@ module.exports = function setUpBot() {
             }
         }
 
-        //Rating service
+        if (message.content.startsWith(`${PREFIX}submit`)) {
+            movieServices.submitMovie(message);
+        }
+
+        if (message.content.startsWith(`${PREFIX}customForm`)) {
+            movieServices.openCustomForm(message);
+        }
+
+        if (message.content.startsWith(`${PREFIX}generateCustomForm`) || message.content.startsWith(`${PREFIX}gcf`)) {
+            movieServices.closeCustomForm(message);
+        }
+
+        if (message.content.startsWith(`${PREFIX}customVotes`)) {
+            movieServices.customVotes(message);
+        }
+
         if (message.content.startsWith(`${PREFIX}rating`)) {
-            ratingServices.rateMovie(message);
+            movieServices.rateMovie(message);
         }
     });
 

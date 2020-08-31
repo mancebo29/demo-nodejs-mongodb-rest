@@ -2,6 +2,8 @@ var jokeService = require('../services/jokeService');
 var surveyService = require('../services/googleForms');
 var mongodb = require('../db');
 var utils = require('../utils/utils');
+const WatchedMovie = require('../models/WatchedMovie');
+const Movie = require('../models/Movie');
 
 let creatingSurvey = false;
 
@@ -68,7 +70,7 @@ const movieServices = {
 
     addMovie: (message) => {
         let title, imdbId;
-        if (message.content.startsWith('!addMovie')) {
+        if (message.content.includes('addMovie')) {
             title = message.content.substr(9);
         } else {
             title = message.content.substr(message.content.indexOf('a ver') + 5);
@@ -168,6 +170,16 @@ const movieServices = {
                 await sendMessageWithDelay(message, '*REDOBLE DE TAMBORES*', 3000);
                 await sendMessageWithDelay(message, winnerTitle, 3000);
                 await sendMessageWithDelay(message, `Con un total de ${winnerMovie.score} votos`, 3000);
+                const movie = await mongodb.findMovie({ name: winnerMovie.title.trim() });
+                console.log(movie, winnerMovie.title.trim());
+                if (movie) {
+                    const watchedMovie = new WatchedMovie({
+                        movie,
+                        watchedOn: new Date(),
+                        score: 0
+                    });
+                    await watchedMovie.save();
+                }
                 await mongodb.dequeue(winnerMovie.title.trim());
                 await sendMessageWithDelay(message, 'Así que la sacaré del queue...');
 
@@ -282,6 +294,135 @@ const movieServices = {
                 return `${text}${movie.asString(true)}\n`;
             }, ''));
         }).catch(e => utils.handleError(e, message));
+    },
+
+    openCustomForm: async (message) => {
+        try {
+            if (creatingSurvey) {
+                message.channel.send('Wey pero aguántese que estoy en eso');
+                return;
+            }
+            const pollsChannel = message.client.channels.resolve('733376737890533447');
+            creatingSurvey = true;
+
+            await message.channel.send('Ok, dame un segundo...');
+            const sentMessage = await pollsChannel.send('Los que vayan a ver la película hagan react a este mensaje!');
+            await sentMessage.react('👍');
+
+            const filter = (reaction) => reaction.emoji.name === '👍';
+            const collector = sentMessage.createReactionCollector(filter, { time: 30 * 60 * 1000 });
+            collector.on('collect', async (r, u) => {
+                try {
+                    if (u.bot) return;
+                    const chat = await u.createDM();
+                    await chat.send('Oye klk, manda `!submit {link-de-imdb}` donde _{link-de-imdb}_ es el link de imdb de la película (**SIN LAS LLAVES**) que quieres proponer para hoy. Puedes usar el comando `!movies` y todos los filtros que quieras por aquí.');
+                    await chat.send(utils.HELP_MESSAGE);
+                } catch (e) {
+                    utils.handleError(e, message);
+                }
+
+            });
+            collector.on('end', (r, u) => {
+                movieServices.closeCustomForm(message);
+            });
+        } catch (e) {
+            utils.handleError(e, message);
+        }
+    },
+
+    closeCustomForm: async (message) => {
+        const pollsChannel = message.client.channels.resolve('733376737890533447');
+        const generalChannel = message.client.channels.resolve('690318438077562902');
+
+        const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
+
+        const formMovies = movieSuggestions.map(m => new Movie(m.movie));
+        surveyService.createSurvey(formMovies).then(result => {
+            creatingSurvey = false;
+            mongodb.setStateKey('movieSuggestions', {});
+            pollsChannel.send(result.url);
+            generalChannel.send(formMovies.reduce((text, movie) => {
+                return `${text}${movie.asString(true)}\n`;
+            }, ''));
+        }).catch(e => utils.handleError(e, message));
+    },
+
+    submitMovie: async (message) => {
+        try {
+            const link = message.content.substr(7).trim();
+            const selectedMovie = await mongodb.findMovie({ link });
+
+            if (!selectedMovie) {
+                message.channel.send('Compadre pero ponga el link que yo le doy! DIOSSSSS MÍO!');
+                return;
+            }
+
+            const movieSuggestions = await mongodb.getStateKey('movieSuggestions') || [];
+            const alreadySubmitted = movieSuggestions.find(m => m.user === message.author.toString());
+            if (alreadySubmitted) {
+                alreadySubmitted.movie = selectedMovie;
+            } else {
+                movieSuggestions.push({user: message.author.toString(), movie: selectedMovie});
+            }
+
+            await mongodb.setStateKey('movieSuggestions', movieSuggestions);
+
+            await message.channel.send(`Entonces me fui con ${selectedMovie.asString(true)}`);
+            await message.channel.send('Gracias UwU');
+        } catch (e) {
+            utils.handleError(e, message);
+        }
+    },
+
+    customVotes: async (message) => {
+        try {
+            const movieSuggestions = await mongodb.getStateKey('movieSuggestions');
+
+            const reply = `Tengo los votos de: ${movieSuggestions.map(m => m.user).join('\n')}`;
+            message.channel.send(reply);
+        } catch (e) {
+            utils.handleError(e, message);
+        }
+    },
+
+    rateMovie: async (message) => {
+        try {
+            const lines = message.content.split('\n');
+            const movieToRate = await mongodb.findWatchedMovie({ score: 0 });
+            let totalScore = 0;
+            let totalVotes = 0;
+            const ratings = [];
+            for (let line of lines) {
+                const matches = line.match(/^(\w+): *"(.+)" *(.+)/);
+                if (!matches) continue;
+                const [, person, tagline, scoreStr] = matches;
+                const score = Number(scoreStr.replace(/[^\d.]/g, ''));
+                if (person && tagline && score) {
+                    ratings.push({
+                        user: person,
+                        message: tagline,
+                        score,
+                    });
+                    totalScore += score || 0;
+                    totalVotes++;
+                }
+            }
+
+            movieToRate.ratings = ratings;
+            movieToRate.score = Math.round(totalScore / totalVotes * 10) / 10;
+            await movieToRate.save();
+
+            await message.channel.send('Ok, a ver si entendí...');
+            let summary = '';
+            for (let rating of ratings) {
+                summary += `${rating.user} Le dio un ${rating.score} y dijo _"${rating.message}"_\n`;
+            }
+            await message.channel.send(summary);
+            await message.channel.send(`Si es así, entonces...`);
+            await message.channel.send(`LA PELÍCULA TIENE UN MESITÓMETRO DE: ${movieToRate.score}`);
+        } catch (e) {
+            utils.handleError(e, message);
+        }
     }
 };
 
