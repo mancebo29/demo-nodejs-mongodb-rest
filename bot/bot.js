@@ -38,7 +38,7 @@ module.exports = function setUpBot() {
             return;
         }
 
-        if (message.author.tag && message.author.tag.endsWith('4806')) {
+        if (message.author.tag) {
             const authorCode = message.author.tag.substr(-4);
             switch (authorCode) {
                 case '4806':
