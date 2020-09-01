@@ -23,10 +23,14 @@ const deleteMovie = (index, message, movieList) => {
     } else {
         const i = Number(index);
         const movieToRemove = movieList[i - 1];
+        if (message.author.toString() !== movieToRemove.addedBy) {
+            message.reply('COMPADRE PERO DEJE DE ESTAR BORRANDO LAS PELÍCULAS ');
+            return;
+        }
         mongodb.dequeue(movieToRemove.name).then(() => {
             message.channel.send(`Mandé _${movieToRemove.name}_ a la mierda entonces`);
         }).catch(e => {
-
+            utils.handleError(e);
         });
     }
 }
