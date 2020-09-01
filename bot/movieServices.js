@@ -23,7 +23,8 @@ const deleteMovie = (index, message, movieList) => {
     } else {
         const i = Number(index);
         const movieToRemove = movieList[i - 1];
-        if (message.author.toString() !== movieToRemove.addedBy) {
+        if (message.author.toString() !== movieToRemove.addedBy
+          || message.author.toString() === '<@588178966523936777>') {
             message.reply('COMPADRE PERO DEJE DE ESTAR BORRANDO LAS PELÍCULAS ');
             return;
         }
