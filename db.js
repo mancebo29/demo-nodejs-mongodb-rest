@@ -107,4 +107,22 @@ module.exports = {
             });
         });
     },
+
+    getWatchedMovies: function (filters = {}) {
+        return new Promise((resolve, reject) => WatchedMovie.find(filters, null, { sort: { watchedOn: -1 } }, (err, movies) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(movies);
+        }));
+    },
+
+    getWatchedDetails: function (filters =  {}) {
+        return new Promise((resolve, reject) => WatchedMovie.findOne(filters, (err, movie) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(movie);
+        }));
+    },
 };

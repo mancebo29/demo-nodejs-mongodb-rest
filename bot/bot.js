@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const movieServices = require('./movieServices');
-const ratingServices = require('../services/ratingService');
+const watchedService = require('./watchedService');
 const sinon = require('sinon');
 var utils = require('../utils/utils');
 
@@ -194,6 +194,18 @@ module.exports = function setUpBot() {
 
         if (message.content.startsWith(`${PREFIX}rating`)) {
             movieServices.rateMovie(message);
+        }
+
+        if (message.content.startsWith(`${PREFIX}watched`)) {
+            const full = message.content.includes('-f');
+            const ratingMatch = message.content.match(/-r ?([\d.,]+) ?(-\w|$)/);
+            const dateMatch = message.content.match(/-d ?(\d+\/\d+\/\d{4}) ?(-\w|$)/);
+            const queryMatch = message.content.match(/-q ?(.+) ?(-\w|$)/);
+            watchedService.listWatched(message, full, {
+                rating: ratingMatch ? Number(ratingMatch[1]) : undefined,
+                date: dateMatch ? dateMatch[1] : undefined,
+                query: queryMatch ? queryMatch[1].toLocaleLowerCase().trim() : undefined,
+            });
         }
     });
 
