@@ -21,6 +21,18 @@ watchedMovieSchema.methods.asString = function() {
   return `${this.movie.name}${year}${date}${score}`;
 };
 
+watchedMovieSchema.methods.getDetails = function() {
+  let title = `${this.asString()}\nAquí los reviews:\n\n`;
+
+  if (this.ratings && this.ratings.length) {
+    this.ratings.forEach(r => {
+      title += `${r.user}: "${r.message}" ${r.score}\n\n`;
+    });
+  }
+
+  return title;
+};
+
 const WatchedMovie = mongoose.model('watched-movie', watchedMovieSchema);
 
 module.exports = WatchedMovie;
