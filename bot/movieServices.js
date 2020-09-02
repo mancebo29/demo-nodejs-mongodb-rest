@@ -259,6 +259,7 @@ const movieServices = {
             sentMessage.react('🇨');
             sentMessage.react('🇩');
             sentMessage.react('🇪');
+            sentMessage.react('🇫');
         } catch (e) {
             utils.handleError(e, message);
         }
