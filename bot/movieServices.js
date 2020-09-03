@@ -402,7 +402,7 @@ const movieServices = {
             let totalVotes = 0;
             const ratings = [];
             for (let line of lines) {
-                const matches = line.match(/^(\w+): *"(.+)" *(.+)/);
+                const matches = line.match(/^(.+) *: *"(.+)" *(.+)/);
                 if (!matches) continue;
                 const [, person, tagline, scoreStr] = matches;
                 const score = Number(scoreStr.replace(/[^\d.]/g, ''));
