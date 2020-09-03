@@ -302,6 +302,8 @@ const movieServices = {
         }).catch(e => utils.handleError(e, message));
     },
 
+    currentCollector: null,
+
     openCustomForm: async (message) => {
         try {
             if (creatingSurvey) {
@@ -316,8 +318,8 @@ const movieServices = {
             await sentMessage.react('👍');
 
             const filter = (reaction) => reaction.emoji.name === '👍';
-            const collector = sentMessage.createReactionCollector(filter, { time: 30 * 60 * 1000 });
-            collector.on('collect', async (r, u) => {
+            movieServices.currentCollector = sentMessage.createReactionCollector(filter, { time: 30 * 60 * 1000 });
+            movieServices.currentCollector.on('collect', async (r, u) => {
                 try {
                     if (u.bot) return;
                     const chat = await u.createDM();
@@ -328,7 +330,8 @@ const movieServices = {
                 }
 
             });
-            collector.on('end', (r, u) => {
+            movieServices.currentCollector.on('end', (r, u) => {
+                message.channel.send('Pues ya voy a tirar el form');
                 movieServices.closeCustomForm(message);
             });
         } catch (e) {
