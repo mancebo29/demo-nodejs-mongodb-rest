@@ -348,7 +348,7 @@ const movieServices = {
         const formMovies = movieSuggestions.map(m => new Movie(m.movie));
         surveyService.createSurvey(formMovies).then(result => {
             creatingSurvey = false;
-            mongodb.setStateKey('movieSuggestions', {});
+            mongodb.setStateKey('movieSuggestions', []);
             pollsChannel.send(result.url);
             generalChannel.send(formMovies.reduce((text, movie) => {
                 return `${text}${movie.asString(true)}\n`;
