@@ -45,6 +45,7 @@ async function allowMovieRemoval(sentMessage, message, m) {
         try {
             if (u.toString() !== m.addedBy && u.toString() !== '<@588178966523936777>') {
                 message.reply('PERO DEJA DE ESTAR BORRANDO LAS PELÍCULAS DE LOS DEMÁS');
+                return;
             }
             await mongodb.dequeue(m.name.trim());
             await message.channel.send(`Okis, quité ${m.asString(true)} entonces :c`);
