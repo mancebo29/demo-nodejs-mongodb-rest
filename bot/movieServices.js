@@ -25,7 +25,7 @@ const deleteMovie = (index, message, movieList) => {
         const movieToRemove = movieList[i - 1];
         if (message.author.toString() !== movieToRemove.addedBy
           && message.author.toString() !== '<@588178966523936777>') {
-            message.reply('COMPADRE PERO DEJE DE ESTAR BORRANDO LAS PELÍCULAS DE LOS DEMÁS');
+            message.reply('PERO DEJA DE ESTAR BORRANDO LAS PELÍCULAS DE LOS DEMÁS');
             return;
         }
         mongodb.dequeue(movieToRemove.name).then(() => {
@@ -34,6 +34,25 @@ const deleteMovie = (index, message, movieList) => {
             utils.handleError(e);
         });
     }
+}
+
+async function allowMovieRemoval(sentMessage, message, m) {
+    await sentMessage.react('❌');
+
+    const filter = (reaction, u) => reaction.emoji.name === '❌' && u.id === message.author.id;
+    const collector = sentMessage.createReactionCollector(filter, {time: 15 * 60 * 1000});
+    collector.on('collect', async (r, u) => {
+        try {
+            if (u.toString() !== m.addedBy && u.toString() !== '<@588178966523936777>') {
+                message.reply('PERO DEJA DE ESTAR BORRANDO LAS PELÍCULAS DE LOS DEMÁS');
+            }
+            await mongodb.dequeue(m.name.trim());
+            await message.channel.send(`Okis, quité ${m.asString(true)} entonces :c`);
+            collector.stop();
+        } catch (e) {
+            utils.handleError(e, message);
+        }
+    });
 }
 
 const movieServices = {
@@ -52,7 +71,18 @@ const movieServices = {
         if (filters.query) {
             filtersToUse.name = { $regex: filters.query, $options: 'i' };
         }
-        mongodb.seeQueue(filtersToUse).then(movies => {
+        mongodb.seeQueue(filtersToUse).then(async (movies) => {
+            if (!movies.length) {
+                await message.channel.send('No encontré ninguna película :c');
+                return;
+            }
+            if (movies.length === 1) {
+                const [m] = movies;
+                const reply = `La única que película que encontré fue:\n${m.asString(true)}\n\n_Le puedes dar a la X para quitarla_`;
+                const sentMessage = await message.channel.send(reply);
+                await allowMovieRemoval(sentMessage, message, m);
+                return;
+            }
             let reply = 'Las películas en queue son: ';
             let n = 1;
             for (const m of movies) {
@@ -84,8 +114,9 @@ const movieServices = {
         if (title.includes('imdb.com')) {
             [title, imdbId] = title.match(/imdb.com\/title\/(\w+)/);
         }
-        mongodb.enqueue(title.trim(), imdbId, message.author.toString()).then(m => {
-            message.channel.send(`Se agregó ${m.asString(true)}`);
+        mongodb.enqueue(title.trim(), imdbId, message.author.toString()).then(async (m) => {
+            const sentMessage = await message.channel.send(`Se agregó ${m.asString(true)}\n\n_Si no era esa, le puedes dar a la x para quitarla_`);
+            await allowMovieRemoval(sentMessage, message, m);
             if (m.rating && Number(m.rating) < 7) {
                 message.channel.send(`Ehm... Tomen en cuenta que solo tiene ${m.rating} en IMDB`);
             }
