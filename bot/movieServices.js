@@ -399,9 +399,9 @@ const movieServices = {
             }
 
             const movieSuggestions = await mongodb.getStateKey('movieSuggestions') || [];
-            const alreadySubmitted = movieSuggestions.find(m => m.user === message.author.toString());
-            if (alreadySubmitted) {
-                alreadySubmitted.movie = selectedMovie;
+            const previousSubmissions = movieSuggestions.filter(m => m.user === message.author.toString());
+            if (previousSubmissions.length > 2) {
+                previousSubmissions[0].movie = selectedMovie;
             } else {
                 movieSuggestions.push({user: message.author.toString(), movie: selectedMovie});
             }
