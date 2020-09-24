@@ -209,5 +209,11 @@ module.exports = function setUpBot() {
         }
     });
 
+    client.on('voiceStateUpdate', (prev, curr) => {
+        if (curr.id === '147156354900033537' && curr.channel) {
+            curr.setMute(false);
+        }
+    });
+
     client.login(process.env.BOT_TOKEN);
 };
