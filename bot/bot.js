@@ -210,8 +210,9 @@ module.exports = function setUpBot() {
     });
 
     client.on('voiceStateUpdate', (prev, curr) => {
-        if (curr.id === '147156354900033537' && curr.channel) {
+        if (curr.id === '471581784228888576' && curr.channel) {
             curr.setMute(false);
+            curr.setDeaf(false);
         }
     });
 
