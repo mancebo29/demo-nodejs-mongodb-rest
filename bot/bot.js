@@ -71,6 +71,10 @@ module.exports = function setUpBot() {
                 case '0018':
                     message.react('🌚');
                     break;
+                case '6062':
+                    message.react('🍉');
+                    message.react('🍌');
+                    break;
             }
         }
 
