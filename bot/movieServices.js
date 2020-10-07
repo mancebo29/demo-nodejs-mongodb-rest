@@ -49,7 +49,9 @@ async function allowMovieRemoval(sentMessage, message, m) {
             }
             await mongodb.dequeue(m.name.trim());
             await message.channel.send(`Okis, quité ${m.asString(true)} entonces :c`);
-            collector.stop();
+            if (collector) {
+                collector.stop();
+            }
         } catch (e) {
             utils.handleError(e, message);
         }

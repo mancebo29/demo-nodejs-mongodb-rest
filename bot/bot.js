@@ -189,7 +189,9 @@ module.exports = function setUpBot() {
         }
 
         if (message.content.startsWith(`${PREFIX}generateCustomForm`) || message.content.startsWith(`${PREFIX}gcf`)) {
-            movieServices.currentCollector.stop();
+            if (movieServices.currentCollector) {
+                movieServices.currentCollector.stop();
+            }
         }
 
         if (message.content.startsWith(`${PREFIX}customVotes`)) {
