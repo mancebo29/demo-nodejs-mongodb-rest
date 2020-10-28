@@ -38,7 +38,10 @@ module.exports = function setUpBot() {
             return;
         }
 
-        if (message.author.tag) {
+        if (message.content.includes(' reaccion') || message.content.includes(' reaction')) {
+            message.reply('QUITÉ LOS REACTIONS DE TO\' EL MUNDO PORQUE EL MÁS QUERIDO (extraoficialmente) LAS MANDÓ A QUITAR');
+        }
+        if (message.author.tag && false) {
             const authorCode = message.author.tag.substr(-4);
             switch (authorCode) {
                 case '4806':
