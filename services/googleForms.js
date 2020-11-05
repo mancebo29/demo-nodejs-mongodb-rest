@@ -1,6 +1,7 @@
 var axios = require('axios');
 var mongodb = require('../db');
 const URL = 'https://api.surveymonkey.com/v3/surveys/';
+var logger = require('../logger/logger');
 
 const genericConfig = {
   headers: {
@@ -70,7 +71,7 @@ const surveyService = {
   fetchResponses: async () => {
     const names = [];
     const surveyUrl = await mongodb.getStateKey('lastForm');
-    console.log(`${surveyUrl}/responses/bulk?per_page=39`);
+    logger.log(`${surveyUrl}/responses/bulk?per_page=39`);
     const responses = await axios.get(`${surveyUrl}/responses/bulk?per_page=39`, genericConfig).then(d => d.data);
 
     const choices = {};
@@ -115,7 +116,7 @@ const surveyService = {
         }
       }
     }
-    console.log(`${surveyUrl}/pages/${pageId}/questions/${questionId}`);
+    logger.log(`${surveyUrl}/pages/${pageId}/questions/${questionId}`);
 
     const originalQuestion = await axios.get(`${surveyUrl}/pages/${pageId}/questions/${questionId}`, genericConfig)
       .then(d => d.data);
@@ -123,11 +124,11 @@ const surveyService = {
     const allScores = originalQuestion.answers.choices.map(oc => {
       let matches = oc.text.match(/^(.+)(\(\d{4}\))/);
       if (!matches) {
-        console.log('NON MATCHING MOVIE ERROR', oc.text);
+        logger.log('NON MATCHING MOVIE ERROR', oc.text);
         matches = oc.text.match(/^(.+)(\(\d{4}\))?(http.+)/);
       }
       const title = matches ? matches[1] : '';
-      console.log('TITLE', title);
+      logger.log('TITLE', title);
       return {
         ...oc,
         title: title ? title.trim() : '',

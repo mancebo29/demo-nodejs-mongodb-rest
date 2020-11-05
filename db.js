@@ -86,7 +86,7 @@ module.exports = {
         return new Promise(resolve => {
             State.find((err, s) => {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                 }
                 let [state] = s;
                 if (!state) state = new State({ lastForm: '' });
@@ -100,7 +100,7 @@ module.exports = {
         return new Promise(resolve => {
             State.find((err, s) => {
                 if (err) {
-                    console.log(err);
+                    logger.log(err);
                 }
                 const [state] = s;
                 resolve(state[key]);

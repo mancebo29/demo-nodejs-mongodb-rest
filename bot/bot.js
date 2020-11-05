@@ -4,12 +4,11 @@ const movieServices = require('./movieServices');
 const watchedService = require('./watchedService');
 const sinon = require('sinon');
 var utils = require('../utils/utils');
-
-
+var logger = require('../logger/logger');
 
 module.exports = function setUpBot() {
     client.once('ready', () => {
-        console.log('Ready!');
+        logger.log('Ready!');
         if (process.env.NODE_ENV === 'dev') {
             const testChannel = client.channels.resolve(process.env.DEFAULT_BOT_CHANNEL);
             client.channels.resolve = sinon.stub().returns(testChannel);
