@@ -1,14 +1,14 @@
 const mongodb = require('../db');
 const utils = require('../utils/utils');
 const { parse } = require('date-fns');
+var logger = require('../logger/logger');
 
 const watchedService = {
     listWatched: (message, full = false, filters = {}) => {
         const filtersToUse = {};
-        console.log(filters);
+        logger.log(filters);
         if (filters.date) {
             filtersToUse.date = { $gte: parse(filters.date, 'dd/MM/yyyy', new Date()) };
-            console.log(filtersToUse);
         }
         if (filters.rating) {
             filtersToUse.score = { $gte: filters.rating };
