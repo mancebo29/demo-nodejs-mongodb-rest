@@ -8,11 +8,7 @@ const genericConfig = {
 
 const catService = {
     getRandomCat: async (text) => {
-        const cat = await axios.get(`https://cataas.com/cat/says/${encodeURIComponent(text)}`, genericConfig).then(d => d.data);
-
-        console.log('CAT: ', cat);
-
-        return cat;
+        return axios.get(`https://cataas.com/cat/says/${encodeURIComponent(text)}`, genericConfig).then(d => d.data);
     }
 };
 
