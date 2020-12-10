@@ -263,19 +263,16 @@ const movieServices = {
         try {
             const generalChannel = message.client.channels.resolve('690318438077562902');
             const [user, level] = message.content.split(' | ');
-            const j = await jokeService.getRandomJoke();
             const text = `Felicidades x${level}! :3`;
 
             let congratsMessage = `Felicidades ${user} por llegar al nivel ${level}.`;
             await generalChannel.send(congratsMessage);
             await generalChannel.send(`https://cataas.com/cat/says/${encodeURIComponent(text)}`);
-            await generalChannel.send('Te ganaste un chiste:');
 
-            if (j.type === 'single') {
-                await sendMessageWithDelay(message, j.joke, 3000, generalChannel);
-            } else {
-                await sendMessageWithDelay(message, j.setup, 3000, generalChannel);
-                await sendMessageWithDelay(message, j.delivery, 5000, generalChannel);
+            const j = await jokeService.getRandomJoke();
+            if (j.url) {
+                await generalChannel.send('Te ganaste un meme:');
+                await sendMessageWithDelay(message, j.url, 0, generalChannel);
             }
         } catch (e) {
             utils.handleError(e, message);

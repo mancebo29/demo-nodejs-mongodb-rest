@@ -6,13 +6,20 @@ const genericConfig = {
     },
 };
 
+let lastMeme = null;
 const jokeService = {
+
     getRandomJoke: async () => {
-        const joke = await axios.get(`https://sv443.net/jokeapi/v2/joke/Miscellaneous,Dark`, genericConfig).then(d => d.data);
+        const url = `https://www.reddit.com/r/dankmemes/top.json?t=day&count=3${lastMeme ? `&after=${lastMeme.name}` : ''}`;
+        const res = await axios.get(url, genericConfig)
+            .then(d => d.data);
 
-        console.log('JOKE: ', JSON.stringify(joke));
+        const meme = res.data.children[0].data;
+        lastMeme = meme || null;
 
-        return joke;
+        console.log('MEME: ', JSON.stringify(meme));
+
+        return meme;
     }
 };
 
