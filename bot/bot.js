@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const movieServices = require('./movieServices');
 const watchedService = require('./watchedService');
+const generalService = require('./generalService');
 const sinon = require('sinon');
 var utils = require('../utils/utils');
 var logger = require('../logger/logger');
@@ -217,6 +218,10 @@ module.exports = function setUpBot() {
                 date: dateMatch ? dateMatch[1] : undefined,
                 query: queryMatch ? queryMatch[1].toLocaleLowerCase().trim() : undefined,
             });
+        }
+
+        if (message.content.startsWith(`${PREFIX}move`)) {
+            generalService.moveEveryone(message);
         }
     });
 
