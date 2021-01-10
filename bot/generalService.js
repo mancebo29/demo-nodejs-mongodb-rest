@@ -18,6 +18,7 @@ const generalService = {
                         const targetChannel = voiceChannels.find(c => c.name.includes(r.emoji.name));
 
                         const currentChannel = message.member.voice.channel;
+                        console.log(currentChannel);
                         const membersArray = Array.from(currentChannel.members.array());
                         for (const member of membersArray) {
                             member.voice.setChannel(targetChannel);
