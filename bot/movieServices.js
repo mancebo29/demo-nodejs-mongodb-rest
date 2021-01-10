@@ -283,14 +283,12 @@ const movieServices = {
         try {
             const pollsChannel = message.client.channels.resolve('733376737890533447');
             const sentMessage = await pollsChannel.send(
-                `klk?\n:regional_indicator_a: Among Us\n\n:regional_indicator_b: Batalla en Pummel Party\n\n:regional_indicator_c: Cinema Night\n\n:regional_indicator_d: D&D\n\n:regional_indicator_e: Entonces algo más\n\n:regional_indicator_f: Fibbage y demás juegos de Jackbox`
+                `klk?\n:regional_indicator_a: Algo más\n\n:regional_indicator_b: Barajar\n\n:regional_indicator_c: Cinema Night\n\n:regional_indicator_d: Día de Jackbox\n`
             );
             sentMessage.react('🇦');
             sentMessage.react('🇧');
             sentMessage.react('🇨');
             sentMessage.react('🇩');
-            sentMessage.react('🇪');
-            sentMessage.react('🇫');
         } catch (e) {
             utils.handleError(e, message);
         }
