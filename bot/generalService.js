@@ -12,7 +12,7 @@ const generalService = {
                 voiceChannels.each((c) => reply += `${c.name.substr(0, 2)} - ${c.toString()} \n`);
                 const newMessage = await message.reply(reply);
                 const filter = (reaction, u) => u.id === message.author.id;
-                const collector = newMessage.createReactionCollector(filter, {time: 5 * 60 * 1000});
+                const collector = newMessage.createReactionCollector(filter, { time: 5 * 60 * 1000 });
                 collector.on('collect', async (r, u) => {
                     try {
                         const targetChannel = voiceChannels.find(c => c.name.includes(r.emoji.name));
