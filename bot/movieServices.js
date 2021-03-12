@@ -296,7 +296,7 @@ const movieServices = {
 
     opinions: async (message) => {
         try {
-            const movieNights = message.client.channels.resolve('727367585225506857');
+            const movieNights = message.client.channels.resolve('806309328885383238');
             const membersArray = Array.from(movieNights.members.array());
             const shuffledArray = utils.suffle(membersArray);
 
