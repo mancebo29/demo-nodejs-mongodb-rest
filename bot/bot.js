@@ -260,11 +260,11 @@ module.exports = function setUpBot() {
         if (curr.id === '302643343530393601') {
             const date = new Date();
             if (!prev.channel && curr.channel) {
-                testChannel.send(`Cafmel entró a las ${date.toLocaleTimeString()}`);
+                testChannel.send(`Cafmel entró a las ${date.toLocaleTimeString('es-DO')}`);
             }
 
             if (!curr.channel && prev.channel) {
-                testChannel.send(`Cafmel salió a las ${date.toLocaleTimeString()}`);
+                testChannel.send(`Cafmel salió a las ${date.toLocaleTimeString('es-DO')}`);
             }
         }
     });
