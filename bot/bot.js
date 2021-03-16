@@ -256,7 +256,6 @@ module.exports = function setUpBot() {
 
     client.on('voiceStateUpdate', (prev, curr) => {
         const testChannel = client.channels.resolve('734638568407826432');
-        testChannel.send('Deployed!');
         if (curr.id === '302643343530393601') {
             const date = new Date();
             if (!prev.channel && curr.channel) {
