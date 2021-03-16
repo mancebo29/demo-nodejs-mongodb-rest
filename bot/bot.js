@@ -255,9 +255,17 @@ module.exports = function setUpBot() {
     });
 
     client.on('voiceStateUpdate', (prev, curr) => {
-        if (curr.id === '471581784228888576' && curr.channel) {
-            curr.setMute(false);
-            curr.setDeaf(false);
+        const testChannel = client.channels.resolve('734638568407826432');
+        testChannel.send('Deployed!');
+        if (curr.id === '302643343530393601') {
+            const date = new Date();
+            if (!prev.channel && curr.channel) {
+                testChannel.send(`Cafmel entró a las ${date.toLocaleTimeString()}`);
+            }
+
+            if (!curr.channel && prev.channel) {
+                testChannel.send(`Cafmel salió a las ${date.toLocaleTimeString()}`);
+            }
         }
     });
 
