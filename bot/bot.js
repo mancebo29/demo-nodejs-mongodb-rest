@@ -252,6 +252,14 @@ module.exports = function setUpBot() {
         if (message.content.startsWith(`${PREFIX}move`)) {
             generalService.moveEveryone(message);
         }
+
+        if (message.content.startsWith('Comencemos a ver')) {
+
+        }
+
+        if (message.content.startsWith('!esebbHkcaseca')) {
+            message.channel.send('Reglas del server: \n1-Si usted está en un voice channel, es su responsabilidad votar en el daily poll, si hay uno correspondiente al día.');
+        }
     });
 
     client.on('voiceStateUpdate', (prev, curr) => {
