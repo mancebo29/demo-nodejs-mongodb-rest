@@ -461,6 +461,12 @@ const movieServices = {
         } catch (e) {
             utils.handleError(e, message);
         }
+    },
+
+    rules: async (message) => {
+        message.channel.send('Déjame buscar las reglas');
+        await sendMessageWithDelay(message, 'https://i.pinimg.com/600x315/73/97/c0/7397c0919de60f1425ad03c4ce83d0a4.jpg', 1000);
+        await sendMessageWithDelay(message, 'Reglas del server: \n1-Si usted está en un voice channel, es su responsabilidad votar en el daily poll, si hay uno correspondiente al día.', 2500);
     }
 };
 

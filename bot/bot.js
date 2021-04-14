@@ -257,8 +257,8 @@ module.exports = function setUpBot() {
 
         }
 
-        if (message.content.startsWith('!esebbHkcaseca')) {
-            message.channel.send('Reglas del server: \n1-Si usted está en un voice channel, es su responsabilidad votar en el daily poll, si hay uno correspondiente al día.');
+        if (message.content.startsWith('!rules')) {
+            movieServices.rules(message);
         }
     });
 
