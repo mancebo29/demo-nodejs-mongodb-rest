@@ -28,7 +28,7 @@ module.exports = function setUpBot() {
 
         const PREFIX = process.env.BOT_COMMAND_PREFIX || '!';
 
-        if (/a\s*m\s*o\s*g\s*u\s*s/gi.test(message.content)) {
+        if (/a\W*m\W*o\W*g\W*u\W*s/gi.test(message.content)) {
             message.delete();
             return;
         }
