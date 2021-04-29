@@ -20,36 +20,6 @@ module.exports = function setUpBot() {
         testChannel.send('Deployed!');
     });
 
-    const x = setInterval( async () => {
-        const response = await axios.get("https://resultados.labreferencia.com/Account/Login", {
-            "headers": {
-                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-                "accept-language": "en-US,en;q=0.9,es-419;q=0.8,es;q=0.7",
-                "cache-control": "max-age=0",
-                "content-type": "application/x-www-form-urlencoded",
-                "sec-fetch-dest": "document",
-                "sec-fetch-mode": "navigate",
-                "sec-fetch-site": "same-origin",
-                "sec-fetch-user": "?1",
-                "upgrade-insecure-requests": "1"
-            },
-            "referrer": "https://resultados.labreferencia.com/Account/Login",
-            "referrerPolicy": "no-referrer-when-downgrade",
-            "body": "UserName=JAIRO09286&Password=489286&RememberMe=true&RememberMe=false",
-            "method": "POST",
-            "mode": "cors",
-            "credentials": "include"
-        }).then(r => r.data);
-        if (response.includes('El nombre de usuario no existe o el sistema')) {
-            return;
-        } else {
-            const channel = client.channels.resolve(process.env.DEFAULT_BOT_CHANNEL);
-            channel.send('Wey ya');
-        }
-    }, 1000 * 60 * 15);
-
-    console.log(x);
-
     const checkPermission = (message) => {
         return true;
     };
@@ -57,6 +27,11 @@ module.exports = function setUpBot() {
     client.on('message', message => {
 
         const PREFIX = process.env.BOT_COMMAND_PREFIX || '!';
+
+        if (/a\s*m\s*o\s*g\s*u\s*s/gi.test(message.content)) {
+            message.delete();
+            return;
+        }
 
         if (message.content === `${PREFIX}ping`) {
             message.channel.send("pong!");
