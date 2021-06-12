@@ -36,8 +36,6 @@ module.exports = function setUpBot() {
         }
     }, 60 * 60 * 1000)
 
-    console.log(x);
-
     const checkPermission = (message) => {
         return true;
     };
