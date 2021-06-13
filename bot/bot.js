@@ -21,21 +21,23 @@ module.exports = function setUpBot() {
     });
 
     setInterval(async () => {
-        const testChannel = client.channels.resolve('734638568407826432');
-        testChannel.send('Hue');
         const showNight = client.channels.resolve('806309328885383238');
+        const movieNight = client.channels.resolve('806323807513870336');
         const time = +(new Date().toISOString().substr(11, 2)) - 4;
+        let timeStr = 'Night';
         switch (true) {
             case time > 0 && time <= 11:
-                showNight.setName('🎥Tv Show Morning');
+                timeStr = 'Morning';
                 break;
             case time > 11 && time <= 19:
-                showNight.setName('🎥Tv Show Afternoon');
+                timeStr = 'Afternoon';
                 break;
             default:
-                showNight.setName('🎥Tv Show Night');
+                timeStr = 'Night';
                 break;
         }
+        showNight.setName(`🎥Tv Show ${timeStr}`);
+        movieNight.setName(`🎬Movie ${timeStr}`);
     }, 60 * 60 * 1000)
 
     const checkPermission = (message) => {
