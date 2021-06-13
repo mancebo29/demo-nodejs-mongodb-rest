@@ -29,7 +29,7 @@ module.exports = function setUpBot() {
             case time > 0 && time <= 11:
                 showNight.setName('🎥Tv Show Morning');
                 break;
-            case time <= 19:
+            case time > 11 && time <= 19:
                 showNight.setName('🎥Tv Show Afternoon');
                 break;
             default:
