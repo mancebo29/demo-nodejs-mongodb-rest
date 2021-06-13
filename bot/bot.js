@@ -26,7 +26,7 @@ module.exports = function setUpBot() {
         const showNight = client.channels.resolve('806309328885383238');
         const time = +(new Date().toISOString().substr(11, 2)) - 4;
         switch (true) {
-            case time <= 11:
+            case time > 0 && time <= 11:
                 showNight.setName('🎥Tv Show Morning');
                 break;
             case time <= 19:
