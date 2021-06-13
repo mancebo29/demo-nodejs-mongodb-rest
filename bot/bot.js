@@ -21,6 +21,8 @@ module.exports = function setUpBot() {
     });
 
     setInterval(async () => {
+        const testChannel = client.channels.resolve('734638568407826432');
+        testChannel.send('Hue');
         const showNight = client.channels.resolve('806309328885383238');
         const time = +(new Date().toISOString().substr(11, 2)) - 4;
         switch (true) {
