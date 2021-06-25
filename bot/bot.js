@@ -65,7 +65,7 @@ module.exports = function setUpBot() {
             return;
         }
 
-        if (message.author.id === 384764838020251658 && message.channel.id === 752498385541529681) {
+        if (message.author.id == '384764838020251658' && message.channel.id == '752498385541529681') {
             message.delete();
         }
 
