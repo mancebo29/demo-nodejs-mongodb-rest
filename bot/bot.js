@@ -66,7 +66,7 @@ module.exports = function setUpBot() {
         }
 
         if (message.author.id === 384764838020251658 && message.channel.id === 752498385541529681) {
-            message.delete({ timeout: 100 });
+            message.delete();
         }
 
         if (message.author.tag && false) {
